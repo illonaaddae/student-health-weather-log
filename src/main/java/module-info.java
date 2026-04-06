@@ -1,7 +1,11 @@
-module com.kingsley {
+module edu.atu.healthlog.studenthealthweatherlog {
     requires javafx.controls;
     requires javafx.fxml;
-    opens com.kingsley to javafx.fxml;
-    exports com.kingsley;
-    exports com.kingsley.controllers;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.fontawesome5;
+    requires java.sql;
+    requires com.google.gson;
+
+    opens edu.atu.healthlog.studenthealthweatherlog to javafx.fxml;
+    exports edu.atu.healthlog.studenthealthweatherlog;
 }

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.atu.healthlog.studenthealthweatherlog.HistoryController" style="-fx-background-color: #f9f9f9; -fx-fit-to-width: true;" fitToWidth="true" hbarPolicy="NEVER">
+    <VBox spacing="30" style="-fx-padding: 40; -fx-background-color: #f9f9f9;">
+
+        <!-- Header -->
+        <VBox spacing="10">
+            <Label text="Your Wellness History" styleClass="headline-lg" style="-fx-text-fill: #1a1a1a; -fx-font-size: 3em; -fx-font-weight: bold;">
+                <font>
+                    <Font name="Manrope Bold" size="36" />
+                </font>
+            </Label>
+            <Label text="A detailed retrospective of your health journey. Analyze patterns between your environment and well-being." style="-fx-text-fill: #5a6061; -fx-font-size: 1.1em;" />
+        </VBox>
+
+        <!-- Filter and Date Range Section -->
+        <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1.5em; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+            <StackPane style="-fx-background-color: #f2f4f4; -fx-padding: 8; -fx-background-radius: 10;">
+                 <FontIcon iconLiteral="fas-calendar-alt" iconSize="16" iconColor="#005faf" />
+            </StackPane>
+            <DatePicker fx:id="startDatePicker" promptText="Oct 01, 2023" prefWidth="150" style="-fx-background-color: transparent;" />
+            <Label text="-" style="-fx-text-fill: #70767a;" />
+            <DatePicker fx:id="endDatePicker" promptText="Oct 31, 2023" prefWidth="150" style="-fx-background-color: transparent;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="filterBtn" text="Filters" style="-fx-background-color: #f2f4f4; -fx-padding: 10 20; -fx-text-fill: #2d3435; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand;" onAction="#applyFilters">
+                <graphic>
+                    <FontIcon iconLiteral="fas-filter" iconSize="14" iconColor="#2d3435" />
+                </graphic>
+            </Button>
+            <Button fx:id="exportCsvBtn" text="Export CSV" style="-fx-background-color: #f2f4f4; -fx-padding: 10 20; -fx-text-fill: #2d3435; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand;" onAction="#exportCSV">
+                <graphic>
+                    <FontIcon iconLiteral="fas-file-csv" iconSize="14" iconColor="#2d3435" />
+                </graphic>
+            </Button>
+        </HBox>
+
+        <!-- Main Content Grid -->
+        <HBox spacing="25">
+
+            <!-- Left Column: Data Insights -->
+            <VBox spacing="25" HBox.hgrow="ALWAYS">
+
+                <!-- Monthly Summary Card -->
+                <VBox spacing="20" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 2em; -fx-background-radius: 1.5em; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+                    <Label text="MONTHLY SUMMARY" style="-fx-text-fill: #005faf; -fx-font-weight: bold; -fx-font-size: 0.8em; -fx-letter-spacing: 1;" />
+                    <Label text="Stability is your strength" style="-fx-font-size: 2em; -fx-font-weight: bold;" />
+                    <Label text="Your hydration levels have increased by 12% compared to last month. Keep up the momentum." style="-fx-text-fill: #5a6061; -fx-font-size: 1.1em;" />
+
+                    <!-- Summary Metrics -->
+                    <HBox spacing="40">
+                        <VBox spacing="8">
+                            <Label text="AVG. SLEEP" style="-fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-font-weight: bold;" />
+                            <HBox alignment="BASELINE_LEFT" spacing="5">
+                                <Label text="7.4" style="-fx-text-fill: #005faf; -fx-font-size: 2em; -fx-font-weight: bold;" />
+                                <Label text="hrs" style="-fx-text-fill: #70767a;" />
+                            </HBox>
+                        </VBox>
+                        <VBox spacing="8">
+                            <Label text="AVG. MOOD" style="-fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-font-weight: bold;" />
+                            <Label text="Calm" style="-fx-font-size: 2em; -fx-font-weight: bold;" />
+                        </VBox>
+                        <VBox spacing="8">
+                            <Label text="HYDRATION" style="-fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-font-weight: bold;" />
+                            <HBox alignment="BASELINE_LEFT" spacing="5">
+                                <Label text="2.8" style="-fx-text-fill: #005faf; -fx-font-size: 2em; -fx-font-weight: bold;" />
+                                <Label text="L" style="-fx-text-fill: #70767a;" />
+                            </HBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Data Table -->
+                <VBox spacing="0" style="-fx-background-color: white; -fx-background-radius: 1.5em; -fx-overflow: hidden; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+                    <TableView fx:id="historyTable" prefHeight="450" style="-fx-background-color: transparent; -fx-selection-bar: #d4e3ff;">
+                        <columns>
+                            <TableColumn fx:id="dateColumn" text="DATE" prefWidth="150" />
+                            <TableColumn fx:id="moodColumn" text="MOOD" prefWidth="120" />
+                            <TableColumn fx:id="sleepColumn" text="SLEEP" prefWidth="100" />
+                            <TableColumn fx:id="waterColumn" text="WATER" prefWidth="100" />
+                            <TableColumn fx:id="exerciseColumn" text="EXERCISE" prefWidth="150" />
+                            <TableColumn fx:id="weatherColumn" text="WEATHER" prefWidth="120" />
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
+                    </TableView>
+
+                    <!-- Pagination -->
+                    <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 1.5em; -fx-background-color: #f9f9f9; -fx-background-radius: 0 0 1.5em 1.5em;">
+                        <Label text="Showing 1 to 4 of 31 entries" style="-fx-text-fill: #70767a; -fx-font-size: 0.9em;" />
+                        <HBox spacing="5" alignment="CENTER">
+                            <Button text="◀" style="-fx-background-color: white; -fx-border-color: #e4e9ea; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                            <Button text="1" style="-fx-background-color: #005faf; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;" />
+                            <Button text="2" style="-fx-background-color: white; -fx-border-color: #e4e9ea; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                            <Button text="3" style="-fx-background-color: white; -fx-border-color: #e4e9ea; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                            <Button text="▶" style="-fx-background-color: white; -fx-border-color: #e4e9ea; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                        </HBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Footer -->
+                <HBox alignment="CENTER_LEFT" spacing="20">
+                    <Label text="© 2023 WELLNESS SANCTUARY — PRIVATE &amp; SECURE" style="-fx-text-fill: #adb3b4; -fx-font-size: 0.75em; -fx-letter-spacing: 1;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <HBox spacing="15">
+                        <Label text="PDF REPORT" style="-fx-text-fill: #70767a; -fx-font-size: 0.75em; -fx-font-weight: bold; -fx-cursor: hand;" />
+                        <Label text="INTEGRATIONS" style="-fx-text-fill: #70767a; -fx-font-size: 0.75em; -fx-font-weight: bold; -fx-cursor: hand;" />
+                    </HBox>
+                </HBox>
+
+            </VBox>
+
+            <!-- Right Column: Analytics & Tips -->
+            <VBox spacing="25" prefWidth="350">
+
+                <!-- Weather Correlation Card -->
+                <VBox spacing="20" style="-fx-background-color: #005faf; -fx-padding: 2.5em; -fx-background-radius: 2em; -fx-effect: dropshadow(three-pass-box, rgba(0,95,175,0.3), 20, 0, 0, 10);">
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <FontIcon iconLiteral="fas-magic" iconSize="28" iconColor="white" />
+                        <Label text="Weather Correlation" style="-fx-text-fill: white; -fx-font-size: 1.4em; -fx-font-weight: bold;" />
+                    </HBox>
+                    <Label text="&quot;We've noticed you tend to sleep 45 minutes longer on rainy days. Planning a rest day tomorrow?&quot;" wrapText="true" style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 1.1em; -fx-line-spacing: 5;" />
+                    <Button fx:id="viewDeepInsightsBtn" text="View Deep Insights" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: rgba(255,255,255,0.5); -fx-border-width: 1; -fx-padding: 12 25; -fx-background-radius: 12; -fx-font-weight: bold; -fx-cursor: hand; -fx-min-width: 100%;" onAction="#viewDeepInsights" />
+                </VBox>
+
+                <!-- Sync Calendar Card -->
+                <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 2em; -fx-background-radius: 1.5em; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+                    <Label text="Sync Calendar" style="-fx-font-size: 1.4em; -fx-font-weight: bold;" />
+                    <Label text="Link your wellness logs with calendar events for better insights." style="-fx-text-fill: #70767a; -fx-font-size: 1em;" />
+                    <Button fx:id="syncCalendarBtn" text="Sync Calendar" style="-fx-background-color: #005faf; -fx-text-fill: white; -fx-padding: 12 25; -fx-background-radius: 12; -fx-font-weight: bold; -fx-cursor: hand; -fx-min-width: 100%;" onAction="#syncCalendar" />
+                </VBox>
+
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+</ScrollPane>
+

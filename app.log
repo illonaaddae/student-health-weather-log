@@ -1,0 +1,69 @@
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/Users/illona/.m2/wrapper/dists/apache-maven-3.8.5-bin/5i5jha092a3i37g0paqnfr15e0/apache-maven-3.8.5/lib/jansi-2.4.0.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper (file:/Users/illona/.m2/wrapper/dists/apache-maven-3.8.5-bin/5i5jha092a3i37g0paqnfr15e0/apache-maven-3.8.5/lib/guava-25.1-android.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------< edu.atu.healthlog:student-health-weather-log >------------
+[INFO] Building student-health-weather-log 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> javafx-maven-plugin:0.0.8:run (default-cli) > process-classes @ student-health-weather-log >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ student-health-weather-log ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 8 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.13.0:compile (default-compile) @ student-health-weather-log ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< javafx-maven-plugin:0.0.8:run (default-cli) < process-classes @ student-health-weather-log <<<
+[INFO] 
+[INFO] 
+[INFO] --- javafx-maven-plugin:0.0.8:run (default-cli) @ student-health-weather-log ---
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.glass.utils.NativeLibLoader in module javafx.graphics (file:/Users/illona/.m2/repository/org/openjfx/javafx-graphics/21.0.6/javafx-graphics-21.0.6-mac.jar)
+WARNING: Use --enable-native-access=javafx.graphics to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '2rem' at [49,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '1.5rem' at [56,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '1.25rem' at [63,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '1.125rem' at [70,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '1rem' at [77,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '1rem' at [84,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '0.875rem' at [90,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '0.75rem' at [96,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '1rem' at [109,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '0.875rem' at [124,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '0.875rem' at [158,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '0.95rem' at [193,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '0.875rem' at [259,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '1.5rem' at [276,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser term
+WARNING: CSS Error parsing file:/Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log/target/classes/edu/atu/healthlog/studenthealthweatherlog/styles.css: Unexpected token '0.875rem' at [292,19]
+Apr 06, 2026 12:24:18 AM javafx.css.CssParser declaration
+WARNING: CSS Error parsing '*{-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em; -fx-border-left: 4px solid #005faf;}: expected series of <size> while parsing '-fx-border-left' at [1,98]
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::allocateMemory has been called by com.sun.marlin.OffHeapArray (file:/Users/illona/.m2/repository/org/openjfx/javafx-graphics/21.0.6/javafx-graphics-21.0.6-mac.jar)
+WARNING: Please consider reporting this to the maintainers of class com.sun.marlin.OffHeapArray
+WARNING: sun.misc.Unsafe::allocateMemory will be removed in a future release

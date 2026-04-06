@@ -1,0 +1,334 @@
+/* ============================================
+   WELLNESS SANCTUARY - DESIGN SYSTEM STYLESHEET
+   ============================================ */
+
+/* Color Palette */
+.root {
+    /* Primary Colors */
+    -primary: #005faf;
+    -primary-dim: #00539a;
+    -primary-container: #d4e3ff;
+    -on-primary: #f6f7ff;
+    -on-primary-container: #005299;
+
+    /* Secondary Colors */
+    -secondary-container: #cbe6ff;
+
+    /* Surface Colors */
+    -surface: #f9f9f9;
+    -surface-container-low: #f2f4f4;
+    -surface-container: #ebeeef;
+    -surface-container-high: #e4e9ea;
+    -surface-container-lowest: #ffffff;
+    -surface-variant: #e0e4e5;
+
+    /* Text Colors */
+    -on-surface: #2d3435;
+    -on-surface-variant: #70767a;
+    -outline: #7a8184;
+    -outline-variant: #adb3b4;
+}
+
+/* Root Background */
+.root {
+    -fx-font-family: "Inter";
+    -fx-base: -surface;
+}
+
+/* BorderPane */
+.border-pane {
+    -fx-background-color: -surface;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+.headline-lg {
+    -fx-font-family: "Manrope";
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -on-surface;
+}
+
+.headline-md {
+    -fx-font-family: "Manrope";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -on-surface;
+}
+
+.headline-sm {
+    -fx-font-family: "Manrope";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -on-surface;
+}
+
+.title-lg {
+    -fx-font-family: "Inter";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -on-surface;
+}
+
+.title-md {
+    -fx-font-family: "Inter";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -on-surface;
+}
+
+.body-lg {
+    -fx-font-family: "Inter";
+    -fx-font-size: 16px;
+    -fx-text-fill: -on-surface;
+}
+
+.body-md {
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+    -fx-text-fill: -on-surface-variant;
+}
+
+.label-sm {
+    -fx-font-family: "Inter";
+    -fx-font-size: 12px;
+    -fx-text-fill: -on-surface-variant;
+    -fx-text-transform: uppercase;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.button-primary {
+    -fx-background-color: -primary;
+    -fx-text-fill: -on-primary;
+    -fx-font-family: "Inter";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 1em 2em;
+    -fx-background-radius: 50;
+    -fx-cursor: hand;
+}
+
+.button-primary:hover {
+    -fx-background-color: -primary-dim;
+}
+
+.button-secondary {
+    -fx-background-color: -primary-container;
+    -fx-text-fill: -on-primary-container;
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 0.75em 1.5em;
+    -fx-background-radius: 0.5em;
+    -fx-cursor: hand;
+}
+
+.button-secondary:hover {
+    -fx-background-color: #c5d9f5;
+}
+
+.button {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+
+.card {
+    -fx-background-color: -surface-container-lowest;
+    -fx-padding: 1.5em;
+    -fx-background-radius: 1em;
+}
+
+/* ============================================
+   INPUT FIELDS
+   ============================================ */
+
+.text-field, .combo-box {
+    -fx-background-color: -surface-container-high;
+    -fx-text-fill: -on-surface;
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+    -fx-padding: 0.75em 1em;
+    -fx-background-radius: 0.75em;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+}
+
+.text-field:focused, .combo-box:focused {
+    -fx-background-color: -surface-container-high;
+    -fx-border-color: -primary;
+    -fx-border-width: 0 0 2 0;
+}
+
+/* ============================================
+   LABELS
+   ============================================ */
+
+.label {
+    -fx-text-fill: -on-surface;
+    -fx-font-family: "Inter";
+}
+
+/* ============================================
+   SIDEBAR NAVIGATION
+   ============================================ */
+
+.sidebar {
+    -fx-background-color: -surface-container-low;
+    -fx-padding: 2em 1.5em;
+}
+
+.nav-item {
+    -fx-padding: 0.75em 0;
+    -fx-text-fill: -on-surface-variant;
+    -fx-font-family: "Inter";
+    -fx-font-size: 15px;
+    -fx-cursor: hand;
+}
+
+.nav-item:hover {
+    -fx-text-fill: -primary;
+}
+
+.nav-item-active {
+    -fx-text-fill: -primary;
+    -fx-font-weight: bold;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.header {
+    -fx-background-color: -surface-container-lowest;
+    -fx-padding: 1em 2em;
+    -fx-border-color: -surface-container;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* ============================================
+   LAYOUT SPACING
+   ============================================ */
+
+.spacing-sm {
+    -fx-spacing: 0.5em;
+}
+
+.spacing-md {
+    -fx-spacing: 1em;
+}
+
+.spacing-lg {
+    -fx-spacing: 1.5em;
+}
+
+.spacing-xl {
+    -fx-spacing: 2em;
+}
+
+/* ============================================
+   SPECIAL COMPONENTS
+   ============================================ */
+
+.wellness-tip {
+    -fx-background-color: -primary;
+    -fx-text-fill: -on-primary;
+    -fx-padding: 1.5em;
+    -fx-background-radius: 1em;
+}
+
+.metric-card {
+    -fx-background-color: -surface-container-lowest;
+    -fx-padding: 1.5em;
+    -fx-background-radius: 1em;
+}
+
+.mood-chip {
+    -fx-background-color: -secondary-container;
+    -fx-text-fill: -on-surface;
+    -fx-padding: 1em 1.5em;
+    -fx-background-radius: 1.5em;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.mood-chip-selected {
+    -fx-background-color: -primary-container;
+    -fx-text-fill: -on-primary-container;
+    -fx-border-color: -primary;
+    -fx-border-width: 2;
+}
+
+.floating-action-button {
+    -fx-background-color: -primary;
+    -fx-text-fill: -on-primary;
+    -fx-background-radius: 50;
+    -fx-min-width: 3.5em;
+    -fx-min-height: 3.5em;
+    -fx-font-size: 24px;
+    -fx-cursor: hand;
+}
+
+.floating-action-button:hover {
+    -fx-background-color: -primary-dim;
+}
+
+.progress-bar {
+    -fx-control-inner-background: -surface-container;
+    -fx-accent: -primary;
+}
+
+.table-view {
+    -fx-background-color: -surface-container-lowest;
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+}
+
+.table-view .column-header {
+    -fx-background-color: -surface-container;
+    -fx-text-fill: -on-surface-variant;
+    -fx-font-weight: bold;
+    -fx-padding: 1em;
+}
+
+.table-view .table-row-cell {
+    -fx-padding: 0.75em;
+    -fx-background-color: -surface-container-lowest;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: -primary-container;
+}
+
+.pagination .pagination-control {
+    -fx-padding: 1em;
+}
+
+.pagination .page-navigation {
+    -fx-text-fill: -on-surface;
+}
+
+.text-fill-primary {
+    -fx-text-fill: -primary;
+}
+
+.text-fill-secondary {
+    -fx-text-fill: -on-surface-variant;
+}
+
+.background-light {
+    -fx-background-color: -surface-container-low;
+}
+
+.background-card {
+    -fx-background-color: -surface-container-lowest;
+}
+
