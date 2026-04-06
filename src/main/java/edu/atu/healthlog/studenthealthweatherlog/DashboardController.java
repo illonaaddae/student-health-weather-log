@@ -1,13 +1,19 @@
 package edu.atu.healthlog.studenthealthweatherlog;
 
+import edu.atu.healthlog.studenthealthweatherlog.database.HealthLogRepository;
+import edu.atu.healthlog.studenthealthweatherlog.models.HealthEntry;
+import edu.atu.healthlog.studenthealthweatherlog.services.WeatherService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.shape.Rectangle;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -45,40 +51,82 @@ public class DashboardController {
     @FXML private Label day1Label, day2Label, day3Label, day4Label, day5Label, day6Label, day7Label;
     @FXML private Rectangle day1Bar, day2Bar, day3Bar, day4Bar, day5Bar, day6Bar, day7Bar;
 
+    private final HealthLogRepository repository = new HealthLogRepository();
+    private final WeatherService weatherService = new WeatherService();
+
     @FXML
     public void initialize() {
-        // Load mock data for the dashboard
-        loadDashboardData();
+        // Load real data in a background thread to keep UI responsive
+        new Thread(this::loadDashboardData).start();
     }
 
     /**
-     * Loads mock wellness data into the dashboard components
+     * Loads real wellness data and current weather into the dashboard components
      */
     private void loadDashboardData() {
-        // Mock user data
-        String userName = "Illona";
-        userNameLabel.setText(userName);
+        // Fetch weather data
+        WeatherService.WeatherData weather = weatherService.getCurrentWeather();
 
-        // Mock mood data
-        moodLabel.setText("Calm");
-        moodStatusLabel.setText("↗ Steady since 8 AM");
+        // Fetch user data from DB (mocking user ID 1 for now)
+        int currentUserId = 1; 
+        List<HealthEntry> recentEntries;
+        try {
+            recentEntries = repository.getAllByUserId(currentUserId);
+        } catch (SQLException e) {
+            System.err.println("Failed to load entries: " + e.getMessage());
+            recentEntries = List.of();
+        }
 
-        // Mock sleep data
-        sleepLabel.setText("7.5");
-        sleepProgressBar.setProgress(0.75); // 7.5 / 10 hours
+        final List<HealthEntry> entries = recentEntries;
 
-        // Mock water intake
-        waterLabel.setText("1.8");
+        // Update UI on JavaFX Application Thread
+        Platform.runLater(() -> {
+            // Mock user name
+            userNameLabel.setText("Illona");
 
-        // Mock exercise data
-        exerciseLabel.setText("Active");
+            // Update Weather UI
+            weatherConditionLabel.setText(weather.condition);
+            weatherTempLabel.setText(String.format("%.0f", weather.temp));
 
-        // Mock weather data
-        weatherConditionLabel.setText("Partly Cloudy");
-        weatherTempLabel.setText("68");
+            if (!entries.isEmpty()) {
+                HealthEntry latest = entries.get(0);
+                moodLabel.setText(latest.getMood());
+                sleepLabel.setText(String.format("%.1f", latest.getSleepHours()));
+                sleepProgressBar.setProgress(Math.min(latest.getSleepHours() / 10.0, 1.0));
+                waterLabel.setText(String.format("%.1f", latest.getWaterIntake()));
+                exerciseLabel.setText(latest.getExercise());
+                moodStatusLabel.setText("Last updated: " + latest.getEntryDate());
+            } else {
+                // Default if no entries
+                moodLabel.setText("No data");
+                sleepLabel.setText("0");
+                sleepProgressBar.setProgress(0);
+                waterLabel.setText("0");
+                exerciseLabel.setText("None");
+                moodStatusLabel.setText("Add your first log today!");
+            }
 
-    // Mock wellness tip
-        wellnessTipLabel.setText("Your screen time is up by 15% today. Try a 5-minute deep breathing exercise to reset your focus before your next session.");
+            // Update chart with recent 7 days
+            updateWeeklyChart(entries);
+        });
+
+        // Mock wellness tip
+        Platform.runLater(() -> wellnessTipLabel.setText("Your screen time is up by 15% today. Try a 5-minute deep breathing exercise to reset your focus before your next session."));
+    }
+
+    private void updateWeeklyChart(List<HealthEntry> entries) {
+        // Simplified: set bar heights based on sleep hours of last 7 entries
+        Rectangle[] bars = {day1Bar, day2Bar, day3Bar, day4Bar, day5Bar, day6Bar, day7Bar};
+        // Reset bars first
+        for (Rectangle bar : bars) bar.setHeight(10);
+
+        for (int i = 0; i < Math.min(entries.size(), 7); i++) {
+            HealthEntry entry = entries.get(entries.size() - 1 - i); // Oldest to newest
+            int barIndex = 6 - i; // Fill from right
+            if (barIndex >= 0) {
+                bars[barIndex].setHeight(entry.getSleepHours() * 15); // Scale 1h = 15px
+            }
+        }
     }
 
     /**

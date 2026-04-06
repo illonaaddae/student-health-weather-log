@@ -1,10 +1,17 @@
 package edu.atu.healthlog.studenthealthweatherlog;
 
+import edu.atu.healthlog.studenthealthweatherlog.database.HealthLogRepository;
+import edu.atu.healthlog.studenthealthweatherlog.models.HealthEntry;
+import edu.atu.healthlog.studenthealthweatherlog.services.WeatherService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 /**
  * AddLogController - Manages the "Add Today's Log" view.
@@ -35,6 +42,8 @@ public class AddLogController {
     @FXML
     private javafx.scene.image.ImageView hydrationImage;
 
+    private final HealthLogRepository repository = new HealthLogRepository();
+    private final WeatherService weatherService = new WeatherService();
     private String selectedMood = "Good"; // Default mood
 
     @FXML
@@ -112,7 +121,7 @@ public class AddLogController {
     }
 
     /**
-     * Handles saving the daily log entry
+     * Handles saving the daily log entry to the database
      */
     @FXML
     public void saveLogEntry() {
@@ -121,21 +130,37 @@ public class AddLogController {
         String activity = activityComboBox.getValue();
         Integer duration = durationSpinner.getValue();
 
-        // Create a log entry object (TODO: implement data persistence)
-        LogEntry entry = new LogEntry();
-        entry.setMood(selectedMood);
-        entry.setSleep(sleepHours);
-        entry.setWater(waterMl);
-        entry.setActivity(activity);
-        entry.setDuration(duration);
+        // Fetch current weather to associate with this log
+        WeatherService.WeatherData weather = weatherService.getCurrentWeather();
 
-        System.out.println("Saving log entry: " + entry);
-        // TODO: Save to database or file
-        // Show success message
-        System.out.println("Log entry saved successfully!");
-        if (MainController.getInstance() != null) {
-            MainController.getInstance().switchToDashboard();
-        }
+        // Create a real health entry object
+        HealthEntry entry = new HealthEntry();
+        entry.setUserId(1); // Mock user ID
+        entry.setEntryDate(LocalDate.now());
+        entry.setMood(selectedMood);
+        entry.setSleepHours(sleepHours);
+        entry.setWaterIntake(waterMl / 1000.0); // Convert ml to liters
+        entry.setExercise(activity + " (" + duration + " min)");
+        entry.setWeatherCondition(weather.condition);
+        entry.setTemperature(weather.temp);
+
+        System.out.println("Saving log entry to database: " + entry);
+
+        // Save in background
+        new Thread(() -> {
+            try {
+                repository.save(entry);
+                System.out.println("Log entry saved successfully to DB!");
+                
+                Platform.runLater(() -> {
+                    if (MainController.getInstance() != null) {
+                        MainController.getInstance().switchToDashboard();
+                    }
+                });
+            } catch (SQLException e) {
+                System.err.println("Failed to save log entry: " + e.getMessage());
+            }
+        }).start();
     }
 
     /**

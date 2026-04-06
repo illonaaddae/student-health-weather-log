@@ -1,5 +1,8 @@
 package edu.atu.healthlog.studenthealthweatherlog;
 
+import edu.atu.healthlog.studenthealthweatherlog.database.HealthLogRepository;
+import edu.atu.healthlog.studenthealthweatherlog.models.HealthEntry;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -8,6 +11,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * HistoryController - Manages the wellness history view.
@@ -41,6 +49,9 @@ public class HistoryController {
     @FXML
     private Button syncCalendarBtn;
 
+    private final HealthLogRepository repository = new HealthLogRepository();
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+
     // Full data list for filtering
     private ObservableList<HistoryEntry> allHistoryData = FXCollections.observableArrayList();
 
@@ -59,21 +70,33 @@ public class HistoryController {
     }
 
     /**
-     * Loads mock wellness history data into the table
+     * Loads wellness history data from the database
      */
     private void loadHistoryData() {
-        // TODO: Implement data loading from database
-        System.out.println("Loading wellness history data...");
-        // Mock data structure (real implementation would fetch from database)
+        System.out.println("Loading wellness history data from DB...");
+        
+        new Thread(() -> {
+            try {
+                List<HealthEntry> entries = repository.getAllByUserId(1); // Mock user ID
+                List<HistoryEntry> historyEntries = entries.stream()
+                        .map(e -> new HistoryEntry(
+                                e.getEntryDate().format(DATE_FORMATTER),
+                                e.getMood(),
+                                String.format("%.1f hrs", e.getSleepHours()),
+                                String.format("%.1f L", e.getWaterIntake()),
+                                e.getExercise(),
+                                String.format("%.0f°C %s", e.getTemperature(), e.getWeatherCondition())
+                        ))
+                        .collect(Collectors.toList());
 
-        allHistoryData.setAll(
-            new HistoryEntry("Oct 21, 2023", "Content", "7.8 hrs", "3.5 L", "Swimming", "26°C"),
-            new HistoryEntry("Oct 22, 2023", "Anxious", "6.1 hrs", "2.0 L", "None recorded", "14°C"),
-            new HistoryEntry("Oct 23, 2023", "Calm", "7.5 hrs", "2.4 L", "Running", "19°C"),
-            new HistoryEntry("Oct 24, 2023", "Joyful", "8.2 hrs", "3.1 L", "Morning Yoga", "24°C")
-        );
-
-        historyTable.setItems(allHistoryData);
+                Platform.runLater(() -> {
+                    allHistoryData.setAll(historyEntries);
+                    historyTable.setItems(allHistoryData);
+                });
+            } catch (SQLException e) {
+                System.err.println("Failed to load history from DB: " + e.getMessage());
+            }
+        }).start();
     }
 
     /**
