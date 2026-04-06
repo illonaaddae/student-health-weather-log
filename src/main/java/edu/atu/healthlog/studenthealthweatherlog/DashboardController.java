@@ -96,6 +96,9 @@ public class DashboardController {
                 waterLabel.setText(String.format("%.1f", latest.getWaterIntake()));
                 exerciseLabel.setText(latest.getExercise());
                 moodStatusLabel.setText("Last updated: " + latest.getEntryDate());
+                
+                // Update wellness tip based on latest data
+                updateWellnessTip(latest);
             } else {
                 // Default if no entries
                 moodLabel.setText("No data");
@@ -109,9 +112,20 @@ public class DashboardController {
             // Update chart with recent 7 days
             updateWeeklyChart(entries);
         });
+    }
 
-        // Mock wellness tip
-        Platform.runLater(() -> wellnessTipLabel.setText("Your screen time is up by 15% today. Try a 5-minute deep breathing exercise to reset your focus before your next session."));
+    private void updateWellnessTip(HealthEntry latest) {
+        String tip;
+        if (latest.getSleepHours() < 6) {
+            tip = "You slept less than 6 hours. Try to avoid caffeine this afternoon and aim for an earlier bedtime tonight.";
+        } else if (latest.getWaterIntake() < 2.0) {
+            tip = "Staying hydrated is key to focus! You've logged " + latest.getWaterIntake() + "L. Try to reach 2.5L today.";
+        } else if ("Stressed".equalsIgnoreCase(latest.getMood())) {
+            tip = "Feeling stressed? A 5-minute deep breathing exercise can help reset your focus.";
+        } else {
+            tip = "Great job maintaining your wellness! Consistency is the secret to long-term health.";
+        }
+        wellnessTipLabel.setText(tip);
     }
 
     private void updateWeeklyChart(List<HealthEntry> entries) {
