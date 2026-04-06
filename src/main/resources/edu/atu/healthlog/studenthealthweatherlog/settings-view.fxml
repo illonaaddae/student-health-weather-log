@@ -5,12 +5,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.atu.healthlog.studenthealthweatherlog.SettingsController" style="-fx-background-color: #f9f9f9; -fx-fit-to-width: true;" fitToWidth="true" hbarPolicy="NEVER">
-    <VBox spacing="20" style="-fx-padding: 30; -fx-background-color: #f9f9f9;">
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.atu.healthlog.studenthealthweatherlog.SettingsController" style="-fx-background-color: transparent; -fx-fit-to-width: true;" fitToWidth="true" hbarPolicy="NEVER">
+    <VBox spacing="20" style="-fx-padding: 30; -fx-background-color: transparent;">
 
         <!-- Header -->
         <VBox spacing="10">
-            <Label text="Settings" styleClass="headline-lg" style="-fx-text-fill: #1a1a1a; -fx-font-size: 2.2em; -fx-font-weight: bold;">
+            <Label text="Settings" styleClass="headline-lg">
                 <font>
                     <Font name="Manrope" size="32" />
                 </font>
@@ -29,13 +29,16 @@
                     <Label text="Account" styleClass="title-lg" />
                     <Separator style="-fx-padding: 0;" />
 
-                    <HBox spacing="15" alignment="CENTER_LEFT">
-                        <Circle radius="30" style="-fx-fill: #d4e3ff;" />
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                        <StackPane>
+                            <Circle radius="30" fx:id="profileCircle" style="-fx-fill: #d4e3ff;" />
+                            <Label fx:id="profileInitials" text="IM" style="-fx-font-weight: bold; -fx-text-fill: #005faf;" />
+                        </StackPane>
                         <VBox spacing="5" HBox.hgrow="ALWAYS">
-                            <Label text="Illona Martinez" styleClass="body-lg" />
-                            <Label text="illona@student.atu.edu" styleClass="body-md" style="-fx-text-fill: #70767a;" />
+                            <TextField fx:id="userNameField" text="Illona Martinez" styleClass="body-lg" style="-fx-background-color: transparent; -fx-padding: 0;" editable="false" />
+                            <TextField fx:id="userEmailField" text="illona@student.atu.edu" styleClass="body-md" style="-fx-text-fill: #70767a; -fx-background-color: transparent; -fx-padding: 0;" editable="false" />
                         </VBox>
-                        <Button text="Edit" styleClass="button-secondary" style="-fx-background-color: #d4e3ff; -fx-text-fill: #005faf; -fx-padding: 0.5em 1em; -fx-font-size: 0.8em;" onAction="#editProfile" />
+                        <Button fx:id="editProfileBtn" text="Edit" styleClass="button-secondary" style="-fx-background-color: #d4e3ff; -fx-text-fill: #005faf; -fx-padding: 0.5em 1em; -fx-font-size: 0.8em;" onAction="#editProfile" />
                     </HBox>
 
                     <VBox spacing="8">
@@ -167,10 +170,13 @@
                 <VBox spacing="12" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
                     <Label text="Appearance" styleClass="title-lg" />
                     <Separator style="-fx-padding: 0;" />
-                    <VBox spacing="8">
-                        <RadioButton text="Light Mode" selected="true" />
-                        <RadioButton text="Dark Mode" />
-                        <RadioButton text="System Default" />
+                    <VBox spacing="8" fx:id="appearanceBox">
+                        <fx:define>
+                            <ToggleGroup fx:id="themeToggleGroup" />
+                        </fx:define>
+                        <RadioButton text="Light Mode" fx:id="lightModeRadio" toggleGroup="$themeToggleGroup" selected="true" onAction="#handleThemeChange" />
+                        <RadioButton text="Dark Mode" fx:id="darkModeRadio" toggleGroup="$themeToggleGroup" onAction="#handleThemeChange" />
+                        <RadioButton text="System Default" fx:id="systemModeRadio" toggleGroup="$themeToggleGroup" onAction="#handleThemeChange" />
                     </VBox>
                 </VBox>
 

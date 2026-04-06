@@ -2,6 +2,10 @@ package edu.atu.healthlog.studenthealthweatherlog;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
+import java.io.File;
 
 /**
  * SettingsController - Manages the settings and preferences view.
@@ -27,6 +31,30 @@ public class SettingsController {
     private CheckBox dataSharing;
     @FXML
     private Button saveBtn;
+
+    // Profile fields
+    @FXML
+    private TextField userNameField;
+    @FXML
+    private TextField userEmailField;
+    @FXML
+    private Button editProfileBtn;
+    @FXML
+    private Circle profileCircle;
+    @FXML
+    private Label profileInitials;
+
+    // Appearance
+    @FXML
+    private ToggleGroup themeToggleGroup;
+    @FXML
+    private RadioButton lightModeRadio;
+    @FXML
+    private RadioButton darkModeRadio;
+    @FXML
+    private RadioButton systemModeRadio;
+
+    private boolean isEditingProfile = false;
 
     @FXML
     public void initialize() {
@@ -69,8 +97,75 @@ public class SettingsController {
      */
     @FXML
     public void editProfile() {
-        System.out.println("Opening profile editor...");
-        // TODO: Open profile editor dialog
+        if (!isEditingProfile) {
+            // Enable editing
+            userNameField.setEditable(true);
+            userEmailField.setEditable(true);
+            userNameField.setStyle("-fx-background-color: white; -fx-border-color: #dcdcdc; -fx-border-radius: 4;");
+            userEmailField.setStyle("-fx-background-color: white; -fx-border-color: #dcdcdc; -fx-border-radius: 4;");
+            editProfileBtn.setText("Save");
+            isEditingProfile = true;
+            System.out.println("Profile editing enabled.");
+        } else {
+            // Save profile
+            saveProfile();
+            userNameField.setEditable(false);
+            userEmailField.setEditable(false);
+            userNameField.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+            userEmailField.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+            editProfileBtn.setText("Edit");
+            isEditingProfile = false;
+            
+            // Update initials
+            updateInitials();
+            System.out.println("Profile saved.");
+        }
+    }
+
+    private void saveProfile() {
+        String name = userNameField.getText();
+        String email = userEmailField.getText();
+        // TODO: Save to database
+        System.out.println("Saving profile: " + name + " (" + email + ")");
+    }
+
+    private void updateInitials() {
+        String name = userNameField.getText();
+        if (name != null && !name.isEmpty()) {
+            String[] parts = name.split("\\s+");
+            StringBuilder initials = new StringBuilder();
+            for (int i = 0; i < Math.min(parts.length, 2); i++) {
+                if (!parts[i].isEmpty()) {
+                    initials.append(parts[i].charAt(0));
+                }
+            }
+            profileInitials.setText(initials.toString().toUpperCase());
+        }
+    }
+
+    @FXML
+    private void handleThemeChange() {
+        RadioButton selected = (RadioButton) themeToggleGroup.getSelectedToggle();
+        if (selected == null) return;
+        
+        String theme = selected.getText();
+        System.out.println("Theme changed to: " + theme);
+        
+        if (theme.contains("Dark")) {
+            applyDarkTheme();
+        } else {
+            applyLightTheme();
+        }
+    }
+
+    private void applyDarkTheme() {
+        System.out.println("Applying Dark Theme...");
+        saveBtn.getScene().getRoot().getStyleClass().add("dark-theme");
+    }
+
+    private void applyLightTheme() {
+        System.out.println("Applying Light Theme...");
+        saveBtn.getScene().getRoot().getStyleClass().remove("dark-theme");
     }
 
     /**
