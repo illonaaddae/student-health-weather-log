@@ -12,6 +12,7 @@ public final class UserPreferences {
     private static final String KEY_PAGE_SIZE = "history.pageSize";
     private static final String KEY_USER_NAME = "user.name";
     private static final String KEY_USER_EMAIL = "user.email";
+    private static final String KEY_DARK_THEME = "ui.darkTheme";
 
     private UserPreferences() {
     }
@@ -58,6 +59,14 @@ public final class UserPreferences {
             return;
         }
         PREFS.put(KEY_USER_EMAIL, email.trim());
+    }
+
+    public static boolean isDarkThemeEnabled() {
+        return PREFS.getBoolean(KEY_DARK_THEME, false);
+    }
+
+    public static void setDarkThemeEnabled(boolean enabled) {
+        PREFS.putBoolean(KEY_DARK_THEME, enabled);
     }
 
 }

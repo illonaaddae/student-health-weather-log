@@ -30,7 +30,7 @@
             </Button>
             <Label fx:id="userNameLabel" text="Illona" styleClass="body-md" />
             <StackPane>
-                <Circle fx:id="userProfileCircle" radius="20" styleClass="background-card" fill="#d4e3ff" />
+                <Circle fx:id="userProfileCircle" radius="20" styleClass="background-card" />
                 <Label fx:id="userProfileInitials" text="I" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #005faf;" />
             </StackPane>
         </HBox>
@@ -38,7 +38,7 @@
 
     <!-- LEFT: Sidebar Navigation -->
     <left>
-        <VBox styleClass="sidebar" spacing="25" prefWidth="240" style="-fx-background-color: #f2f4f4;">
+        <VBox styleClass="sidebar" spacing="25" prefWidth="240">
             <!-- Logo Section -->
             <VBox spacing="5">
                 <Label text="Sanctuary" styleClass="headline-md" style="-fx-text-fill: #005faf;">
@@ -90,7 +90,7 @@
 
     <!-- CENTER: Content Area (Screen Container) -->
     <center>
-        <StackPane fx:id="contentArea" style="-fx-background-color: #f9f9f9;">
+        <StackPane fx:id="contentArea">
             <!-- Screens will be dynamically loaded here -->
         </StackPane>
     </center>

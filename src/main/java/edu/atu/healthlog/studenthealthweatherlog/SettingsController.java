@@ -67,6 +67,7 @@ public class SettingsController {
     public void initialize() {
         setupSpinners();
         loadSettings();
+        applySavedThemeSelection();
     }
 
     /**
@@ -105,6 +106,20 @@ public class SettingsController {
         }
         if (userEmailField != null) {
             userEmailField.setText(UserPreferences.getUserEmail());
+        }
+    }
+
+    private void applySavedThemeSelection() {
+        if (UserPreferences.isDarkThemeEnabled()) {
+            if (darkModeRadio != null) {
+                darkModeRadio.setSelected(true);
+            }
+            applyDarkTheme();
+        } else {
+            if (lightModeRadio != null) {
+                lightModeRadio.setSelected(true);
+            }
+            applyLightTheme();
         }
     }
 
@@ -214,6 +229,7 @@ public class SettingsController {
         
         String theme = selected.getText();
         System.out.println("Theme changed to: " + theme);
+        UserPreferences.setDarkThemeEnabled(theme.contains("Dark"));
         
         if (theme.contains("Dark")) {
             applyDarkTheme();
@@ -224,12 +240,17 @@ public class SettingsController {
 
     private void applyDarkTheme() {
         System.out.println("Applying Dark Theme...");
-        saveBtn.getScene().getRoot().getStyleClass().add("dark-theme");
+        if (saveBtn != null && saveBtn.getScene() != null && saveBtn.getScene().getRoot() != null) {
+            saveBtn.getScene().getRoot().getStyleClass().remove("dark-theme");
+            saveBtn.getScene().getRoot().getStyleClass().add("dark-theme");
+        }
     }
 
     private void applyLightTheme() {
         System.out.println("Applying Light Theme...");
-        saveBtn.getScene().getRoot().getStyleClass().remove("dark-theme");
+        if (saveBtn != null && saveBtn.getScene() != null && saveBtn.getScene().getRoot() != null) {
+            saveBtn.getScene().getRoot().getStyleClass().remove("dark-theme");
+        }
     }
 
     /**

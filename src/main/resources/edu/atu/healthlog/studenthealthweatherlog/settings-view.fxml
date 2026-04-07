@@ -5,8 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.atu.healthlog.studenthealthweatherlog.SettingsController" style="-fx-background-color: transparent; -fx-fit-to-width: true;" fitToWidth="true" hbarPolicy="NEVER">
-    <VBox spacing="20" style="-fx-padding: 30; -fx-background-color: transparent;">
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.atu.healthlog.studenthealthweatherlog.SettingsController" style="-fx-fit-to-width: true;" fitToWidth="true" hbarPolicy="NEVER">
+    <VBox spacing="20" style="-fx-padding: 30;">
 
         <!-- Header -->
         <VBox spacing="10">
@@ -25,18 +25,18 @@
             <VBox spacing="20" HBox.hgrow="ALWAYS">
 
                 <!-- Account Settings Section -->
-                <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
+                <VBox spacing="15" styleClass="card">
                     <Label text="Account" styleClass="title-lg" />
                     <Separator style="-fx-padding: 0;" />
 
                         <HBox spacing="15" alignment="CENTER_LEFT">
                         <StackPane>
-                            <Circle radius="30" fx:id="profileCircle" style="-fx-fill: #d4e3ff;" />
+                            <Circle radius="30" fx:id="profileCircle" styleClass="background-card" />
                             <Label fx:id="profileInitials" text="IM" style="-fx-font-weight: bold; -fx-text-fill: #005faf;" />
                         </StackPane>
                         <VBox spacing="5" HBox.hgrow="ALWAYS">
-                            <TextField fx:id="userNameField" text="Illona Martinez" styleClass="body-lg" style="-fx-background-color: transparent; -fx-padding: 0;" editable="false" />
-                            <TextField fx:id="userEmailField" text="illona@student.atu.edu" styleClass="body-md" style="-fx-text-fill: #70767a; -fx-background-color: transparent; -fx-padding: 0;" editable="false" />
+                            <TextField fx:id="userNameField" text="Illona Martinez" styleClass="text-field body-lg" editable="false" />
+                            <TextField fx:id="userEmailField" text="illona@student.atu.edu" styleClass="text-field body-md" editable="false" />
                         </VBox>
                         <Button fx:id="editProfileBtn" text="Edit" styleClass="button-secondary" style="-fx-background-color: #d4e3ff; -fx-text-fill: #005faf; -fx-padding: 0.5em 1em; -fx-font-size: 0.8em;" onAction="#editProfile" />
                     </HBox>
@@ -48,7 +48,7 @@
                 </VBox>
 
                 <!-- Notification Settings -->
-                <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
+                <VBox spacing="15" styleClass="card">
                     <Label text="Notifications" styleClass="title-lg" />
                     <Separator style="-fx-padding: 0;" />
 
@@ -79,7 +79,7 @@
                 </VBox>
 
                 <!-- Wellness Goals -->
-                <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
+                <VBox spacing="15" styleClass="card">
                     <Label text="Wellness Goals" styleClass="title-lg" />
                     <Separator style="-fx-padding: 0;" />
 
@@ -135,7 +135,7 @@
             <VBox spacing="15" prefWidth="300">
 
                 <!-- About App -->
-                <VBox spacing="12" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
+                <VBox spacing="12" styleClass="card">
                     <Label text="About" styleClass="title-lg" />
                     <Separator style="-fx-padding: 0;" />
                     <VBox spacing="8">
@@ -155,7 +155,7 @@
                 </VBox>
 
                 <!-- Support & Legal -->
-                <VBox spacing="12" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
+                <VBox spacing="12" styleClass="card">
                     <Label text="Support" styleClass="title-lg" />
                     <Separator style="-fx-padding: 0;" />
                     <VBox spacing="8">

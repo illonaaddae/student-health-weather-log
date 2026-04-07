@@ -58,8 +58,30 @@
     -fx-background-color: -surface;
 }
 
+.root.dark-theme .scroll-pane,
+.root.dark-theme .scroll-pane > .viewport,
+.root.dark-theme .border-pane,
+.root.dark-theme .vbox,
+.root.dark-theme .hbox {
+    -fx-background-color: transparent;
+}
+
+.root.dark-theme .header {
+    -fx-background-color: derive(-surface-container-lowest, -8%);
+    -fx-border-color: -outline-variant;
+}
+
+.root.dark-theme .sidebar {
+    -fx-background-color: derive(-surface-container-low, -4%);
+    -fx-border-color: -outline-variant;
+    -fx-border-width: 0 1 0 0;
+}
+
 .root.dark-theme .card {
-    -fx-background-color: -surface-container;
+    -fx-background-color: linear-gradient(to bottom right, derive(-surface-container, 6%), -surface-container);
+    -fx-border-color: derive(-outline-variant, -10%);
+    -fx-border-width: 1;
+    -fx-border-radius: 1em;
 }
 
 .root.dark-theme .headline-lg,
@@ -67,7 +89,8 @@
 .root.dark-theme .headline-sm,
 .root.dark-theme .title-lg,
 .root.dark-theme .title-md,
-.root.dark-theme .body-lg {
+.root.dark-theme .body-lg,
+.root.dark-theme .label {
     -fx-text-fill: -on-surface;
 }
 
@@ -76,9 +99,95 @@
     -fx-text-fill: -on-surface-variant;
 }
 
+.root.dark-theme .text-field,
+.root.dark-theme .combo-box,
+.root.dark-theme .spinner,
+.root.dark-theme .date-picker {
+    -fx-background-color: -surface-container-high;
+    -fx-text-fill: -on-surface;
+    -fx-prompt-text-fill: -on-surface-variant;
+    -fx-border-color: -outline-variant;
+}
+
+.root.dark-theme .text-field:focused,
+.root.dark-theme .combo-box:focused,
+.root.dark-theme .spinner:focused,
+.root.dark-theme .date-picker:focused {
+    -fx-border-color: -primary-dim;
+    -fx-border-width: 0 0 2 0;
+}
+
+.root.dark-theme .tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.root.dark-theme .tab-pane .tab {
+    -fx-background-color: -surface-container;
+    -fx-text-base-color: -on-surface-variant;
+}
+
+.root.dark-theme .tab-pane .tab:selected {
+    -fx-background-color: -primary-container;
+    -fx-text-base-color: -on-primary-container;
+}
+
+.root.dark-theme .radio-button,
+.root.dark-theme .check-box {
+    -fx-text-fill: -on-surface;
+}
+
+.root.dark-theme .radio-button .dot,
+.root.dark-theme .check-box .box {
+    -fx-background-color: -surface-container-high;
+    -fx-border-color: -outline-variant;
+}
+
 .root.dark-theme .button-secondary {
     -fx-background-color: -primary-container;
     -fx-text-fill: -on-primary-container;
+}
+
+.root.dark-theme .button-primary {
+    -fx-background-color: -primary-dim;
+}
+
+.root.dark-theme .nav-item {
+    -fx-text-fill: -on-surface-variant;
+}
+
+.root.dark-theme .nav-item:hover,
+.root.dark-theme .nav-item-active {
+    -fx-text-fill: -primary-dim;
+}
+
+.root.dark-theme .background-card,
+.root.dark-theme .metric-card,
+.root.dark-theme .wellness-tip {
+    -fx-background-color: -surface-container;
+}
+
+.root.dark-theme .table-view {
+    -fx-background-color: -surface-container-lowest;
+    -fx-border-color: -outline-variant;
+}
+
+.root.dark-theme .table-view .column-header,
+.root.dark-theme .table-view .filler,
+.root.dark-theme .table-view .column-header-background {
+    -fx-background-color: -surface-container;
+}
+
+.root.dark-theme .table-view .table-row-cell {
+    -fx-background-color: -surface-container-lowest;
+    -fx-border-color: transparent;
+}
+
+.root.dark-theme .table-view .table-row-cell:filled:selected {
+    -fx-background-color: derive(-primary-container, -5%);
+}
+
+.root.dark-theme .separator .line {
+    -fx-border-color: -outline-variant;
 }
 
 /* BorderPane */

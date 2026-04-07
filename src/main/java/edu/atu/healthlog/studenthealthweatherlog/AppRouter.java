@@ -25,8 +25,8 @@ public final class AppRouter {
         }
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("auth-view.fxml"));
         Scene scene = new Scene(loader.load(), 980, 640);
-        String css = HelloApplication.class.getResource("styles.css").toExternalForm();
-        scene.getStylesheets().add(css);
+        addStylesheet(scene);
+        applySavedTheme(scene);
         primaryStage.setTitle("Wellness Sanctuary - Sign In");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -38,11 +38,31 @@ public final class AppRouter {
         }
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(loader.load(), 1400, 900);
-        String css = HelloApplication.class.getResource("styles.css").toExternalForm();
-        scene.getStylesheets().add(css);
+        addStylesheet(scene);
+        applySavedTheme(scene);
         primaryStage.setTitle("Wellness Sanctuary - Health & Wellness Log");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private static void applySavedTheme(Scene scene) {
+        if (scene == null || scene.getRoot() == null) {
+            return;
+        }
+        scene.getRoot().getStyleClass().remove("dark-theme");
+        if (UserPreferences.isDarkThemeEnabled()) {
+            scene.getRoot().getStyleClass().add("dark-theme");
+        }
+    }
+
+    private static void addStylesheet(Scene scene) {
+        if (scene == null) {
+            return;
+        }
+        var resource = HelloApplication.class.getResource("styles.css");
+        if (resource != null) {
+            scene.getStylesheets().add(resource.toExternalForm());
+        }
     }
 }
 
