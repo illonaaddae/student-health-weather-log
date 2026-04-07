@@ -135,6 +135,7 @@ public class SettingsController {
             
             // Update initials
             updateInitials();
+            refreshMainProfile();
             System.out.println("Profile saved.");
             Toast.show(editProfileBtn, "Profile saved", false);
         }
@@ -184,6 +185,12 @@ public class SettingsController {
         UserPreferences.setUserName(name);
         UserPreferences.setUserEmail(email);
         System.out.println("Saving profile: " + name + " (" + email + ")");
+    }
+
+    private void refreshMainProfile() {
+        if (MainController.getInstance() != null) {
+            MainController.getInstance().refreshUserProfile();
+        }
     }
 
     private void updateInitials() {

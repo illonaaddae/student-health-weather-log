@@ -98,10 +98,12 @@ public class AuthController {
         }
 
         String email = emailField.getText().trim();
-        String derivedName = deriveNameFromEmail(email);
 
         UserPreferences.setUserEmail(email);
-        UserPreferences.setUserName(derivedName);
+        if (UserPreferences.getUserName() == null || UserPreferences.getUserName().isBlank()
+                || "Student".equalsIgnoreCase(UserPreferences.getUserName())) {
+            UserPreferences.setUserName(deriveNameFromEmail(email));
+        }
 
         setStatus("Signed in successfully (mock).", false);
         Toast.show(signInBtn, "Signed in", false);

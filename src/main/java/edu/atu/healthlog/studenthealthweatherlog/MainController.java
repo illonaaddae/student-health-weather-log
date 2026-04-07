@@ -69,11 +69,26 @@ public class MainController {
             });
         }
 
-        // Mock user data
-        if (userNameLabel != null) userNameLabel.setText(UserPreferences.getUserName());
+        refreshUserProfile();
 
         // Load the dashboard by default
         switchToDashboard();
+    }
+
+    public void refreshUserProfile() {
+        String name = UserPreferences.getUserName();
+        if (userNameLabel != null) {
+            userNameLabel.setText(name);
+        }
+
+        if (userProfileInitials != null) {
+            userProfileInitials.setText(buildInitials(name));
+            userProfileInitials.setVisible(true);
+        }
+
+        if (userProfileCircle != null) {
+            userProfileCircle.setFill(javafx.scene.paint.Color.web("#d4e3ff"));
+        }
     }
 
     /**
@@ -130,7 +145,6 @@ public class MainController {
     @FXML
     public void signOut() {
         System.out.println("Signing out...");
-        UserPreferences.clearUser();
         Toast.show(signOutBtn, "Signed out", false);
         try {
             AppRouter.showAuth();
@@ -178,6 +192,20 @@ public class MainController {
                 userProfileInitials.setVisible(false);
             }
         }
+    }
+
+    private String buildInitials(String name) {
+        if (name == null || name.isBlank()) {
+            return "S";
+        }
+        String[] parts = name.trim().split("\\s+");
+        StringBuilder initials = new StringBuilder();
+        for (int i = 0; i < Math.min(parts.length, 2); i++) {
+            if (!parts[i].isBlank()) {
+                initials.append(parts[i].charAt(0));
+            }
+        }
+        return initials.length() == 0 ? "S" : initials.toString().toUpperCase();
     }
 }
 

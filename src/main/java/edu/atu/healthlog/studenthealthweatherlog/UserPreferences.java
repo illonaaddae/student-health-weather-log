@@ -60,9 +60,5 @@ public final class UserPreferences {
         PREFS.put(KEY_USER_EMAIL, email.trim());
     }
 
-    public static void clearUser() {
-        PREFS.remove(KEY_USER_NAME);
-        PREFS.remove(KEY_USER_EMAIL);
-    }
 }
 
