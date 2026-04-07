@@ -187,6 +187,7 @@ public class SettingsController {
                 alert.setTitle("Error");
                 alert.setHeaderText("Image Load Failed");
                 alert.setContentText("Could not load the selected image. Please try another one.");
+                Toast.styleAlert(alert, profileCircle, true);
                 alert.show();
                 Toast.show(profileCircle, "Image load failed", true);
             }
@@ -205,6 +206,7 @@ public class SettingsController {
     private void refreshMainProfile() {
         if (MainController.getInstance() != null) {
             MainController.getInstance().refreshUserProfile();
+            MainController.getInstance().refreshCurrentScreen();
         }
     }
 
@@ -244,12 +246,18 @@ public class SettingsController {
             saveBtn.getScene().getRoot().getStyleClass().remove("dark-theme");
             saveBtn.getScene().getRoot().getStyleClass().add("dark-theme");
         }
+        if (MainController.getInstance() != null) {
+            MainController.getInstance().refreshCurrentScreen();
+        }
     }
 
     private void applyLightTheme() {
         System.out.println("Applying Light Theme...");
         if (saveBtn != null && saveBtn.getScene() != null && saveBtn.getScene().getRoot() != null) {
             saveBtn.getScene().getRoot().getStyleClass().remove("dark-theme");
+        }
+        if (MainController.getInstance() != null) {
+            MainController.getInstance().refreshCurrentScreen();
         }
     }
 
@@ -323,6 +331,7 @@ public class SettingsController {
             alert.setTitle("Settings");
             alert.setHeaderText("Saved");
             alert.setContentText("Your settings have been saved successfully.");
+            Toast.styleAlert(alert, saveBtn, false);
             alert.show();
         } catch (Exception e) {
             Toast.show(saveBtn, "Failed to save settings", true);
@@ -330,6 +339,7 @@ public class SettingsController {
             alert.setTitle("Settings Error");
             alert.setHeaderText("Save failed");
             alert.setContentText(e.getMessage());
+            Toast.styleAlert(alert, saveBtn, true);
             alert.show();
         }
     }
@@ -345,6 +355,7 @@ public class SettingsController {
         alert.setTitle("Contact Support");
         alert.setHeaderText("Connecting to Wellness Support");
         alert.setContentText("You are being redirected to our support portal. You can also reach us directly at support@wellnesslog.atu.edu");
+        Toast.styleAlert(alert, saveBtn, false);
         alert.show();
 
         Toast.show(saveBtn, "Support portal opened (mock)", false);

@@ -6,6 +6,7 @@ import javafx.animation.SequentialTransition;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.DialogPane;
 import javafx.stage.Popup;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -28,14 +29,22 @@ public final class Toast {
         }
 
         Window window = owner.getScene().getWindow();
+        boolean darkTheme = owner.getScene().getRoot() != null
+                && owner.getScene().getRoot().getStyleClass().contains("dark-theme");
         Label label = new Label(message);
-        String background = isError ? "#d32f2f" : "#2e7d32";
+        String background = darkTheme
+                ? (isError ? "#8d4a4a" : "#335c4f")
+                : (isError ? "#d32f2f" : "#2e7d32");
+        String textColor = darkTheme ? "#f5f7fa" : "white";
         label.setStyle(
                 "-fx-background-color: " + background + ";" +
-                "-fx-text-fill: white;" +
+                "-fx-text-fill: " + textColor + ";" +
                 "-fx-padding: 10 14;" +
-                "-fx-background-radius: 8;" +
-                "-fx-font-size: 12px;"
+                "-fx-background-radius: 10;" +
+                "-fx-font-size: 12px;" +
+                "-fx-border-color: rgba(255,255,255,0.12);" +
+                "-fx-border-width: 1;" +
+                "-fx-border-radius: 10;"
         );
 
         Popup popup = new Popup();
@@ -59,6 +68,34 @@ public final class Toast {
         SequentialTransition seq = new SequentialTransition(wait, fadeOut);
         seq.setOnFinished(e -> popup.hide());
         seq.play();
+    }
+
+    public static void styleAlert(Alert alert, Node owner, boolean isError) {
+        if (alert == null) {
+            return;
+        }
+
+        boolean darkTheme = owner != null
+                && owner.getScene() != null
+                && owner.getScene().getRoot() != null
+                && owner.getScene().getRoot().getStyleClass().contains("dark-theme");
+
+        DialogPane pane = alert.getDialogPane();
+        String background = darkTheme ? "#2b2f33" : "#ffffff";
+        String textColor = darkTheme ? "#edf0f2" : "#2d3435";
+        String borderColor = darkTheme ? (isError ? "#8d4a4a" : "#5f6b72") : (isError ? "#f2b8b5" : "#d4e3ff");
+        pane.setStyle(
+                "-fx-background-color: " + background + ";" +
+                "-fx-border-color: " + borderColor + ";" +
+                "-fx-border-width: 1;" +
+                "-fx-border-radius: 12;" +
+                "-fx-background-radius: 12;"
+        );
+        pane.getStyleClass().add("theme-alert");
+        if (pane.getScene() != null) {
+            pane.getScene().getRoot().setStyle("-fx-background-color: transparent;");
+        }
+        pane.lookupAll(".label").forEach(node -> node.setStyle("-fx-text-fill: " + textColor + ";"));
     }
 }
 

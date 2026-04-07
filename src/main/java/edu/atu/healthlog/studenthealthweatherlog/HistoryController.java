@@ -351,6 +351,7 @@ public class HistoryController {
             alert.setTitle("Export Error");
             alert.setHeaderText("Failed to export CSV");
             alert.setContentText(e.getMessage());
+            Toast.styleAlert(alert, historyTable, true);
             alert.show();
         }
     }
@@ -386,6 +387,7 @@ public class HistoryController {
             alert.setTitle("Export Error");
             alert.setHeaderText("Failed to export PDF");
             alert.setContentText(e.getMessage());
+            Toast.styleAlert(alert, historyTable, true);
             alert.show();
         }
     }
@@ -512,6 +514,7 @@ public class HistoryController {
         alert.setTitle("Export Complete");
         alert.setHeaderText(headerText);
         alert.setContentText(file.getAbsolutePath());
+        Toast.styleAlert(alert, historyTable, false);
 
         ButtonType openFolder = new ButtonType("Open Folder");
         alert.getButtonTypes().setAll(openFolder, ButtonType.OK);
@@ -554,6 +557,7 @@ public class HistoryController {
         alert.setTitle("Calendar Integration");
         alert.setHeaderText("Link to System Calendar?");
         alert.setContentText("Would you like to sync your wellness entries with your device's default calendar? This will allow you to see your wellness patterns alongside your schedule.");
+        Toast.styleAlert(alert, historyTable, false);
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
@@ -568,6 +572,7 @@ public class HistoryController {
         progressAlert.setTitle("Syncing...");
         progressAlert.setHeaderText("External Calendar Sync in Progress");
         progressAlert.setContentText("Please wait while we connect to your calendar service...");
+        Toast.styleAlert(progressAlert, historyTable, false);
         progressAlert.show();
 
         new Thread(() -> {

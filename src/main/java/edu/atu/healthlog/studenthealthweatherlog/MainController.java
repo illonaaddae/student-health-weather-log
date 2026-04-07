@@ -2,6 +2,7 @@ package edu.atu.healthlog.studenthealthweatherlog;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,6 +12,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * MainController - Manages the main application shell with navigation and screen swapping.
@@ -60,6 +63,9 @@ public class MainController {
     private static final String WEATHER_INSIGHTS_VIEW = "weather-insights-view.fxml";
     private static final String SETTINGS_VIEW = "settings-view.fxml";
 
+    private final Map<String, Parent> screenCache = new HashMap<>();
+    private final Map<String, Object> controllerCache = new HashMap<>();
+
     @FXML
     public void initialize() {
         // Setup search field listener
@@ -89,6 +95,8 @@ public class MainController {
         if (userProfileCircle != null) {
             userProfileCircle.setFill(javafx.scene.paint.Color.web("#d4e3ff"));
         }
+
+        refreshDashboardGreeting();
     }
 
     /**
@@ -159,11 +167,14 @@ public class MainController {
      */
     private void loadScreen(String fxmlFile) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(fxmlFile)
-            );
-            contentArea.getChildren().clear();
-            contentArea.getChildren().add(loader.load());
+            Parent screen = screenCache.get(fxmlFile);
+            if (screen == null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+                screen = loader.load();
+                screenCache.put(fxmlFile, screen);
+                controllerCache.put(fxmlFile, loader.getController());
+            }
+            contentArea.getChildren().setAll(screen);
         } catch (IOException e) {
             System.err.println("Error loading screen: " + fxmlFile);
             e.printStackTrace();
@@ -191,6 +202,18 @@ public class MainController {
             if (userProfileInitials != null) {
                 userProfileInitials.setVisible(false);
             }
+        }
+    }
+
+    public void refreshCurrentScreen() {
+        refreshDashboardGreeting();
+    }
+
+    private void refreshDashboardGreeting() {
+        Object controller = controllerCache.get(DASHBOARD_VIEW);
+        if (controller instanceof DashboardController dashboardController) {
+            dashboardController.refreshGreeting();
+            dashboardController.refreshThemeStyles();
         }
     }
 

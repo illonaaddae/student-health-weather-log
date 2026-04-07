@@ -53,11 +53,28 @@ public class DashboardController {
 
     private final HealthLogRepository repository = new HealthLogRepository();
     private final WeatherService weatherService = new WeatherService();
+    private boolean monthlyTrendMode = false;
 
     @FXML
     public void initialize() {
+        refreshGreeting();
+        refreshThemeStyles();
         // Load real data in a background thread to keep UI responsive
         new Thread(this::loadDashboardData).start();
+    }
+
+    public void refreshGreeting() {
+        if (userNameLabel != null) {
+            userNameLabel.setText(UserPreferences.getUserName());
+        }
+    }
+
+    public void refreshThemeStyles() {
+        if (monthlyTrendMode) {
+            applyMonthlyTrendStyles();
+        } else {
+            applyWeeklyTrendStyles();
+        }
     }
 
     /**
@@ -81,8 +98,7 @@ public class DashboardController {
 
         // Update UI on JavaFX Application Thread
         Platform.runLater(() -> {
-            // Mock user name
-            userNameLabel.setText("Illona");
+            refreshGreeting();
 
             // Update Weather UI
             weatherConditionLabel.setText(weather.condition);
@@ -149,8 +165,8 @@ public class DashboardController {
     @FXML
     public void showWeeklyTrends() {
         System.out.println("Switching to weekly trends...");
-        if (weekBtn != null) weekBtn.setStyle("-fx-background-color: #005faf; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-size: 0.8em; -fx-padding: 5 15;");
-        if (monthBtn != null) monthBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-padding: 5 15;");
+        monthlyTrendMode = false;
+        applyWeeklyTrendStyles();
 
         // Update labels for Week
         day1Label.setText("MON");
@@ -187,8 +203,8 @@ public class DashboardController {
     @FXML
     public void showMonthlyTrends() {
         System.out.println("Switching to monthly trends...");
-        if (monthBtn != null) monthBtn.setStyle("-fx-background-color: #005faf; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-size: 0.8em; -fx-padding: 5 15;");
-        if (weekBtn != null) weekBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-padding: 5 15;");
+        monthlyTrendMode = true;
+        applyMonthlyTrendStyles();
 
         // Update labels for Month - showing last 7 months
         Label[] labels = {day1Label, day2Label, day3Label, day4Label, day5Label, day6Label, day7Label};
@@ -218,6 +234,77 @@ public class DashboardController {
         // Highlight current month (the last one)
         day7Label.setStyle("-fx-text-fill: #005faf;");
         day7Bar.setOpacity(0.8);
+    }
+
+    private void applyWeeklyTrendStyles() {
+        boolean dark = UserPreferences.isDarkThemeEnabled();
+        if (weekBtn != null) {
+            weekBtn.setStyle(dark
+                    ? "-fx-background-color: #7f94b3; -fx-text-fill: #0d0f11; -fx-background-radius: 15; -fx-font-size: 0.8em; -fx-padding: 5 15; -fx-font-weight: bold;"
+                    : "-fx-background-color: #005faf; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-size: 0.8em; -fx-padding: 5 15; -fx-font-weight: bold;");
+        }
+        if (monthBtn != null) {
+            monthBtn.setStyle(dark
+                    ? "-fx-background-color: transparent; -fx-text-fill: #c4c6ca; -fx-font-size: 0.8em; -fx-padding: 5 15;"
+                    : "-fx-background-color: transparent; -fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-padding: 5 15;");
+        }
+
+        String mutedLabelStyle = dark
+                ? "-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #c4c6ca;"
+                : "-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;";
+        String activeLabelStyle = dark
+                ? "-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #d4e3ff;"
+                : "-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #005faf;";
+        if (day1Label != null) day1Label.setStyle(mutedLabelStyle);
+        if (day2Label != null) day2Label.setStyle(mutedLabelStyle);
+        if (day3Label != null) day3Label.setStyle(mutedLabelStyle);
+        if (day4Label != null) day4Label.setStyle(activeLabelStyle);
+        if (day5Label != null) day5Label.setStyle(mutedLabelStyle);
+        if (day6Label != null) day6Label.setStyle(mutedLabelStyle);
+        if (day7Label != null) day7Label.setStyle(mutedLabelStyle);
+
+        if (day1Bar != null) day1Bar.setOpacity(dark ? 0.35 : 0.2);
+        if (day2Bar != null) day2Bar.setOpacity(dark ? 0.35 : 0.2);
+        if (day3Bar != null) day3Bar.setOpacity(dark ? 0.35 : 0.2);
+        if (day4Bar != null) day4Bar.setOpacity(1.0);
+        if (day5Bar != null) day5Bar.setOpacity(dark ? 0.35 : 0.2);
+        if (day6Bar != null) day6Bar.setOpacity(dark ? 0.35 : 0.2);
+        if (day7Bar != null) day7Bar.setOpacity(dark ? 0.35 : 0.2);
+    }
+
+    private void applyMonthlyTrendStyles() {
+        boolean dark = UserPreferences.isDarkThemeEnabled();
+        if (monthBtn != null) {
+            monthBtn.setStyle(dark
+                    ? "-fx-background-color: #7f94b3; -fx-text-fill: #0d0f11; -fx-background-radius: 15; -fx-font-size: 0.8em; -fx-padding: 5 15; -fx-font-weight: bold;"
+                    : "-fx-background-color: #005faf; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-size: 0.8em; -fx-padding: 5 15; -fx-font-weight: bold;");
+        }
+        if (weekBtn != null) {
+            weekBtn.setStyle(dark
+                    ? "-fx-background-color: transparent; -fx-text-fill: #c4c6ca; -fx-font-size: 0.8em; -fx-padding: 5 15;"
+                    : "-fx-background-color: transparent; -fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-padding: 5 15;");
+        }
+
+        String mutedLabelStyle = dark
+                ? "-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #c4c6ca;"
+                : "-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;";
+        if (day1Label != null) day1Label.setStyle(mutedLabelStyle);
+        if (day2Label != null) day2Label.setStyle(mutedLabelStyle);
+        if (day3Label != null) day3Label.setStyle(mutedLabelStyle);
+        if (day4Label != null) day4Label.setStyle(mutedLabelStyle);
+        if (day5Label != null) day5Label.setStyle(mutedLabelStyle);
+        if (day6Label != null) day6Label.setStyle(mutedLabelStyle);
+        if (day7Label != null) day7Label.setStyle(dark
+                ? "-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #d4e3ff;"
+                : "-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #005faf;");
+
+        if (day1Bar != null) day1Bar.setOpacity(dark ? 0.55 : 0.4);
+        if (day2Bar != null) day2Bar.setOpacity(dark ? 0.55 : 0.4);
+        if (day3Bar != null) day3Bar.setOpacity(dark ? 0.55 : 0.4);
+        if (day4Bar != null) day4Bar.setOpacity(dark ? 0.55 : 0.4);
+        if (day5Bar != null) day5Bar.setOpacity(dark ? 0.55 : 0.4);
+        if (day6Bar != null) day6Bar.setOpacity(dark ? 0.55 : 0.4);
+        if (day7Bar != null) day7Bar.setOpacity(dark ? 0.85 : 0.8);
     }
 
     /**

@@ -92,42 +92,42 @@
                 </HBox>
 
                 <!-- Activity Trends -->
-                <VBox spacing="20" styleClass="card" style="-fx-background-color: #f2f4f4; -fx-padding: 2em; -fx-background-radius: 1.5em;">
+                <VBox spacing="20" styleClass="card dashboard-chart-card">
                     <HBox alignment="CENTER_LEFT">
                         <Label text="Activity Trends" style="-fx-font-size: 1.5em; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" />
                         <Region HBox.hgrow="ALWAYS" />
                         <HBox spacing="5" style="-fx-background-color: #ffffff; -fx-padding: 5; -fx-background-radius: 20;">
-                            <Button fx:id="weekBtn" text="Week" style="-fx-background-color: #005faf; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-size: 0.8em; -fx-padding: 5 15;" onAction="#showWeeklyTrends" />
-                            <Button fx:id="monthBtn" text="Month" style="-fx-background-color: transparent; -fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-padding: 5 15;" onAction="#showMonthlyTrends" />
+                            <Button fx:id="weekBtn" text="Week" styleClass="chart-toggle-button" onAction="#showWeeklyTrends" />
+                            <Button fx:id="monthBtn" text="Month" styleClass="chart-toggle-button" onAction="#showMonthlyTrends" />
                         </HBox>
                     </HBox>
                     <HBox alignment="BOTTOM_CENTER" spacing="25" prefHeight="150" style="-fx-padding: 0 20;">
                         <VBox alignment="BOTTOM_CENTER" spacing="10">
-                            <Rectangle fx:id="day1Bar" width="40" height="60" fill="#005faf" opacity="0.2" arcWidth="8" arcHeight="8" />
+                            <Rectangle fx:id="day1Bar" width="40" height="60" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
                             <Label fx:id="day1Label" text="MON" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" spacing="10">
-                            <Rectangle fx:id="day2Bar" width="40" height="100" fill="#005faf" opacity="0.2" arcWidth="8" arcHeight="8" />
+                            <Rectangle fx:id="day2Bar" width="40" height="100" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
                             <Label fx:id="day2Label" text="TUE" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" spacing="10">
-                            <Rectangle fx:id="day3Bar" width="40" height="75" fill="#005faf" opacity="0.2" arcWidth="8" arcHeight="8" />
+                            <Rectangle fx:id="day3Bar" width="40" height="75" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
                             <Label fx:id="day3Label" text="WED" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" spacing="10">
-                            <Rectangle fx:id="day4Bar" width="40" height="130" fill="#005faf" arcWidth="8" arcHeight="8" />
+                            <Rectangle fx:id="day4Bar" width="40" height="130" arcWidth="8" arcHeight="8" styleClass="chart-bar chart-bar-active" />
                             <Label fx:id="day4Label" text="THU" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #005faf;" />
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" spacing="10">
-                            <Rectangle fx:id="day5Bar" width="40" height="65" fill="#005faf" opacity="0.2" arcWidth="8" arcHeight="8" />
+                            <Rectangle fx:id="day5Bar" width="40" height="65" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
                             <Label fx:id="day5Label" text="FRI" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" spacing="10">
-                            <Rectangle fx:id="day6Bar" width="40" height="45" fill="#005faf" opacity="0.2" arcWidth="8" arcHeight="8" />
+                            <Rectangle fx:id="day6Bar" width="40" height="45" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
                             <Label fx:id="day6Label" text="SAT" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" spacing="10">
-                            <Rectangle fx:id="day7Bar" width="40" height="30" fill="#005faf" opacity="0.2" arcWidth="8" arcHeight="8" />
+                            <Rectangle fx:id="day7Bar" width="40" height="30" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
                             <Label fx:id="day7Label" text="SUN" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
                         </VBox>
                     </HBox>
