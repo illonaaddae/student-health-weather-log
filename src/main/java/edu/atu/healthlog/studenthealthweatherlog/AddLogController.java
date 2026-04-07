@@ -101,12 +101,33 @@ public class AddLogController {
     @FXML
     public void selectMood(javafx.event.ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
-        String mood = clickedButton.getText().split("\n")[1].trim();
+        String mood = resolveMood(clickedButton);
         selectedMood = mood;
 
         // Update button styles
         resetMoodButtons();
         clickedButton.setStyle("-fx-background-color: #d4e3ff; -fx-padding: 1em; -fx-background-radius: 0.75em; -fx-text-alignment: center; -fx-font-size: 0.85em; -fx-border-color: #005faf; -fx-border-width: 2;");
+    }
+
+    private String resolveMood(Button clickedButton) {
+        if (clickedButton == moodLowBtn) {
+            return "Low";
+        }
+        if (clickedButton == moodNeutralBtn) {
+            return "Neutral";
+        }
+        if (clickedButton == moodGoodBtn) {
+            return "Good";
+        }
+        if (clickedButton == moodGreatBtn) {
+            return "Great";
+        }
+        if (clickedButton == moodTiredBtn) {
+            return "Tired";
+        }
+
+        String text = clickedButton.getText();
+        return text == null ? "Good" : text.trim();
     }
 
     /**
