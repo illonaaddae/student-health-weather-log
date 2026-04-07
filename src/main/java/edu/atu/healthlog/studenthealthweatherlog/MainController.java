@@ -5,7 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 
 import java.io.IOException;
 
@@ -28,6 +31,10 @@ public class MainController {
     private StackPane contentArea;
     @FXML
     private Label userNameLabel;
+    @FXML
+    private Circle userProfileCircle;
+    @FXML
+    private Label userProfileInitials;
     @FXML
     private TextField searchField;
     @FXML
@@ -63,7 +70,7 @@ public class MainController {
         }
 
         // Mock user data
-        if (userNameLabel != null) userNameLabel.setText("Illona");
+        if (userNameLabel != null) userNameLabel.setText(UserPreferences.getUserName());
 
         // Load the dashboard by default
         switchToDashboard();
@@ -123,7 +130,13 @@ public class MainController {
     @FXML
     public void signOut() {
         System.out.println("Signing out...");
-        // TODO: Implement sign-out functionality
+        UserPreferences.clearUser();
+        Toast.show(signOutBtn, "Signed out", false);
+        try {
+            AppRouter.showAuth();
+        } catch (IOException e) {
+            System.err.println("Failed to load auth screen: " + e.getMessage());
+        }
     }
 
     /**
@@ -156,6 +169,15 @@ public class MainController {
 
         // Highlight active button
         activeButton.setStyle("-fx-background-color: transparent; -fx-text-alignment: left; -fx-alignment: CENTER_LEFT; -fx-font-size: 0.95em; -fx-text-fill: #005faf; -fx-font-weight: bold;");
+    }
+
+    public void updateProfilePicture(Image image) {
+        if (userProfileCircle != null && image != null) {
+            userProfileCircle.setFill(new ImagePattern(image));
+            if (userProfileInitials != null) {
+                userProfileInitials.setVisible(false);
+            }
+        }
     }
 }
 

@@ -29,7 +29,10 @@
                 </graphic>
             </Button>
             <Label fx:id="userNameLabel" text="Illona" styleClass="body-md" />
-            <Circle radius="20" styleClass="background-card" />
+            <StackPane>
+                <Circle fx:id="userProfileCircle" radius="20" styleClass="background-card" fill="#d4e3ff" />
+                <Label fx:id="userProfileInitials" text="I" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #005faf;" />
+            </StackPane>
         </HBox>
     </top>
 

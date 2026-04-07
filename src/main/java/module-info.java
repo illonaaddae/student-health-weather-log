@@ -5,6 +5,9 @@ module edu.atu.healthlog.studenthealthweatherlog {
     requires org.kordamp.ikonli.fontawesome5;
     requires java.sql;
     requires com.google.gson;
+    requires org.apache.pdfbox;
+    requires org.apache.fontbox;
+    requires java.prefs;
 
     opens edu.atu.healthlog.studenthealthweatherlog to javafx.fxml;
     opens edu.atu.healthlog.studenthealthweatherlog.models to javafx.base, com.google.gson;

@@ -12,16 +12,20 @@ import java.sql.Statement;
 public class DatabaseConnection {
     private static final String BASE_URL = "jdbc:mysql://localhost:3306/";
     private static final String DB_NAME = "healthlog_db";
-    private static final String USER = "root"; // Update with actual DB credentials
-    private static final String PASSWORD = "password"; 
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
 
     private static Connection connection = null;
+    private static boolean isUsingMock = false;
 
     /**
      * Gets the current database connection.
      * Initializes it if it doesn't exist.
      */
     public static Connection getConnection() throws SQLException {
+        if (isUsingMock) {
+            throw new SQLException("Database is in mock mode due to previous connection failure.");
+        }
         if (connection == null || connection.isClosed()) {
             try {
                 // Register JDBC driver
@@ -42,10 +46,15 @@ public class DatabaseConnection {
                     connection = DriverManager.getConnection(BASE_URL + DB_NAME, USER, PASSWORD);
                 }
             } catch (ClassNotFoundException e) {
+                isUsingMock = true;
                 throw new SQLException("MySQL JDBC Driver not found.", e);
             }
         }
         return connection;
+    }
+
+    public static boolean isMockMode() {
+        return isUsingMock;
     }
 
     /**
@@ -75,6 +84,7 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             System.err.println("Database initialization failed: " + e.getMessage());
             System.err.println("Please ensure MySQL is running and credentials in DatabaseConnection.java are correct.");
+            isUsingMock = true;
         }
     }
 
