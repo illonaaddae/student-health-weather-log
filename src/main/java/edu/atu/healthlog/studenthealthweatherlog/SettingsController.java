@@ -6,6 +6,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import java.io.File;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 
 /**
  * SettingsController - Manages the settings and preferences view.
@@ -28,6 +31,8 @@ public class SettingsController {
     @FXML
     private Spinner<Integer> targetExerciseSpinner;
     @FXML
+    private TextField cityField;
+    @FXML
     private CheckBox dataSharing;
     @FXML
     private Button saveBtn;
@@ -43,6 +48,8 @@ public class SettingsController {
     private Circle profileCircle;
     @FXML
     private Label profileInitials;
+    @FXML
+    private StackPane profileStackPane;
 
     // Appearance
     @FXML
@@ -90,10 +97,19 @@ public class SettingsController {
         weeklyInsights.setSelected(true);
         goalReminders.setSelected(false);
         dataSharing.setSelected(false);
+        if (cityField != null) {
+            cityField.setText(UserPreferences.getCity());
+        }
+        if (userNameField != null) {
+            userNameField.setText(UserPreferences.getUserName());
+        }
+        if (userEmailField != null) {
+            userEmailField.setText(UserPreferences.getUserEmail());
+        }
     }
 
     /**
-     * Edits user profile information
+     * Updates user profile information
      */
     @FXML
     public void editProfile() {
@@ -106,6 +122,7 @@ public class SettingsController {
             editProfileBtn.setText("Save");
             isEditingProfile = true;
             System.out.println("Profile editing enabled.");
+            Toast.show(editProfileBtn, "Edit profile enabled", false);
         } else {
             // Save profile
             saveProfile();
@@ -119,13 +136,53 @@ public class SettingsController {
             // Update initials
             updateInitials();
             System.out.println("Profile saved.");
+            Toast.show(editProfileBtn, "Profile saved", false);
+        }
+    }
+
+    /**
+     * Implementation for changing the profile picture
+     */
+    @FXML
+    public void changeProfilePicture() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Profile Picture");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(profileCircle.getScene().getWindow());
+        if (selectedFile != null) {
+            try {
+                Image image = new Image(selectedFile.toURI().toString());
+                profileCircle.setFill(new ImagePattern(image));
+                profileInitials.setVisible(false);
+
+                // Update sidebar profile globally via MainController instance
+                if (MainController.getInstance() != null) {
+                    MainController.getInstance().updateProfilePicture(image);
+                }
+
+                System.out.println("Profile picture updated: " + selectedFile.getName());
+                Toast.show(profileCircle, "Profile picture updated", false);
+            } catch (Exception e) {
+                System.err.println("Error loading profile picture: " + e.getMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Image Load Failed");
+                alert.setContentText("Could not load the selected image. Please try another one.");
+                alert.show();
+                Toast.show(profileCircle, "Image load failed", true);
+            }
         }
     }
 
     private void saveProfile() {
         String name = userNameField.getText();
         String email = userEmailField.getText();
-        // TODO: Save to database
+        // Persist in preferences for the current session
+        UserPreferences.setUserName(name);
+        UserPreferences.setUserEmail(email);
         System.out.println("Saving profile: " + name + " (" + email + ")");
     }
 
@@ -174,7 +231,7 @@ public class SettingsController {
     @FXML
     public void changePassword() {
         System.out.println("Opening password change dialog...");
-        // TODO: Implement password change dialog
+        Toast.show(saveBtn, "Password change is not yet implemented", true);
     }
 
     /**
@@ -183,6 +240,7 @@ public class SettingsController {
     @FXML
     public void exportData() {
         System.out.println("Exporting user data...");
+        Toast.show(saveBtn, "Export started (mock)", false);
         // TODO: Implement data export functionality
     }
 
@@ -192,6 +250,7 @@ public class SettingsController {
     @FXML
     public void deleteAccount() {
         System.out.println("Deleting account...");
+        Toast.show(saveBtn, "Delete requested (mock)", true);
         // TODO: Show confirmation dialog and implement account deletion
     }
 
@@ -201,27 +260,50 @@ public class SettingsController {
     @FXML
     public void saveChanges() {
         System.out.println("Saving settings...");
+        try {
+            // Collect all settings
+            boolean dailyRemindersEnabled = dailyReminders.isSelected();
+            boolean weatherAlertsEnabled = weatherAlerts.isSelected();
+            boolean weeklyInsightsEnabled = weeklyInsights.isSelected();
+            boolean goalRemindersEnabled = goalReminders.isSelected();
+            int targetSleep = targetSleepSpinner.getValue();
+            int targetWater = targetWaterSpinner.getValue();
+            int targetExercise = targetExerciseSpinner.getValue();
+            boolean dataSharingEnabled = dataSharing.isSelected();
 
-        // Collect all settings
-        boolean dailyRemindersEnabled = dailyReminders.isSelected();
-        boolean weatherAlertsEnabled = weatherAlerts.isSelected();
-        boolean weeklyInsightsEnabled = weeklyInsights.isSelected();
-        boolean goalRemindersEnabled = goalReminders.isSelected();
-        int targetSleep = targetSleepSpinner.getValue();
-        int targetWater = targetWaterSpinner.getValue();
-        int targetExercise = targetExerciseSpinner.getValue();
-        boolean dataSharingEnabled = dataSharing.isSelected();
+            if (cityField != null && !cityField.getText().isBlank()) {
+                UserPreferences.setCity(cityField.getText());
+            }
 
-        // TODO: Persist settings to database/preferences
-        System.out.println("Settings saved successfully!");
-        System.out.println("  Daily Reminders: " + dailyRemindersEnabled);
-        System.out.println("  Weather Alerts: " + weatherAlertsEnabled);
-        System.out.println("  Weekly Insights: " + weeklyInsightsEnabled);
-        System.out.println("  Goal Reminders: " + goalRemindersEnabled);
-        System.out.println("  Target Sleep: " + targetSleep + " hours");
-        System.out.println("  Target Water: " + targetWater + " ml");
-        System.out.println("  Target Exercise: " + targetExercise + " mins/day");
-        System.out.println("  Data Sharing: " + dataSharingEnabled);
+            // TODO: Persist settings to database/preferences
+            System.out.println("Settings saved successfully!");
+            System.out.println("  Daily Reminders: " + dailyRemindersEnabled);
+            System.out.println("  Weather Alerts: " + weatherAlertsEnabled);
+            System.out.println("  Weekly Insights: " + weeklyInsightsEnabled);
+            System.out.println("  Goal Reminders: " + goalRemindersEnabled);
+            System.out.println("  Target Sleep: " + targetSleep + " hours");
+            System.out.println("  Target Water: " + targetWater + " ml");
+            System.out.println("  Target Exercise: " + targetExercise + " mins/day");
+            System.out.println("  Data Sharing: " + dataSharingEnabled);
+            if (cityField != null) {
+                System.out.println("  Weather City: " + UserPreferences.getCity());
+            }
+
+            Toast.show(saveBtn, "Settings saved successfully", false);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Settings");
+            alert.setHeaderText("Saved");
+            alert.setContentText("Your settings have been saved successfully.");
+            alert.show();
+        } catch (Exception e) {
+            Toast.show(saveBtn, "Failed to save settings", true);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Settings Error");
+            alert.setHeaderText("Save failed");
+            alert.setContentText(e.getMessage());
+            alert.show();
+        }
     }
 
     /**
@@ -230,7 +312,17 @@ public class SettingsController {
     @FXML
     public void contactSupport() {
         System.out.println("Opening support contact...");
-        // TODO: Implement support contact functionality
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Contact Support");
+        alert.setHeaderText("Connecting to Wellness Support");
+        alert.setContentText("You are being redirected to our support portal. You can also reach us directly at support@wellnesslog.atu.edu");
+        alert.show();
+
+        Toast.show(saveBtn, "Support portal opened (mock)", false);
+
+        // In a real JavaFX application, we'd use getHostServices().showDocument()
+        // For this mock, we'll just simulate the redirection
     }
 
     /**
@@ -239,7 +331,7 @@ public class SettingsController {
     @FXML
     public void openUserGuide() {
         System.out.println("Opening user guide...");
-        // TODO: Implement user guide dialog or web view
+        Toast.show(saveBtn, "User guide coming soon", false);
     }
 
     /**
@@ -248,7 +340,7 @@ public class SettingsController {
     @FXML
     public void openTerms() {
         System.out.println("Opening terms of service...");
-        // TODO: Show terms of service dialog
+        Toast.show(saveBtn, "Terms of service coming soon", false);
     }
 
     /**
@@ -257,7 +349,7 @@ public class SettingsController {
     @FXML
     public void openPrivacy() {
         System.out.println("Opening privacy policy...");
-        // TODO: Show privacy policy dialog
+        Toast.show(saveBtn, "Privacy policy coming soon", false);
     }
 
     /**
@@ -312,4 +404,3 @@ public class SettingsController {
         public void setDataSharing(boolean dataSharing) { this.dataSharing = dataSharing; }
     }
 }
-
