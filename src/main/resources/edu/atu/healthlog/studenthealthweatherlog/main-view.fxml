@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.atu.healthlog.studenthealthweatherlog.MainController">
+    <!-- TOP: Header with logo and user info -->
+    <top>
+        <HBox styleClass="header" spacing="15" alignment="CENTER_LEFT" prefHeight="60">
+            <Label text="Wellness Sanctuary" styleClass="headline-md" textFill="#005faf">
+                <font>
+                    <Font name="Manrope" size="20" />
+                </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <TextField fx:id="searchField" promptText="Search insights..." prefWidth="200" styleClass="text-field" />
+            <Button fx:id="notificationBtn" style="-fx-background-color: transparent; -fx-cursor: hand;" onAction="#openNotifications">
+                <graphic>
+                    <FontIcon iconLiteral="fas-bell" iconSize="20" iconColor="#5a6061" />
+                </graphic>
+            </Button>
+            <Button fx:id="settingsBtn" style="-fx-background-color: transparent; -fx-cursor: hand;" onAction="#openSettings">
+                <graphic>
+                    <FontIcon iconLiteral="fas-cog" iconSize="20" iconColor="#5a6061" />
+                </graphic>
+            </Button>
+            <Label fx:id="userNameLabel" text="Illona" styleClass="body-md" />
+            <StackPane>
+                <Circle fx:id="userProfileCircle" radius="20" styleClass="background-card" />
+                <Label fx:id="userProfileInitials" text="I" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #005faf;" />
+            </StackPane>
+        </HBox>
+    </top>
+
+    <!-- LEFT: Sidebar Navigation -->
+    <left>
+        <VBox styleClass="sidebar" spacing="25" prefWidth="240">
+            <!-- Logo Section -->
+            <VBox spacing="5">
+                <Label text="Sanctuary" styleClass="headline-md" style="-fx-text-fill: #005faf;">
+                    <font>
+                        <Font name="Manrope" size="18" />
+                    </font>
+                </Label>
+                <Label text="HEALTH &amp; WELLNESS" styleClass="label-sm" />
+            </VBox>
+
+            <!-- Navigation Items -->
+            <Button fx:id="dashboardBtn" text="Dashboard" styleClass="nav-item" style="-fx-background-color: transparent; -fx-text-alignment: left; -fx-alignment: CENTER_LEFT; -fx-font-size: 0.95em;" onAction="#switchToDashboard">
+                <graphic>
+                    <FontIcon iconLiteral="fas-th-large" iconSize="18" iconColor="#5a6061" />
+                </graphic>
+            </Button>
+            <Button fx:id="addLogBtn" text="Add Log" styleClass="nav-item" style="-fx-background-color: transparent; -fx-text-alignment: left; -fx-alignment: CENTER_LEFT; -fx-font-size: 0.95em;" onAction="#switchToAddLog">
+                <graphic>
+                    <FontIcon iconLiteral="fas-edit" iconSize="18" iconColor="#5a6061" />
+                </graphic>
+            </Button>
+            <Button fx:id="historyBtn" text="History" styleClass="nav-item" style="-fx-background-color: transparent; -fx-text-alignment: left; -fx-alignment: CENTER_LEFT; -fx-font-size: 0.95em;" onAction="#switchToHistory">
+                <graphic>
+                    <FontIcon iconLiteral="fas-history" iconSize="18" iconColor="#5a6061" />
+                </graphic>
+            </Button>
+            <Button fx:id="weatherInsightsBtn" text="Weather Insights" styleClass="nav-item" style="-fx-background-color: transparent; -fx-text-alignment: left; -fx-alignment: CENTER_LEFT; -fx-font-size: 0.95em;" onAction="#switchToWeatherInsights">
+                <graphic>
+                    <FontIcon iconLiteral="fas-cloud-sun" iconSize="18" iconColor="#5a6061" />
+                </graphic>
+            </Button>
+
+            <!-- Spacer -->
+            <Region VBox.vgrow="ALWAYS" />
+
+            <!-- Bottom Navigation Items -->
+            <Button fx:id="supportBtn" text="Support" styleClass="nav-item" style="-fx-background-color: transparent; -fx-text-alignment: left; -fx-alignment: CENTER_LEFT; -fx-font-size: 0.95em;" onAction="#openSupport">
+                <graphic>
+                    <FontIcon iconLiteral="fas-question-circle" iconSize="18" iconColor="#5a6061" />
+                </graphic>
+            </Button>
+            <Button fx:id="signOutBtn" text="Sign Out" styleClass="nav-item" style="-fx-background-color: transparent; -fx-text-alignment: left; -fx-alignment: CENTER_LEFT; -fx-font-size: 0.95em;" onAction="#signOut">
+                <graphic>
+                    <FontIcon iconLiteral="fas-sign-out-alt" iconSize="18" iconColor="#5a6061" />
+                </graphic>
+            </Button>
+        </VBox>
+    </left>
+
+    <!-- CENTER: Content Area (Screen Container) -->
+    <center>
+        <StackPane fx:id="contentArea">
+            <!-- Screens will be dynamically loaded here -->
+        </StackPane>
+    </center>
+
+</BorderPane>
+

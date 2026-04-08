@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.atu.healthlog.studenthealthweatherlog.WeatherInsightsController" style="-fx-background-color: #f9f9f9; -fx-fit-to-width: true;" fitToWidth="true" hbarPolicy="NEVER">
+    <VBox spacing="20" style="-fx-padding: 30; -fx-background-color: #f9f9f9;">
+
+        <!-- Header -->
+        <Label text="Weather &amp; Wellness Correlations" styleClass="headline-lg" style="-fx-text-fill: #005faf; -fx-font-size: 2.2em; -fx-font-weight: bold;">
+            <font>
+                <Font name="Manrope" size="32" />
+            </font>
+        </Label>
+
+        <!-- Main Content Grid -->
+        <HBox spacing="20">
+
+            <!-- Left Column: Charts -->
+            <VBox spacing="20" HBox.hgrow="ALWAYS">
+
+                <!-- Mood Impact by Condition Chart -->
+                <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <VBox HBox.hgrow="ALWAYS">
+                            <Label text="Mood Impact by Condition" styleClass="headline-md" style="-fx-font-size: 1.5em; -fx-font-weight: bold;" />
+                            <Label text="Analyzing the last 30 days of behavioral correlations" styleClass="body-md" style="-fx-text-fill: #70767a;" />
+                        </VBox>
+                        <Button text="Monthly View" styleClass="button-secondary" style="-fx-background-color: #d4e3ff; -fx-text-fill: #005faf; -fx-padding: 0.5em 1em; -fx-font-size: 0.8em; -fx-background-radius: 1em;" onAction="#switchToMonthlyView" />
+                        <Button style="-fx-background-color: transparent; -fx-padding: 5; -fx-cursor: hand;" onAction="#openFilter">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-filter" iconSize="14" iconColor="#70767a" />
+                            </graphic>
+                        </Button>
+                    </HBox>
+
+        <!-- Chart Content (Mock Bars with actual styling) -->
+        <VBox prefHeight="350" minHeight="350" spacing="10" style="-fx-padding: 20 0 0 40;">
+            <AnchorPane VBox.vgrow="ALWAYS">
+                <!-- Y-Axis Labels -->
+                <VBox spacing="85" AnchorPane.leftAnchor="-40" AnchorPane.topAnchor="0">
+                    <Label text="High (5)" style="-fx-font-size: 10; -fx-text-fill: #70767a;" />
+                    <Label text="Avg (3)" style="-fx-font-size: 10; -fx-text-fill: #70767a;" />
+                    <Label text="Low (1)" style="-fx-font-size: 10; -fx-text-fill: #70767a;" />
+                </VBox>
+                
+                <!-- Bars Container -->
+                <HBox spacing="30" alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+                    <VBox alignment="BOTTOM_CENTER" spacing="10">
+                        <Rectangle fx:id="sunnyBar" width="50" height="0" fill="#005faf" arcWidth="10" arcHeight="10" />
+                        <FontIcon iconLiteral="fas-sun" iconSize="24" iconColor="#ffa000" />
+                        <Label text="Sunny" style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #5a6061;" />
+                    </VBox>
+                    <VBox alignment="BOTTOM_CENTER" spacing="10">
+                        <Rectangle fx:id="cloudyBar" width="50" height="0" fill="#00539a" opacity="0.8" arcWidth="10" arcHeight="10" />
+                        <FontIcon iconLiteral="fas-cloud" iconSize="24" iconColor="#90a4ae" />
+                        <Label text="Cloudy" style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #5a6061;" />
+                    </VBox>
+                    <VBox alignment="BOTTOM_CENTER" spacing="10">
+                        <Rectangle fx:id="rainyBar" width="50" height="0" fill="#0e5881" opacity="0.7" arcWidth="10" arcHeight="10" />
+                        <FontIcon iconLiteral="fas-cloud-showers-heavy" iconSize="24" iconColor="#4fc3f7" />
+                        <Label text="Rainy" style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #5a6061;" />
+                    </VBox>
+                    <VBox alignment="BOTTOM_CENTER" spacing="10">
+                        <Rectangle fx:id="snowBar" width="50" height="0" fill="#53616a" opacity="0.6" arcWidth="10" arcHeight="10" />
+                        <FontIcon iconLiteral="fas-snowflake" iconSize="24" iconColor="#cfd8dc" />
+                        <Label text="Snow" style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #5a6061;" />
+                    </VBox>
+                    <VBox alignment="BOTTOM_CENTER" spacing="10">
+                        <Rectangle fx:id="partlyBar" width="50" height="0" fill="#005faf" opacity="0.75" arcWidth="10" arcHeight="10" />
+                        <FontIcon iconLiteral="fas-cloud-sun" iconSize="24" iconColor="#ffb74d" />
+                        <Label text="Partly" style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #5a6061;" />
+                    </VBox>
+                </HBox>
+            </AnchorPane>
+        </VBox>
+                </VBox>
+
+                <!-- Two Column Charts Row -->
+                <HBox spacing="20">
+
+                    <!-- Humidity vs Energy Chart -->
+                    <VBox spacing="12" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;" HBox.hgrow="ALWAYS">
+                        <Label text="Humidity vs. Energy" style="-fx-font-size: 1.25em; -fx-font-weight: bold;" />
+                        <Label text="Inverse correlation detected this quarter." styleClass="body-md" style="-fx-text-fill: #70767a;" />
+                        <StackPane prefHeight="100" style="-fx-background-color: #f2f4f4; -fx-background-radius: 0.75em;">
+                            <HBox alignment="CENTER" spacing="30">
+                                <StackPane>
+                                    <Rectangle width="200" height="2" fill="#adb3b4" />
+                                    <HBox spacing="35" alignment="CENTER">
+                                        <Circle radius="4" fill="#005faf" />
+                                        <Circle radius="4" fill="#00539a" translateY="5" />
+                                        <Circle radius="4" fill="#005faf" translateY="-5" />
+                                        <Circle radius="4" fill="#00539a" translateY="8" />
+                                    </HBox>
+                                </StackPane>
+                            </HBox>
+                        </StackPane>
+                    </VBox>
+
+                    <!-- Weather Forecast Integration -->
+                    <VBox spacing="12" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;" HBox.hgrow="ALWAYS">
+                        <Label text="Weather Forecast Integration" style="-fx-font-size: 1.25em; -fx-font-weight: bold;" />
+                        <VBox spacing="10">
+                            <HBox spacing="15" alignment="CENTER_LEFT">
+                                <VBox alignment="CENTER">
+                                    <Label text="TOMORROW" style="-fx-text-fill: #70767a; -fx-font-size: 10; -fx-font-weight: bold;" />
+                                    <FontIcon iconLiteral="fas-sun" iconSize="28" iconColor="#ffa000" />
+                                    <Label text="72°F" style="-fx-font-size: 14; -fx-font-weight: bold;" />
+                                </VBox>
+                                <Separator orientation="VERTICAL" prefHeight="40" />
+                                <Label text="Syncing with local atmospheric data for smarter logging." wrapText="true" style="-fx-text-fill: #70767a; -fx-font-size: 0.9em;" HBox.hgrow="ALWAYS" />
+                            </HBox>
+                            <Button fx:id="syncCalendarBtn" text="Sync Calendar" styleClass="button-primary" style="-fx-background-color: #005faf; -fx-text-fill: white; -fx-padding: 0.75em; -fx-background-radius: 2em; -fx-cursor: hand; -fx-min-width: 100%; -fx-font-weight: bold;" onAction="#syncCalendar" />
+                        </VBox>
+                    </VBox>
+
+                </HBox>
+
+            </VBox>
+
+            <!-- Right Column: Insights & Tips -->
+            <VBox spacing="20" prefWidth="300">
+
+                <!-- Wellness Insight Card -->
+                <VBox spacing="15" style="-fx-background-color: #d4e3ff; -fx-padding: 2em; -fx-background-radius: 1.5em;">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <FontIcon iconLiteral="fas-lightbulb" iconSize="20" iconColor="#005faf" />
+                        <Label text="Wellness Insight" style="-fx-text-fill: #005faf; -fx-font-size: 1.2em; -fx-font-weight: bold;" />
+                    </HBox>
+                    <Label text="You tend to report 24% higher focus levels on sunny days. Consider scheduling deep work for tomorrow's clear sky window." wrapText="true" style="-fx-text-fill: #005faf; -fx-font-size: 1em; -fx-line-spacing: 5;" />
+                    <Button fx:id="viewGoalsBtn" text="View Sunlight Goals" style="-fx-background-color: #004079; -fx-text-fill: white; -fx-padding: 0.75em 1.5em; -fx-background-radius: 2em; -fx-cursor: hand; -fx-min-width: 100%; -fx-font-weight: bold;" onAction="#viewGoals" />
+                </VBox>
+
+                <!-- Correlated Metrics Card -->
+                <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
+                    <Label text="Correlated Metrics" style="-fx-font-size: 1.2em; -fx-font-weight: bold;" />
+                    <VBox spacing="15">
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <StackPane style="-fx-background-color: #e1f0fb; -fx-padding: 8; -fx-background-radius: 8;">
+                                <FontIcon iconLiteral="fas-moon" iconSize="16" iconColor="#005faf" />
+                            </StackPane>
+                            <Label text="Sleep Quality" style="-fx-font-size: 0.95em;" HBox.hgrow="ALWAYS" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="+12%" style="-fx-text-fill: #005faf; -fx-font-weight: bold;" />
+                        </HBox>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <StackPane style="-fx-background-color: #fff3e0; -fx-padding: 8; -fx-background-radius: 8;">
+                                <FontIcon iconLiteral="fas-running" iconSize="16" iconColor="#ef6c00" />
+                            </StackPane>
+                            <Label text="Activity Level" style="-fx-font-size: 0.95em;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="+18%" style="-fx-text-fill: #ef6c00; -fx-font-weight: bold;" />
+                        </HBox>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <StackPane style="-fx-background-color: #e8f5e9; -fx-padding: 8; -fx-background-radius: 8;">
+                                <FontIcon iconLiteral="fas-brain" iconSize="16" iconColor="#2e7d32" />
+                            </StackPane>
+                            <Label text="Anxiety Frequency" style="-fx-font-size: 0.95em;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="-08%" style="-fx-text-fill: #2e7d32; -fx-font-weight: bold;" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>
+

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.atu.healthlog.studenthealthweatherlog.SettingsController" style="-fx-fit-to-width: true;" fitToWidth="true" hbarPolicy="NEVER">
+    <VBox spacing="20" style="-fx-padding: 30;">
+
+        <!-- Header -->
+        <VBox spacing="10">
+            <Label text="Settings" styleClass="headline-lg">
+                <font>
+                    <Font name="Manrope" size="32" />
+                </font>
+            </Label>
+            <Label text="Customize your wellness sanctuary experience." styleClass="body-md" />
+        </VBox>
+
+        <!-- Main Content -->
+        <HBox spacing="25">
+
+            <!-- Left Column: Settings Options -->
+            <VBox spacing="20" HBox.hgrow="ALWAYS">
+
+                <!-- Account Settings Section -->
+                <VBox spacing="15" styleClass="card">
+                    <Label text="Account" styleClass="title-lg" />
+                    <Separator style="-fx-padding: 0;" />
+
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                        <StackPane>
+                            <Circle radius="30" fx:id="profileCircle" styleClass="background-card" />
+                            <Label fx:id="profileInitials" text="IM" style="-fx-font-weight: bold; -fx-text-fill: #005faf;" />
+                        </StackPane>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <TextField fx:id="userNameField" text="Illona Martinez" styleClass="text-field body-lg" editable="false" />
+                            <TextField fx:id="userEmailField" text="illona@student.atu.edu" styleClass="text-field body-md" editable="false" />
+                        </VBox>
+                        <Button fx:id="editProfileBtn" text="Edit" styleClass="button-secondary" style="-fx-background-color: #d4e3ff; -fx-text-fill: #005faf; -fx-padding: 0.5em 1em; -fx-font-size: 0.8em;" onAction="#editProfile" />
+                    </HBox>
+
+                    <VBox spacing="8">
+                        <Label text="Password" styleClass="body-lg" />
+                        <Button text="Change Password" style="-fx-background-color: transparent; -fx-padding: 0; -fx-text-fill: #005faf; -fx-cursor: hand; -fx-font-weight: bold;" onAction="#changePassword" />
+                    </VBox>
+                </VBox>
+
+                <!-- Notification Settings -->
+                <VBox spacing="15" styleClass="card">
+                    <Label text="Notifications" styleClass="title-lg" />
+                    <Separator style="-fx-padding: 0;" />
+
+                    <VBox spacing="12">
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="dailyReminders" text="Daily Logging Reminders" selected="true" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="9:00 AM" styleClass="body-md" style="-fx-text-fill: #70767a;" />
+                        </HBox>
+
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="weatherAlerts" text="Weather Alerts" selected="true" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="As they occur" styleClass="body-md" style="-fx-text-fill: #70767a;" />
+                        </HBox>
+
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="weeklyInsights" text="Weekly Insights" selected="true" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="Every Monday" styleClass="body-md" style="-fx-text-fill: #70767a;" />
+                        </HBox>
+
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="goalReminders" text="Goal Reminders" selected="false" />
+                            <Region HBox.hgrow="ALWAYS" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Wellness Goals -->
+                <VBox spacing="15" styleClass="card">
+                    <Label text="Wellness Goals" styleClass="title-lg" />
+                    <Separator style="-fx-padding: 0;" />
+
+                    <VBox spacing="12">
+                        <HBox spacing="10">
+                            <Label text="Target Sleep" HBox.hgrow="ALWAYS" />
+                            <Spinner fx:id="targetSleepSpinner" editable="true" prefWidth="80" />
+                            <Label text="hours" />
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Target Water Intake" HBox.hgrow="ALWAYS" />
+                            <Spinner fx:id="targetWaterSpinner" editable="true" prefWidth="100" />
+                            <Label text="ml" />
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Label text="Target Exercise" HBox.hgrow="ALWAYS" />
+                            <Spinner fx:id="targetExerciseSpinner" editable="true" prefWidth="80" />
+                            <Label text="mins/day" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Privacy & Data Settings -->
+                <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
+                    <Label text="Privacy &amp; Data" styleClass="title-lg" />
+                    <Separator style="-fx-padding: 0;" />
+
+                    <VBox spacing="10">
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="dataSharing" text="Allow Anonymous Data Sharing for Research" selected="false" />
+                        </HBox>
+
+                        <HBox spacing="15" alignment="TOP_LEFT">
+                            <Label text="📥 Data Export" HBox.hgrow="ALWAYS" />
+                            <Button text="Download My Data" style="-fx-background-color: transparent; -fx-padding: 0; -fx-text-fill: #005faf; -fx-cursor: hand; -fx-font-weight: bold;" onAction="#exportData" />
+                        </HBox>
+
+                        <HBox spacing="15" alignment="TOP_LEFT">
+                            <Label text="🗑 Delete Account" HBox.hgrow="ALWAYS" />
+                            <Button text="Permanently Delete" style="-fx-background-color: transparent; -fx-padding: 0; -fx-text-fill: #d32f2f; -fx-cursor: hand; -fx-font-weight: bold;" onAction="#deleteAccount" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Save Changes Button -->
+                <Button fx:id="saveBtn" text="💾 Save Changes" styleClass="button-primary" style="-fx-background-color: #005faf; -fx-text-fill: #f6f7ff; -fx-font-weight: bold; -fx-font-size: 1em; -fx-padding: 1em 2em; -fx-background-radius: 50; -fx-cursor: hand; -fx-min-width: 100%;" onAction="#saveChanges" />
+
+            </VBox>
+
+            <!-- Right Column: Additional Info -->
+            <VBox spacing="15" prefWidth="300">
+
+                <!-- About App -->
+                <VBox spacing="12" styleClass="card">
+                    <Label text="About" styleClass="title-lg" />
+                    <Separator style="-fx-padding: 0;" />
+                    <VBox spacing="8">
+                        <HBox spacing="10">
+                            <Label text="Version" />
+                            <Label text="1.0.0" styleClass="body-md" style="-fx-text-fill: #70767a;" />
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Build" />
+                            <Label text="Build 2024.01" styleClass="body-md" style="-fx-text-fill: #70767a;" />
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label text="Last Updated" />
+                            <Label text="April 5, 2026" styleClass="body-md" style="-fx-text-fill: #70767a;" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Support & Legal -->
+                <VBox spacing="12" styleClass="card">
+                    <Label text="Support" styleClass="title-lg" />
+                    <Separator style="-fx-padding: 0;" />
+                    <VBox spacing="8">
+                        <Button text="📧 Contact Support" style="-fx-background-color: transparent; -fx-padding: 0; -fx-text-fill: #005faf; -fx-cursor: hand; -fx-font-weight: bold;" onAction="#contactSupport" />
+                        <Button text="📚 User Guide" style="-fx-background-color: transparent; -fx-padding: 0; -fx-text-fill: #005faf; -fx-cursor: hand; -fx-font-weight: bold;" onAction="#openUserGuide" />
+                        <Button text="⚖ Terms of Service" style="-fx-background-color: transparent; -fx-padding: 0; -fx-text-fill: #005faf; -fx-cursor: hand; -fx-font-weight: bold;" onAction="#openTerms" />
+                        <Button text="🔒 Privacy Policy" style="-fx-background-color: transparent; -fx-padding: 0; -fx-text-fill: #005faf; -fx-cursor: hand; -fx-font-weight: bold;" onAction="#openPrivacy" />
+                    </VBox>
+                </VBox>
+
+                <!-- Theme Selection -->
+                <VBox spacing="12" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
+                    <Label text="Appearance" styleClass="title-lg" />
+                    <Separator style="-fx-padding: 0;" />
+                    <VBox spacing="8" fx:id="appearanceBox">
+                        <fx:define>
+                            <ToggleGroup fx:id="themeToggleGroup" />
+                        </fx:define>
+                        <RadioButton text="Light Mode" fx:id="lightModeRadio" toggleGroup="$themeToggleGroup" selected="true" onAction="#handleThemeChange" />
+                        <RadioButton text="Dark Mode" fx:id="darkModeRadio" toggleGroup="$themeToggleGroup" onAction="#handleThemeChange" />
+                        <RadioButton text="System Default" fx:id="systemModeRadio" toggleGroup="$themeToggleGroup" onAction="#handleThemeChange" />
+                    </VBox>
+                </VBox>
+
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+</ScrollPane>
+

@@ -1,0 +1,560 @@
+/* ============================================
+   WELLNESS SANCTUARY - DESIGN SYSTEM STYLESHEET
+   ============================================ */
+
+/* Color Palette */
+.root {
+    /* Primary Colors */
+    -primary: #005faf;
+    -primary-dim: #00539a;
+    -primary-container: #d4e3ff;
+    -on-primary: #f6f7ff;
+    -on-primary-container: #005299;
+
+    /* Secondary Colors */
+    -secondary-container: #cbe6ff;
+
+    /* Surface Colors */
+    -surface: #f9f9f9;
+    -surface-container-low: #f2f4f4;
+    -surface-container: #ebeeef;
+    -surface-container-high: #e4e9ea;
+    -surface-container-lowest: #ffffff;
+    -surface-variant: #e0e4e5;
+
+    /* Text Colors */
+    -on-surface: #2d3435;
+    -on-surface-variant: #70767a;
+    -outline: #7a8184;
+    -outline-variant: #adb3b4;
+}
+
+/* Root Background */
+.root {
+    -fx-font-family: "Inter";
+    -fx-base: -surface;
+}
+
+/* Dark Theme overrides */
+.root.dark-theme {
+    -primary: #d4e3ff;
+    -primary-dim: #9ab9ff;
+    -primary-container: #004680;
+    -on-primary: #00315e;
+    -on-primary-container: #d4e3ff;
+
+    -surface: #1a1c1e;
+    -surface-container-low: #2d3033;
+    -surface-container: #3d4144;
+    -surface-container-high: #4d5255;
+    -surface-container-lowest: #0d0f11;
+    -surface-variant: #444749;
+
+    -on-surface: #e2e2e6;
+    -on-surface-variant: #c4c6ca;
+    -outline: #8e9195;
+    -outline-variant: #444749;
+
+    -fx-background-color: -surface;
+}
+
+.root.dark-theme .scroll-pane,
+.root.dark-theme .scroll-pane > .viewport,
+.root.dark-theme .border-pane,
+.root.dark-theme .vbox,
+.root.dark-theme .hbox {
+    -fx-background-color: transparent;
+}
+
+.root.dark-theme .header {
+    -fx-background-color: derive(-surface-container-lowest, -8%);
+    -fx-border-color: -outline-variant;
+}
+
+.root.dark-theme .sidebar {
+    -fx-background-color: derive(-surface-container-low, -4%);
+    -fx-border-color: -outline-variant;
+    -fx-border-width: 0 1 0 0;
+}
+
+.root.dark-theme .card {
+    -fx-background-color: linear-gradient(to bottom right, derive(-surface-container, 6%), -surface-container);
+    -fx-border-color: derive(-outline-variant, -10%);
+    -fx-border-width: 1;
+    -fx-border-radius: 1em;
+}
+
+.root.dark-theme .auth-card {
+    -fx-background-color: linear-gradient(to bottom right, #25282b, #1f2225);
+    -fx-border-color: #4b5156;
+}
+
+.root.dark-theme .headline-lg,
+.root.dark-theme .headline-md,
+.root.dark-theme .headline-sm,
+.root.dark-theme .title-lg,
+.root.dark-theme .title-md,
+.root.dark-theme .body-lg,
+.root.dark-theme .label {
+    -fx-text-fill: -on-surface;
+}
+
+.root.dark-theme .body-md,
+.root.dark-theme .label-sm {
+    -fx-text-fill: -on-surface-variant;
+}
+
+.root.dark-theme .text-field,
+.root.dark-theme .combo-box,
+.root.dark-theme .spinner,
+.root.dark-theme .date-picker {
+    -fx-background-color: -surface-container-high;
+    -fx-text-fill: -on-surface;
+    -fx-prompt-text-fill: -on-surface-variant;
+    -fx-border-color: -outline-variant;
+}
+
+.root.dark-theme .text-field:focused,
+.root.dark-theme .combo-box:focused,
+.root.dark-theme .spinner:focused,
+.root.dark-theme .date-picker:focused {
+    -fx-border-color: -primary-dim;
+    -fx-border-width: 0 0 2 0;
+}
+
+.root.dark-theme .tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.root.dark-theme .tab-pane .tab {
+    -fx-background-color: -surface-container;
+    -fx-text-base-color: -on-surface-variant;
+}
+
+.root.dark-theme .tab-pane .tab:selected {
+    -fx-background-color: -primary-container;
+    -fx-text-base-color: -on-primary-container;
+}
+
+.root.dark-theme .radio-button,
+.root.dark-theme .check-box {
+    -fx-text-fill: -on-surface;
+}
+
+.root.dark-theme .radio-button .dot,
+.root.dark-theme .check-box .box {
+    -fx-background-color: -surface-container-high;
+    -fx-border-color: -outline-variant;
+}
+
+.root.dark-theme .button-secondary {
+    -fx-background-color: -primary-container;
+    -fx-text-fill: -on-primary-container;
+}
+
+.root.dark-theme .button-primary {
+    -fx-background-color: -primary-dim;
+}
+
+.root.dark-theme .nav-item {
+    -fx-text-fill: -on-surface-variant;
+}
+
+.root.dark-theme .nav-item:hover,
+.root.dark-theme .nav-item-active {
+    -fx-text-fill: -primary-dim;
+}
+
+.root.dark-theme .background-card,
+.root.dark-theme .metric-card,
+.root.dark-theme .wellness-tip {
+    -fx-background-color: -surface-container;
+}
+
+.root.dark-theme .table-view {
+    -fx-background-color: -surface-container-lowest;
+    -fx-border-color: -outline-variant;
+}
+
+.root.dark-theme .table-view .column-header,
+.root.dark-theme .table-view .filler,
+.root.dark-theme .table-view .column-header-background {
+    -fx-background-color: -surface-container;
+}
+
+.root.dark-theme .table-view .table-row-cell {
+    -fx-background-color: -surface-container-lowest;
+    -fx-border-color: transparent;
+}
+
+.root.dark-theme .table-view .table-row-cell:filled:selected {
+    -fx-background-color: derive(-primary-container, -5%);
+}
+
+.root.dark-theme .separator .line {
+    -fx-border-color: -outline-variant;
+}
+
+.root.dark-theme .dashboard-chart-card {
+    -fx-background-color: linear-gradient(to bottom right, #2b2f33, #24282b);
+    -fx-border-color: #4b5156;
+}
+
+.root.dark-theme .chart-toggle-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -on-surface-variant;
+}
+
+.root.dark-theme .chart-toggle-button:hover {
+    -fx-text-fill: -primary-dim;
+}
+
+.root.dark-theme .chart-bar {
+    -fx-fill: #6f87a4;
+}
+
+.root.dark-theme .chart-bar-active {
+    -fx-fill: #d4e3ff;
+}
+
+.root.dark-theme .chart-bar:hover {
+    -fx-opacity: 1;
+    -fx-stroke: #d4e3ff;
+    -fx-stroke-width: 1.5;
+}
+
+/* BorderPane */
+.border-pane {
+    -fx-background-color: -surface;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+.headline-lg {
+    -fx-font-family: "Manrope";
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -on-surface;
+}
+
+.headline-md {
+    -fx-font-family: "Manrope";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -on-surface;
+}
+
+.headline-sm {
+    -fx-font-family: "Manrope";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -on-surface;
+}
+
+.title-lg {
+    -fx-font-family: "Inter";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -on-surface;
+}
+
+.title-md {
+    -fx-font-family: "Inter";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -on-surface;
+}
+
+.body-lg {
+    -fx-font-family: "Inter";
+    -fx-font-size: 16px;
+    -fx-text-fill: -on-surface;
+}
+
+.body-md {
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+    -fx-text-fill: -on-surface-variant;
+}
+
+.label-sm {
+    -fx-font-family: "Inter";
+    -fx-font-size: 12px;
+    -fx-text-fill: -on-surface-variant;
+    -fx-text-transform: uppercase;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.button-primary {
+    -fx-background-color: -primary;
+    -fx-text-fill: -on-primary;
+    -fx-font-family: "Inter";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 1em 2em;
+    -fx-background-radius: 50;
+    -fx-cursor: hand;
+}
+
+.button-primary:hover {
+    -fx-background-color: -primary-dim;
+}
+
+.button-secondary {
+    -fx-background-color: -primary-container;
+    -fx-text-fill: -on-primary-container;
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 0.75em 1.5em;
+    -fx-background-radius: 0.5em;
+    -fx-cursor: hand;
+}
+
+.button-secondary:hover {
+    -fx-background-color: #c5d9f5;
+}
+
+.button {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+
+.card {
+    -fx-background-color: -surface-container-lowest;
+    -fx-padding: 1.5em;
+    -fx-background-radius: 1em;
+}
+
+.auth-card {
+    -fx-padding: 34;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 6);
+}
+
+/* ============================================
+   INPUT FIELDS
+   ============================================ */
+
+.text-field, .combo-box {
+    -fx-background-color: -surface-container-high;
+    -fx-text-fill: -on-surface;
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+    -fx-padding: 0.75em 1em;
+    -fx-background-radius: 0.75em;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+}
+
+.text-field:focused, .combo-box:focused {
+    -fx-background-color: -surface-container-high;
+    -fx-border-color: -primary;
+    -fx-border-width: 0 0 2 0;
+}
+
+/* ============================================
+   LABELS
+   ============================================ */
+
+.label {
+    -fx-text-fill: -on-surface;
+    -fx-font-family: "Inter";
+}
+
+/* ============================================
+   SIDEBAR NAVIGATION
+   ============================================ */
+
+.sidebar {
+    -fx-background-color: -surface-container-low;
+    -fx-padding: 2em 1.5em;
+}
+
+.nav-item {
+    -fx-padding: 0.75em 0;
+    -fx-text-fill: -on-surface-variant;
+    -fx-font-family: "Inter";
+    -fx-font-size: 15px;
+    -fx-cursor: hand;
+}
+
+.nav-item:hover {
+    -fx-text-fill: -primary;
+}
+
+.nav-item-active {
+    -fx-text-fill: -primary;
+    -fx-font-weight: bold;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.header {
+    -fx-background-color: -surface-container-lowest;
+    -fx-padding: 1em 2em;
+    -fx-border-color: -surface-container;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* ============================================
+   LAYOUT SPACING
+   ============================================ */
+
+.spacing-sm {
+    -fx-spacing: 0.5em;
+}
+
+.spacing-md {
+    -fx-spacing: 1em;
+}
+
+.spacing-lg {
+    -fx-spacing: 1.5em;
+}
+
+.spacing-xl {
+    -fx-spacing: 2em;
+}
+
+/* ============================================
+   SPECIAL COMPONENTS
+   ============================================ */
+
+.wellness-tip {
+    -fx-background-color: -primary;
+    -fx-text-fill: -on-primary;
+    -fx-padding: 1.5em;
+    -fx-background-radius: 1em;
+}
+
+.metric-card {
+    -fx-background-color: -surface-container-lowest;
+    -fx-padding: 1.5em;
+    -fx-background-radius: 1em;
+}
+
+.mood-chip {
+    -fx-background-color: -secondary-container;
+    -fx-text-fill: -on-surface;
+    -fx-padding: 1em 1.5em;
+    -fx-background-radius: 1.5em;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.mood-chip-selected {
+    -fx-background-color: -primary-container;
+    -fx-text-fill: -on-primary-container;
+    -fx-border-color: -primary;
+    -fx-border-width: 2;
+}
+
+.floating-action-button {
+    -fx-background-color: -primary;
+    -fx-text-fill: -on-primary;
+    -fx-background-radius: 50;
+    -fx-min-width: 3.5em;
+    -fx-min-height: 3.5em;
+    -fx-font-size: 24px;
+    -fx-cursor: hand;
+}
+
+.floating-action-button:hover {
+    -fx-background-color: -primary-dim;
+}
+
+.progress-bar {
+    -fx-control-inner-background: -surface-container;
+    -fx-accent: -primary;
+}
+
+.table-view {
+    -fx-background-color: -surface-container-lowest;
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+}
+
+.table-view .column-header {
+    -fx-background-color: -surface-container;
+    -fx-text-fill: -on-surface-variant;
+    -fx-font-weight: bold;
+    -fx-padding: 1em;
+}
+
+.table-view .table-row-cell {
+    -fx-padding: 0.75em;
+    -fx-background-color: -surface-container-lowest;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: -primary-container;
+}
+
+.pagination .pagination-control {
+    -fx-padding: 1em;
+}
+
+.pagination .page-navigation {
+    -fx-text-fill: -on-surface;
+}
+
+.text-fill-primary {
+    -fx-text-fill: -primary;
+}
+
+.text-fill-secondary {
+    -fx-text-fill: -on-surface-variant;
+}
+
+.background-light {
+    -fx-background-color: -surface-container-low;
+}
+
+.background-card {
+    -fx-background-color: -surface-container-lowest;
+}
+
+.dashboard-chart-card {
+    -fx-background-color: #f2f4f4;
+    -fx-padding: 2em;
+    -fx-background-radius: 1.5em;
+}
+
+.chart-toggle-button {
+    -fx-background-radius: 15;
+    -fx-font-size: 0.8em;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+}
+
+.chart-toggle-button:hover {
+    -fx-opacity: 0.9;
+}
+
+.chart-bar {
+    -fx-fill: #005faf;
+    -fx-cursor: hand;
+}
+
+.chart-bar:hover {
+    -fx-opacity: 1;
+    -fx-stroke: #005faf;
+    -fx-stroke-width: 1.5;
+}
+
+.chart-bar-active {
+    -fx-fill: #005faf;
+}
+

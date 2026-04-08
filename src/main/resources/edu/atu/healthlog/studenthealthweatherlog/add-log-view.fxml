@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Rectangle?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.atu.healthlog.studenthealthweatherlog.AddLogController" style="-fx-background-color: #f9f9f9; -fx-fit-to-width: true;" fitToWidth="true" hbarPolicy="NEVER">
+    <VBox spacing="30" style="-fx-padding: 40; -fx-background-color: #f9f9f9;">
+
+        <!-- Header -->
+        <VBox spacing="10">
+            <Label text="Add Today's Log" styleClass="headline-lg" style="-fx-text-fill: #1a1a1a; -fx-font-size: 3em; -fx-font-weight: bold;">
+                <font>
+                    <Font name="Manrope Bold" size="36" />
+                </font>
+            </Label>
+            <Label text="Take a moment to reflect on your physical and mental well-being." style="-fx-text-fill: #5a6061; -fx-font-size: 1.1em;" />
+        </VBox>
+
+        <!-- Main Content -->
+        <HBox spacing="30">
+
+            <!-- Left Column: Form Inputs -->
+            <VBox spacing="25" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+
+                <!-- How are you feeling? -->
+                <VBox spacing="20">
+                    <Label text="How are you feeling?" style="-fx-font-size: 1.5em; -fx-font-weight: bold;" />
+                    <HBox spacing="15">
+                        <Button fx:id="moodLowBtn" text="Low" contentDisplay="TOP" style="-fx-background-color: #f2f4f4; -fx-padding: 15; -fx-background-radius: 12; -fx-min-width: 80; -fx-cursor: hand;" onAction="#selectMood">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-frown" iconSize="30" iconColor="#5a6061" />
+                            </graphic>
+                        </Button>
+                        <Button fx:id="moodNeutralBtn" text="Neutral" contentDisplay="TOP" style="-fx-background-color: #f2f4f4; -fx-padding: 15; -fx-background-radius: 12; -fx-min-width: 80; -fx-cursor: hand;" onAction="#selectMood">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-meh" iconSize="30" iconColor="#5a6061" />
+                            </graphic>
+                        </Button>
+                        <Button fx:id="moodGoodBtn" text="Good" contentDisplay="TOP" style="-fx-background-color: #d4e3ff; -fx-padding: 15; -fx-background-radius: 12; -fx-min-width: 80; -fx-border-color: #005faf; -fx-border-width: 2; -fx-border-radius: 10; -fx-cursor: hand;" onAction="#selectMood">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-smile" iconSize="30" iconColor="#005faf" />
+                            </graphic>
+                        </Button>
+                        <Button fx:id="moodGreatBtn" text="Great" contentDisplay="TOP" style="-fx-background-color: #f2f4f4; -fx-padding: 15; -fx-background-radius: 12; -fx-min-width: 80; -fx-cursor: hand;" onAction="#selectMood">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-grin-stars" iconSize="30" iconColor="#5a6061" />
+                            </graphic>
+                        </Button>
+                        <Button fx:id="moodTiredBtn" text="Tired" contentDisplay="TOP" style="-fx-background-color: #f2f4f4; -fx-padding: 15; -fx-background-radius: 12; -fx-min-width: 80; -fx-cursor: hand;" onAction="#selectMood">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-tired" iconSize="30" iconColor="#5a6061" />
+                            </graphic>
+                        </Button>
+                    </HBox>
+                </VBox>
+
+                <!-- Sleep & Water Row -->
+                <HBox spacing="20">
+                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                        <Label text="Sleep Duration" style="-fx-font-weight: bold;" />
+                        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #e4e9ea; -fx-padding: 10; -fx-background-radius: 10;">
+                            <Spinner fx:id="sleepSpinner" min="0" max="24" initialValue="8" editable="true" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                            <Label text="Hours" style="-fx-text-fill: #70767a;" />
+                        </HBox>
+                    </VBox>
+                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                        <Label text="Water Intake" style="-fx-font-weight: bold;" />
+                        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #e4e9ea; -fx-padding: 10; -fx-background-radius: 10;">
+                            <Spinner fx:id="waterSpinner" min="0" max="5000" initialValue="2000" editable="true" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                            <Label text="ml" style="-fx-text-fill: #70767a;" />
+                        </HBox>
+                    </VBox>
+                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                        <Label text="Exercise Duration" style="-fx-font-weight: bold;" />
+                        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #e4e9ea; -fx-padding: 10; -fx-background-radius: 10;">
+                            <Spinner fx:id="durationSpinner" min="0" max="240" initialValue="30" editable="true" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+                            <Label text="mins" style="-fx-text-fill: #70767a;" />
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Daily Exercise -->
+                <VBox spacing="10">
+                    <Label text="Daily Exercise" style="-fx-font-weight: bold;" />
+                    <ComboBox fx:id="activityComboBox" promptText="Select Activity Type" style="-fx-background-color: #e4e9ea; -fx-padding: 10; -fx-background-radius: 10; -fx-min-width: 100%;" />
+                </VBox>
+
+                <!-- Save Button -->
+                <Button fx:id="saveBtn" text="Save Daily Entry" styleClass="button-primary" style="-fx-background-color: #005faf; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 1.2em; -fx-padding: 15 40; -fx-background-radius: 30; -fx-cursor: hand; -fx-min-width: 100%;" onAction="#saveLogEntry">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-save" iconSize="20" iconColor="white" />
+                    </graphic>
+                </Button>
+
+            </VBox>
+
+            <!-- Right Column: Tips & Insights -->
+            <VBox spacing="25" prefWidth="320">
+
+                <!-- Hydration Tip -->
+                <VBox spacing="15" style="-fx-background-color: #1a1a1a; -fx-padding: 25; -fx-background-radius: 20;">
+                    <Label text="Hydration Tip" style="-fx-text-fill: white; -fx-font-size: 1.4em; -fx-font-weight: bold;" />
+                    <Label text="Drinking water before meals can improve digestion and focus by 15%." wrapText="true" style="-fx-text-fill: rgba(255,255,255,0.8); -fx-font-size: 1em; -fx-line-spacing: 5;" />
+                    <ImageView fx:id="hydrationImage" fitHeight="150" fitWidth="270" preserveRatio="true" />
+                </VBox>
+
+                <!-- Weekly Streak -->
+                <VBox spacing="15" style="-fx-background-color: #f2f4f4; -fx-padding: 25; -fx-background-radius: 20;">
+                    <Label text="Weekly Streak" style="-fx-font-size: 1.2em; -fx-font-weight: bold;" />
+                    <HBox spacing="8" alignment="BOTTOM_CENTER" prefHeight="120">
+                        <VBox alignment="BOTTOM_CENTER" spacing="5" HBox.hgrow="ALWAYS">
+                            <Rectangle width="35" height="100" fill="#d4e3ff" arcWidth="8" arcHeight="8" />
+                            <Label text="Mon" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" spacing="5" HBox.hgrow="ALWAYS">
+                            <Rectangle width="35" height="75" fill="#d4e3ff" arcWidth="8" arcHeight="8" />
+                            <Label text="Tue" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" spacing="5" HBox.hgrow="ALWAYS">
+                            <Rectangle width="35" height="50" fill="#005faf" arcWidth="8" arcHeight="8" />
+                            <Label text="Wed" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #005faf;" />
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" spacing="5" HBox.hgrow="ALWAYS">
+                            <Rectangle width="35" height="25" fill="#e4e9ea" arcWidth="8" arcHeight="8" />
+                            <Label text="Thu" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" spacing="5" HBox.hgrow="ALWAYS">
+                            <Rectangle width="35" height="15" fill="#e4e9ea" arcWidth="8" arcHeight="8" />
+                            <Label text="Fri" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
+                        </VBox>
+                    </HBox>
+                    <Label text="Log 4 more days to hit your goal!" style="-fx-text-fill: #5a6061; -fx-alignment: center; -fx-min-width: 100%;" />
+                </VBox>
+
+                <!-- Motivational Quote -->
+                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 20; -fx-border-color: #005faf; -fx-border-width: 0 0 0 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+                    <FontIcon iconLiteral="fas-quote-left" iconSize="20" iconColor="#005faf" />
+                    <Label text="&quot;The greatest wealth is health.&quot;" wrapText="true" style="-fx-text-fill: #005faf; -fx-font-style: italic; -fx-font-size: 1.1em;" />
+                    <Label text="— Virgil" style="-fx-text-fill: #70767a; -fx-font-size: 0.9em;" />
+                </VBox>
+
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+</ScrollPane>
+

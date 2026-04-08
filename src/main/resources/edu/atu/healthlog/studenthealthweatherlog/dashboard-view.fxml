@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.atu.healthlog.studenthealthweatherlog.DashboardController" style="-fx-background-color: #f9f9f9; -fx-fit-to-width: true;" fitToWidth="true" hbarPolicy="NEVER">
+    <VBox spacing="30" style="-fx-padding: 40; -fx-background-color: #f9f9f9;">
+
+        <!-- Hero Welcome Section -->
+        <VBox spacing="10">
+            <!-- Custom label with bold part using TextFlow or just two labels in HBox -->
+            <HBox spacing="5" alignment="CENTER_LEFT">
+                <Label text="Good morning, " style="-fx-font-size: 3.5em; -fx-font-weight: 200; -fx-text-fill: #1a1a1a;" />
+                <Label fx:id="userNameLabel" text="Illona" style="-fx-font-size: 3.5em; -fx-font-weight: 800; -fx-text-fill: #005faf;" />
+            </HBox>
+            <Label text="Your sanctuary is ready. You've maintained your hydration streak for 5 days." style="-fx-text-fill: #5a6061; -fx-font-size: 1.2em;" />
+        </VBox>
+
+        <!-- Bento Grid Layout -->
+        <HBox spacing="25">
+
+            <!-- Left Column: Metrics Grid -->
+            <VBox spacing="20" HBox.hgrow="ALWAYS">
+                <HBox spacing="20">
+                    <!-- Today's Mood Card -->
+                    <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 2em; -fx-background-radius: 1.5em; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                        <HBox alignment="TOP_LEFT">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="TODAY'S MOOD" style="-fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-font-weight: bold; -fx-letter-spacing: 1;" />
+                                <Label fx:id="moodLabel" text="Calm" style="-fx-font-size: 2em; -fx-font-weight: bold;" />
+                                <Label fx:id="moodStatusLabel" text="↗ Steady since 8 AM" style="-fx-text-fill: #22648e; -fx-font-size: 0.9em;" />
+                            </VBox>
+                            <StackPane style="-fx-background-color: #cbe6ff; -fx-background-radius: 30; -fx-min-width: 60; -fx-min-height: 60;">
+                                <FontIcon iconLiteral="fas-smile" iconSize="30" iconColor="#005faf" />
+                            </StackPane>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Sleep Card -->
+                    <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 2em; -fx-background-radius: 1.5em; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                        <HBox alignment="TOP_LEFT">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="SLEEP" style="-fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-font-weight: bold;" />
+                                <HBox alignment="BASELINE_LEFT" spacing="5">
+                                    <Label fx:id="sleepLabel" text="7.5" style="-fx-font-size: 2em; -fx-font-weight: bold;" />
+                                    <Label text="Hours" style="-fx-text-fill: #70767a; -fx-font-size: 1.1em;" />
+                                </HBox>
+                                <ProgressBar fx:id="sleepProgressBar" progress="0.85" prefHeight="6" style="-fx-accent: #005faf; -fx-background-radius: 3; -fx-control-inner-background: #d4e3ff;" />
+                            </VBox>
+                            <StackPane style="-fx-background-color: #d4e3ff; -fx-background-radius: 30; -fx-min-width: 60; -fx-min-height: 60;">
+                                <FontIcon iconLiteral="fas-moon" iconSize="30" iconColor="#005faf" />
+                            </StackPane>
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="20">
+                    <!-- Water Intake Card -->
+                    <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 2em; -fx-background-radius: 1.5em; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                        <HBox alignment="TOP_LEFT">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="WATER INTAKE" style="-fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-font-weight: bold;" />
+                                <HBox alignment="BASELINE_LEFT" spacing="5">
+                                    <Label fx:id="waterLabel" text="1.8" style="-fx-font-size: 2em; -fx-font-weight: bold;" />
+                                    <Label text="L" style="-fx-text-fill: #70767a; -fx-font-size: 1.1em;" />
+                                </HBox>
+                                <Label text="Target: 2.5L" style="-fx-text-fill: #70767a; -fx-font-size: 0.9em;" />
+                            </VBox>
+                            <StackPane style="-fx-background-color: #e1f0fb; -fx-background-radius: 30; -fx-min-width: 60; -fx-min-height: 60;">
+                                <FontIcon iconLiteral="fas-tint" iconSize="30" iconColor="#005faf" />
+                            </StackPane>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Exercise Card -->
+                    <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 2em; -fx-background-radius: 1.5em; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);" HBox.hgrow="ALWAYS">
+                        <HBox alignment="TOP_LEFT">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="EXERCISE" style="-fx-text-fill: #70767a; -fx-font-size: 0.8em; -fx-font-weight: bold;" />
+                                <Label fx:id="exerciseLabel" text="Active" style="-fx-font-size: 2em; -fx-font-weight: bold;" />
+                                <Label text="30 mins" style="-fx-text-fill: #70767a; -fx-font-size: 0.9em;" />
+                            </VBox>
+                            <StackPane style="-fx-background-color: #cbe6ff; -fx-background-radius: 30; -fx-min-width: 60; -fx-min-height: 60;">
+                                <FontIcon iconLiteral="fas-running" iconSize="30" iconColor="#005faf" />
+                            </StackPane>
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Activity Trends -->
+                <VBox spacing="20" styleClass="card dashboard-chart-card">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Activity Trends" style="-fx-font-size: 1.5em; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox spacing="5" style="-fx-background-color: #ffffff; -fx-padding: 5; -fx-background-radius: 20;">
+                            <Button fx:id="weekBtn" text="Week" styleClass="chart-toggle-button" onAction="#showWeeklyTrends" />
+                            <Button fx:id="monthBtn" text="Month" styleClass="chart-toggle-button" onAction="#showMonthlyTrends" />
+                        </HBox>
+                    </HBox>
+                    <HBox alignment="BOTTOM_CENTER" spacing="25" prefHeight="150" style="-fx-padding: 0 20;">
+                        <VBox alignment="BOTTOM_CENTER" spacing="10">
+                            <Rectangle fx:id="day1Bar" width="40" height="60" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
+                            <Label fx:id="day1Label" text="MON" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" spacing="10">
+                            <Rectangle fx:id="day2Bar" width="40" height="100" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
+                            <Label fx:id="day2Label" text="TUE" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" spacing="10">
+                            <Rectangle fx:id="day3Bar" width="40" height="75" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
+                            <Label fx:id="day3Label" text="WED" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" spacing="10">
+                            <Rectangle fx:id="day4Bar" width="40" height="130" arcWidth="8" arcHeight="8" styleClass="chart-bar chart-bar-active" />
+                            <Label fx:id="day4Label" text="THU" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #005faf;" />
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" spacing="10">
+                            <Rectangle fx:id="day5Bar" width="40" height="65" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
+                            <Label fx:id="day5Label" text="FRI" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" spacing="10">
+                            <Rectangle fx:id="day6Bar" width="40" height="45" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
+                            <Label fx:id="day6Label" text="SAT" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" spacing="10">
+                            <Rectangle fx:id="day7Bar" width="40" height="30" opacity="0.2" arcWidth="8" arcHeight="8" styleClass="chart-bar" />
+                            <Label fx:id="day7Label" text="SUN" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #70767a;" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <!-- Right Column: Weather & Tips -->
+            <VBox spacing="25" prefWidth="350">
+                <!-- Weather Widget -->
+                <VBox spacing="20" style="-fx-background-color: #005faf; -fx-padding: 2.5em; -fx-background-radius: 2em; -fx-effect: dropshadow(three-pass-box, rgba(0,95,175,0.3), 20, 0, 0, 10);">
+                    <VBox spacing="5">
+                        <Label text="SAN FRANCISCO" style="-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 0.85em; -fx-font-weight: bold; -fx-letter-spacing: 2;" />
+                        <HBox alignment="CENTER_LEFT">
+                            <Label fx:id="weatherConditionLabel" text="Partly Cloudy" style="-fx-text-fill: white; -fx-font-size: 2.2em; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <FontIcon iconLiteral="fas-cloud-sun" iconSize="50" iconColor="white" />
+                        </HBox>
+                    </VBox>
+                    
+                    <HBox alignment="BASELINE_LEFT" spacing="5">
+                        <Label fx:id="weatherTempLabel" text="68" style="-fx-text-fill: white; -fx-font-size: 5em; -fx-font-weight: 200;" />
+                        <Label text="° F" style="-fx-text-fill: white; -fx-font-size: 2em; -fx-font-weight: bold;" />
+                    </HBox>
+                    
+                    <HBox spacing="20">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <FontIcon iconLiteral="fas-tint" iconSize="14" iconColor="white" opacity="0.8" />
+                            <Label text="42%" style="-fx-text-fill: white; -fx-font-size: 1em;" />
+                        </HBox>
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <FontIcon iconLiteral="fas-wind" iconSize="14" iconColor="white" opacity="0.8" />
+                            <Label text="12mph" style="-fx-text-fill: white; -fx-font-size: 1em;" />
+                        </HBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Wellness Tip -->
+                <VBox spacing="15" style="-fx-background-color: #f0f4f8; -fx-padding: 2em; -fx-background-radius: 1.5em; -fx-border-color: #d4e3ff; -fx-border-width: 1;">
+                    <Label text="Wellness Tip" style="-fx-text-fill: #005faf; -fx-font-size: 1.4em; -fx-font-weight: bold;" />
+                    <Label fx:id="wellnessTipLabel" text="&quot;Your screen time is up by 15% today. Try a 5-minute deep breathing exercise to reset your focus before your next session.&quot;" wrapText="true" style="-fx-text-fill: #47555e; -fx-font-size: 1.1em; -fx-line-spacing: 5;" />
+                    <Button text="Start Reset →" style="-fx-background-color: #005faf; -fx-text-fill: white; -fx-background-radius: 12; -fx-padding: 10 25; -fx-font-weight: bold; -fx-cursor: hand;" onAction="#startWellnessReset" />
+                </VBox>
+                
+                <StackPane alignment="BOTTOM_RIGHT">
+                     <Button style="-fx-background-color: #005faf; -fx-background-radius: 30; -fx-min-width: 60; -fx-min-height: 60; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);" onAction="#addNewLog">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-plus" iconSize="24" iconColor="white" />
+                        </graphic>
+                     </Button>
+                </StackPane>
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>
+
