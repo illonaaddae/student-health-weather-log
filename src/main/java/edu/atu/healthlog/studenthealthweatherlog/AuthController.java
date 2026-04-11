@@ -24,6 +24,7 @@ public class AuthController {
     @FXML private Button signInBtn;
     @FXML private Button signUpBtn;
     @FXML private Label statusLabel;
+    @FXML private Label subtitleLabel;
     @FXML private Label nameHelpLabel;
     @FXML private TabPane authTabPane;
 
@@ -70,6 +71,9 @@ public class AuthController {
             signUpBtn.setDisable(isSignIn);
             signUpBtn.setVisible(!isSignIn);
             signUpBtn.setManaged(!isSignIn);
+        }
+        if (subtitleLabel != null) {
+            subtitleLabel.setText(isSignIn ? "Sign in to continue." : "Create a new account to get started.");
         }
         setStatus(isSignIn ? "Please sign in to continue." : "Create your account to get started.", false);
     }
