@@ -1,8 +1,8 @@
 package edu.atu.healthlog.studenthealthweatherlog;
 
 import edu.atu.healthlog.studenthealthweatherlog.database.DatabaseConnection;
-import edu.atu.healthlog.studenthealthweatherlog.database.HealthLogRepository;
 import edu.atu.healthlog.studenthealthweatherlog.models.HealthEntry;
+import edu.atu.healthlog.studenthealthweatherlog.repositories.HealthEntryRepository;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -93,7 +93,7 @@ public class HistoryController {
     @FXML
     private ComboBox<Integer> pageSizeComboBox;
 
-    private final HealthLogRepository repository = new HealthLogRepository();
+    private HealthEntryRepository repository;
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy");
     private static final DateTimeFormatter EXPORT_TS_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
 
@@ -105,6 +105,11 @@ public class HistoryController {
 
     @FXML
     public void initialize() {
+        try {
+            repository = new HealthEntryRepository(DatabaseConnection.getConnection());
+        } catch (java.sql.SQLException e) {
+            System.err.println("History: could not connect to database: " + e.getMessage());
+        }
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         moodColumn.setCellValueFactory(new PropertyValueFactory<>("mood"));
         sleepColumn.setCellValueFactory(new PropertyValueFactory<>("sleep"));
@@ -194,11 +199,12 @@ public class HistoryController {
 
         new Thread(() -> {
             try {
-                List<HealthEntry> entries = repository.getAllByUserId(1);
+                if (repository == null) return;
+                List<HealthEntry> entries = repository.findByUserId(UserSession.getCurrentUserId());
                 List<HistoryEntry> historyEntries = entries.stream()
                         .map(e -> new HistoryEntry(
                                 e.getEntryDate().format(DATE_FORMATTER),
-                                e.getMood(),
+                                e.getMoodScore(),
                                 String.format("%.1f hrs", e.getSleepHours()),
                                 String.format("%.1f L", e.getWaterIntake()),
                                 e.getExercise(),
@@ -528,7 +534,17 @@ public class HistoryController {
 
     private void revealInFinder(File file) {
         try {
-            new ProcessBuilder("open", "-R", file.getAbsolutePath()).start();
+            String os = System.getProperty("os.name").toLowerCase();
+            ProcessBuilder pb;
+            if (os.contains("win")) {
+                pb = new ProcessBuilder("explorer", "/select," + file.getAbsolutePath());
+            } else if (os.contains("mac")) {
+                pb = new ProcessBuilder("open", "-R", file.getAbsolutePath());
+            } else {
+                // Linux and other Unix-like systems
+                pb = new ProcessBuilder("xdg-open", file.getParentFile().getAbsolutePath());
+            }
+            pb.start();
         } catch (IOException e) {
             Toast.show(historyTable, "Could not open folder", true);
         }
@@ -651,10 +667,12 @@ public class HistoryController {
 
         historyTable.setItems(pageSlice);
 
-        if (total == 0) {
-            paginationLabel.setText("Showing 0 to 0 of 0 entries");
-        } else {
-            paginationLabel.setText("Showing " + (fromIndex + 1) + " to " + toIndex + " of " + total + " entries");
+        if (paginationLabel != null) {
+            if (total == 0) {
+                paginationLabel.setText("Showing 0 to 0 of 0 entries");
+            } else {
+                paginationLabel.setText("Showing " + (fromIndex + 1) + " to " + toIndex + " of " + total + " entries");
+            }
         }
 
         if (prevPageBtn != null) {

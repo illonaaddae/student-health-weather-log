@@ -1,4 +1,4 @@
-package com.kingsley.models;
+package edu.atu.healthlog.studenthealthweatherlog.models;
 
 import java.time.LocalDate;
 import java.util.Objects;

@@ -1,14 +1,20 @@
 package edu.atu.healthlog.studenthealthweatherlog;
 
+import edu.atu.healthlog.studenthealthweatherlog.database.DatabaseConnection;
+import edu.atu.healthlog.studenthealthweatherlog.models.User;
+import edu.atu.healthlog.studenthealthweatherlog.repositories.UserRepository;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+
 import java.io.File;
-import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
-import javafx.scene.paint.ImagePattern;
+import java.sql.SQLException;
 
 /**
  * SettingsController - Manages the settings and preferences view.
@@ -62,9 +68,15 @@ public class SettingsController {
     private RadioButton systemModeRadio;
 
     private boolean isEditingProfile = false;
+    private UserRepository userRepository;
 
     @FXML
     public void initialize() {
+        try {
+            userRepository = new UserRepository(DatabaseConnection.getConnection());
+        } catch (SQLException e) {
+            System.err.println("Settings: could not connect to database: " + e.getMessage());
+        }
         setupSpinners();
         loadSettings();
         applySavedThemeSelection();
@@ -106,6 +118,24 @@ public class SettingsController {
         }
         if (userEmailField != null) {
             userEmailField.setText(UserPreferences.getUserEmail());
+        }
+        restoreProfilePicture();
+    }
+
+    private void restoreProfilePicture() {
+        String path = UserPreferences.getProfilePicturePath();
+        if (path == null || profileCircle == null) return;
+        java.io.File file = new java.io.File(path);
+        if (!file.exists()) {
+            UserPreferences.setProfilePicturePath(null);
+            return;
+        }
+        try {
+            javafx.scene.image.Image image = new javafx.scene.image.Image(file.toURI().toString());
+            profileCircle.setFill(new javafx.scene.paint.ImagePattern(image));
+            if (profileInitials != null) profileInitials.setVisible(false);
+        } catch (Exception e) {
+            System.err.println("Could not restore profile picture: " + e.getMessage());
         }
     }
 
@@ -174,6 +204,8 @@ public class SettingsController {
                 profileCircle.setFill(new ImagePattern(image));
                 profileInitials.setVisible(false);
 
+                UserPreferences.setProfilePicturePath(selectedFile.getAbsolutePath());
+
                 // Update sidebar profile globally via MainController instance
                 if (MainController.getInstance() != null) {
                     MainController.getInstance().updateProfilePicture(image);
@@ -195,12 +227,33 @@ public class SettingsController {
     }
 
     private void saveProfile() {
-        String name = userNameField.getText();
-        String email = userEmailField.getText();
-        // Persist in preferences for the current session
-        UserPreferences.setUserName(name);
-        UserPreferences.setUserEmail(email);
-        System.out.println("Saving profile: " + name + " (" + email + ")");
+        String name = userNameField.getText().trim();
+        String email = userEmailField.getText().trim();
+
+        if (name.isBlank() || email.isBlank()) {
+            Toast.show(editProfileBtn, "Name and email cannot be empty", true);
+            return;
+        }
+
+        User current = UserSession.getCurrentUser();
+        if (current == null || userRepository == null) {
+            Toast.show(editProfileBtn, "Not logged in", true);
+            return;
+        }
+
+        try {
+            current.setUserName(name);
+            current.setEmail(email);
+            userRepository.update(current);
+            UserPreferences.setUserName(name);
+            UserPreferences.setUserEmail(email);
+            System.out.println("Profile saved to DB: " + name + " (" + email + ")");
+        } catch (IllegalArgumentException e) {
+            Toast.show(editProfileBtn, e.getMessage(), true);
+        } catch (SQLException e) {
+            System.err.println("Failed to save profile: " + e.getMessage());
+            Toast.show(editProfileBtn, "Failed to save profile", true);
+        }
     }
 
     private void refreshMainProfile() {
@@ -266,8 +319,64 @@ public class SettingsController {
      */
     @FXML
     public void changePassword() {
-        System.out.println("Opening password change dialog...");
-        Toast.show(saveBtn, "Password change is not yet implemented", true);
+        if (userRepository == null || UserSession.getCurrentUser() == null) {
+            Toast.show(saveBtn, "Not logged in", true);
+            return;
+        }
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Change Password");
+        dialog.setHeaderText("Enter your current and new password");
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        PasswordField currentPwField = new PasswordField();
+        PasswordField newPwField = new PasswordField();
+        PasswordField confirmPwField = new PasswordField();
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20));
+        grid.add(new Label("Current password:"), 0, 0);
+        grid.add(currentPwField, 1, 0);
+        grid.add(new Label("New password:"), 0, 1);
+        grid.add(newPwField, 1, 1);
+        grid.add(new Label("Confirm new password:"), 0, 2);
+        grid.add(confirmPwField, 1, 2);
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response != ButtonType.OK) return;
+
+            String current = currentPwField.getText();
+            String newPw = newPwField.getText();
+            String confirm = confirmPwField.getText();
+
+            User user = UserSession.getCurrentUser();
+
+            if (!PasswordUtils.verify(current, user.getPassword())) {
+                Toast.show(saveBtn, "Current password is incorrect", true);
+                return;
+            }
+            if (newPw.length() < 8) {
+                Toast.show(saveBtn, "New password must be at least 8 characters", true);
+                return;
+            }
+            if (!newPw.equals(confirm)) {
+                Toast.show(saveBtn, "New passwords do not match", true);
+                return;
+            }
+
+            try {
+                user.setPassword(PasswordUtils.hash(newPw));
+                userRepository.update(user);
+                System.out.println("Password changed successfully for user: " + user.getUsername());
+                Toast.show(saveBtn, "Password changed successfully", false);
+            } catch (SQLException e) {
+                System.err.println("Failed to change password: " + e.getMessage());
+                Toast.show(saveBtn, "Failed to change password", true);
+            }
+        });
     }
 
     /**
@@ -285,9 +394,32 @@ public class SettingsController {
      */
     @FXML
     public void deleteAccount() {
-        System.out.println("Deleting account...");
-        Toast.show(saveBtn, "Delete requested (mock)", true);
-        // TODO: Show confirmation dialog and implement account deletion
+        if (userRepository == null || UserSession.getCurrentUser() == null) {
+            Toast.show(saveBtn, "Not logged in", true);
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Account");
+        confirm.setHeaderText("This will permanently delete your account and all data.");
+        confirm.setContentText("Are you sure you want to continue?");
+        Toast.styleAlert(confirm, saveBtn, true);
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response != ButtonType.OK) return;
+            try {
+                int userId = UserSession.getCurrentUserId();
+                userRepository.delete(userId);
+                UserSession.logout();
+                System.out.println("Account deleted for user id: " + userId);
+                AppRouter.showAuth();
+            } catch (SQLException e) {
+                System.err.println("Failed to delete account: " + e.getMessage());
+                Toast.show(saveBtn, "Failed to delete account", true);
+            } catch (java.io.IOException e) {
+                System.err.println("Failed to navigate to auth: " + e.getMessage());
+            }
+        });
     }
 
     /**
@@ -308,7 +440,17 @@ public class SettingsController {
             boolean dataSharingEnabled = dataSharing.isSelected();
 
             if (cityField != null && !cityField.getText().isBlank()) {
-                UserPreferences.setCity(cityField.getText());
+                String city = cityField.getText().trim();
+                UserPreferences.setCity(city);
+                User current = UserSession.getCurrentUser();
+                if (current != null && userRepository != null) {
+                    try {
+                        current.setCity(city);
+                        userRepository.update(current);
+                    } catch (SQLException e) {
+                        System.err.println("Failed to update city in DB: " + e.getMessage());
+                    }
+                }
             }
 
             // TODO: Persist settings to database/preferences

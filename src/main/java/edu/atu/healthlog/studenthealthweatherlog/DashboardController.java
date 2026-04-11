@@ -1,7 +1,8 @@
 package edu.atu.healthlog.studenthealthweatherlog;
 
-import edu.atu.healthlog.studenthealthweatherlog.database.HealthLogRepository;
+import edu.atu.healthlog.studenthealthweatherlog.database.DatabaseConnection;
 import edu.atu.healthlog.studenthealthweatherlog.models.HealthEntry;
+import edu.atu.healthlog.studenthealthweatherlog.repositories.HealthEntryRepository;
 import edu.atu.healthlog.studenthealthweatherlog.services.WeatherService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -51,15 +52,19 @@ public class DashboardController {
     @FXML private Label day1Label, day2Label, day3Label, day4Label, day5Label, day6Label, day7Label;
     @FXML private Rectangle day1Bar, day2Bar, day3Bar, day4Bar, day5Bar, day6Bar, day7Bar;
 
-    private final HealthLogRepository repository = new HealthLogRepository();
+    private HealthEntryRepository repository;
     private final WeatherService weatherService = new WeatherService();
     private boolean monthlyTrendMode = false;
 
     @FXML
     public void initialize() {
+        try {
+            repository = new HealthEntryRepository(DatabaseConnection.getConnection());
+        } catch (SQLException e) {
+            System.err.println("Dashboard: could not connect to database: " + e.getMessage());
+        }
         refreshGreeting();
         refreshThemeStyles();
-        // Load real data in a background thread to keep UI responsive
         new Thread(this::loadDashboardData).start();
     }
 
@@ -84,11 +89,11 @@ public class DashboardController {
         // Fetch weather data
         WeatherService.WeatherData weather = weatherService.getCurrentWeather();
 
-        // Fetch user data from DB (mocking user ID 1 for now)
-        int currentUserId = 1; 
         List<HealthEntry> recentEntries;
         try {
-            recentEntries = repository.getAllByUserId(currentUserId);
+            recentEntries = repository != null
+                    ? repository.findByUserId(UserSession.getCurrentUserId())
+                    : List.of();
         } catch (SQLException e) {
             System.err.println("Failed to load entries: " + e.getMessage());
             recentEntries = List.of();
@@ -106,7 +111,7 @@ public class DashboardController {
 
             if (!entries.isEmpty()) {
                 HealthEntry latest = entries.get(0);
-                moodLabel.setText(latest.getMood());
+                moodLabel.setText(latest.getMoodScore());
                 sleepLabel.setText(String.format("%.1f", latest.getSleepHours()));
                 sleepProgressBar.setProgress(Math.min(latest.getSleepHours() / 10.0, 1.0));
                 waterLabel.setText(String.format("%.1f", latest.getWaterIntake()));
@@ -136,7 +141,7 @@ public class DashboardController {
             tip = "You slept less than 6 hours. Try to avoid caffeine this afternoon and aim for an earlier bedtime tonight.";
         } else if (latest.getWaterIntake() < 2.0) {
             tip = "Staying hydrated is key to focus! You've logged " + latest.getWaterIntake() + "L. Try to reach 2.5L today.";
-        } else if ("Stressed".equalsIgnoreCase(latest.getMood())) {
+        } else if ("Stressed".equalsIgnoreCase(latest.getMoodScore())) {
             tip = "Feeling stressed? A 5-minute deep breathing exercise can help reset your focus.";
         } else {
             tip = "Great job maintaining your wellness! Consistency is the secret to long-term health.";
@@ -145,17 +150,22 @@ public class DashboardController {
     }
 
     private void updateWeeklyChart(List<HealthEntry> entries) {
-        // Simplified: set bar heights based on sleep hours of last 7 entries
+        Label[] labels = {day1Label, day2Label, day3Label, day4Label, day5Label, day6Label, day7Label};
         Rectangle[] bars = {day1Bar, day2Bar, day3Bar, day4Bar, day5Bar, day6Bar, day7Bar};
-        // Reset bars first
-        for (Rectangle bar : bars) bar.setHeight(10);
 
-        for (int i = 0; i < Math.min(entries.size(), 7); i++) {
-            HealthEntry entry = entries.get(entries.size() - 1 - i); // Oldest to newest
-            int barIndex = 6 - i; // Fill from right
-            if (barIndex >= 0) {
-                bars[barIndex].setHeight(entry.getSleepHours() * 15); // Scale 1h = 15px
-            }
+        for (Rectangle bar : bars) bar.setHeight(10);
+        for (Label label : labels) label.setText("-");
+
+        // entries are DESC (index 0 = today). Fill bars right-to-left so newest is on the right.
+        int count = Math.min(entries.size(), 7);
+        for (int i = 0; i < count; i++) {
+            HealthEntry entry = entries.get(i);
+            int barIndex = 6 - i; // i=0 (today) → bar 6 (rightmost)
+            bars[barIndex].setHeight(entry.getSleepHours() * 15);
+            labels[barIndex].setText(entry.getEntryDate()
+                    .getDayOfWeek()
+                    .getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.ENGLISH)
+                    .toUpperCase());
         }
     }
 

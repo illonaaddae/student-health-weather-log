@@ -1,4 +1,4 @@
-package com.kingsley.models;
+package edu.atu.healthlog.studenthealthweatherlog.models;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

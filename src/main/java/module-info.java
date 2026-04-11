@@ -13,8 +13,4 @@ module edu.atu.healthlog.studenthealthweatherlog {
     opens edu.atu.healthlog.studenthealthweatherlog.models to javafx.base, com.google.gson;
     exports edu.atu.healthlog.studenthealthweatherlog;
     exports edu.atu.healthlog.studenthealthweatherlog.models;
-    requires java.sql;
-    opens com.kingsley to javafx.fxml;
-    exports com.kingsley;
-    exports com.kingsley.controllers;
 }

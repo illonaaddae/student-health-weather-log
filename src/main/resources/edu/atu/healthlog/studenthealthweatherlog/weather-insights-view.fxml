@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
@@ -169,6 +170,58 @@
                 </VBox>
             </VBox>
         </HBox>
+        <!-- Trend Analysis Section -->
+        <Label text="Trend Analysis" style="-fx-text-fill: #005faf; -fx-font-size: 1.6em; -fx-font-weight: bold; -fx-padding: 10 0 0 0;" />
+
+        <HBox spacing="20">
+
+            <!-- Mood Trend Chart -->
+            <VBox spacing="10" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;" HBox.hgrow="ALWAYS">
+                <Label text="Mood Over Time" style="-fx-font-size: 1.1em; -fx-font-weight: bold;" />
+                <Label text="Numeric mood (1=Low → 5=Great) for recent entries" style="-fx-text-fill: #70767a; -fx-font-size: 0.85em;" />
+                <AreaChart fx:id="moodTrendChart" prefHeight="220" animated="false"
+                           style="-fx-padding: 0; -fx-background-color: transparent;">
+                    <xAxis>
+                        <CategoryAxis label="" tickLabelRotation="45" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="" lowerBound="0" upperBound="5" tickUnit="1" autoRanging="false" />
+                    </yAxis>
+                </AreaChart>
+            </VBox>
+
+            <!-- Sleep Trend Chart -->
+            <VBox spacing="10" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;" HBox.hgrow="ALWAYS">
+                <Label text="Sleep Hours Over Time" style="-fx-font-size: 1.1em; -fx-font-weight: bold;" />
+                <Label text="Hours of sleep logged per entry" style="-fx-text-fill: #70767a; -fx-font-size: 0.85em;" />
+                <AreaChart fx:id="sleepTrendChart" prefHeight="220" animated="false"
+                           style="-fx-padding: 0; -fx-background-color: transparent;">
+                    <xAxis>
+                        <CategoryAxis label="" tickLabelRotation="45" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="" lowerBound="0" upperBound="12" tickUnit="2" autoRanging="false" />
+                    </yAxis>
+                </AreaChart>
+            </VBox>
+
+        </HBox>
+
+        <!-- Water Intake Trend -->
+        <VBox spacing="10" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
+            <Label text="Water Intake vs. Mood" style="-fx-font-size: 1.1em; -fx-font-weight: bold;" />
+            <Label text="Daily water intake (L) alongside mood score — recent entries" style="-fx-text-fill: #70767a; -fx-font-size: 0.85em;" />
+            <BarChart fx:id="waterMoodChart" prefHeight="200" animated="false"
+                      style="-fx-background-color: transparent;">
+                <xAxis>
+                    <CategoryAxis label="" tickLabelRotation="45" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="" lowerBound="0" upperBound="5" tickUnit="1" autoRanging="false" />
+                </yAxis>
+            </BarChart>
+        </VBox>
+
     </VBox>
 </ScrollPane>
 

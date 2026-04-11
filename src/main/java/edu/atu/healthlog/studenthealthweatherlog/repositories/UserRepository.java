@@ -1,6 +1,8 @@
-package com.kingsley.repositories;
+package edu.atu.healthlog.studenthealthweatherlog.repositories;
 
-import com.kingsley.models.User;
+
+
+import edu.atu.healthlog.studenthealthweatherlog.models.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -63,6 +65,19 @@ public class UserRepository {
                 rs.getNString("password"),
                 rs.getNString("city")
         );
+    }
+
+    public Optional<User> findByEmail(String email) throws SQLException {
+        if (email == null || email.isBlank()) throw new IllegalArgumentException("Email cannot be blank");
+
+        String sql = "SELECT * FROM users WHERE email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) return Optional.of(mapRow(rs));
+            }
+        }
+        return Optional.empty();
     }
 
     public Optional<User> findByUsername(String username) throws SQLException {

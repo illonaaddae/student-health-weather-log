@@ -1,7 +1,7 @@
-package com.kingsley.repositories;
+package edu.atu.healthlog.studenthealthweatherlog.repositories;
 
-
-import com.kingsley.models.User;
+import edu.atu.healthlog.studenthealthweatherlog.models.User;
+import edu.atu.healthlog.studenthealthweatherlog.repositories.UserRepository;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;

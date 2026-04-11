@@ -13,6 +13,7 @@
                     <Font name="Manrope" size="26" />
                 </font>
             </Label>
+            <!-- TODO 1: Make this Label dynamic when either signin or signup button is clicked -->
             <Label text="Sign in to continue or create a new account." styleClass="body-md" />
 
             <TabPane fx:id="authTabPane" tabClosingPolicy="UNAVAILABLE" prefWidth="360">

@@ -13,6 +13,7 @@ public final class UserPreferences {
     private static final String KEY_USER_NAME = "user.name";
     private static final String KEY_USER_EMAIL = "user.email";
     private static final String KEY_DARK_THEME = "ui.darkTheme";
+    private static final String KEY_PROFILE_PICTURE = "user.profilePicturePath";
 
     private UserPreferences() {
     }
@@ -67,6 +68,18 @@ public final class UserPreferences {
 
     public static void setDarkThemeEnabled(boolean enabled) {
         PREFS.putBoolean(KEY_DARK_THEME, enabled);
+    }
+
+    public static String getProfilePicturePath() {
+        return PREFS.get(KEY_PROFILE_PICTURE, null);
+    }
+
+    public static void setProfilePicturePath(String path) {
+        if (path == null || path.isBlank()) {
+            PREFS.remove(KEY_PROFILE_PICTURE);
+        } else {
+            PREFS.put(KEY_PROFILE_PICTURE, path.trim());
+        }
     }
 
 }

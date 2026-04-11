@@ -1,7 +1,11 @@
 package edu.atu.healthlog.studenthealthweatherlog;
 
-import edu.atu.healthlog.studenthealthweatherlog.database.HealthLogRepository;
+import edu.atu.healthlog.studenthealthweatherlog.database.DatabaseConnection;
+import edu.atu.healthlog.studenthealthweatherlog.models.Correlation;
 import edu.atu.healthlog.studenthealthweatherlog.models.HealthEntry;
+import edu.atu.healthlog.studenthealthweatherlog.repositories.CorrelationRepository;
+import edu.atu.healthlog.studenthealthweatherlog.repositories.HealthEntryRepository;
+import edu.atu.healthlog.studenthealthweatherlog.services.CorrelationService;
 import edu.atu.healthlog.studenthealthweatherlog.services.WeatherService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -42,12 +46,20 @@ public class AddLogController {
     @FXML
     private javafx.scene.image.ImageView hydrationImage;
 
-    private final HealthLogRepository repository = new HealthLogRepository();
+    private HealthEntryRepository repository;
+    private CorrelationRepository correlationRepository;
     private final WeatherService weatherService = new WeatherService();
+    private final CorrelationService correlationService = new CorrelationService();
     private String selectedMood = "Good"; // Default mood
 
     @FXML
     public void initialize() {
+        try {
+            repository = new HealthEntryRepository(DatabaseConnection.getConnection());
+            correlationRepository = new CorrelationRepository(DatabaseConnection.getConnection());
+        } catch (SQLException e) {
+            System.err.println("Could not connect to database: " + e.getMessage());
+        }
         setupSpinners();
         setupActivityComboBox();
         setMoodButtonDefault();
@@ -146,33 +158,45 @@ public class AddLogController {
      */
     @FXML
     public void saveLogEntry() {
+        if (repository == null) {
+            System.err.println("Cannot save: database is unavailable.");
+            return;
+        }
+
         Integer sleepHours = sleepSpinner.getValue();
         Integer waterMl = waterSpinner.getValue();
         String activity = activityComboBox.getValue();
         Integer duration = durationSpinner.getValue();
 
-        // Fetch current weather to associate with this log
         WeatherService.WeatherData weather = weatherService.getCurrentWeather();
 
-        // Create a real health entry object
         HealthEntry entry = new HealthEntry();
-        entry.setUserId(1); // Mock user ID
+        entry.setUserId(UserSession.getCurrentUserId());
         entry.setEntryDate(LocalDate.now());
-        entry.setMood(selectedMood);
+        entry.setMoodScore(selectedMood);
         entry.setSleepHours(sleepHours);
-        entry.setWaterIntake(waterMl / 1000.0); // Convert ml to liters
+        entry.setWaterIntake(waterMl / 1000.0);
         entry.setExercise(activity + " (" + duration + " min)");
         entry.setWeatherCondition(weather.condition);
         entry.setTemperature(weather.temp);
+        entry.setNotes("");
 
-        System.out.println("Saving log entry to database: " + entry);
-
-        // Save in background
         new Thread(() -> {
             try {
-                repository.save(entry);
-                System.out.println("Log entry saved successfully to DB!");
-                
+                int generatedId = repository.save(entry);
+                entry.setId(generatedId);
+                System.out.println("Log entry saved successfully (id=" + generatedId + ").");
+
+                if (correlationRepository != null) {
+                    try {
+                        Correlation correlation = correlationService.createCorrelation(entry);
+                        correlationRepository.save(correlation);
+                        System.out.println("Correlation record saved for entry id=" + generatedId);
+                    } catch (Exception e) {
+                        System.err.println("Could not save correlation (non-fatal): " + e.getMessage());
+                    }
+                }
+
                 Platform.runLater(() -> {
                     if (MainController.getInstance() != null) {
                         MainController.getInstance().switchToDashboard();

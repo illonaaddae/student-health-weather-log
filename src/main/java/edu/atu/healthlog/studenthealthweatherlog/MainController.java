@@ -92,8 +92,25 @@ public class MainController {
             userProfileInitials.setVisible(true);
         }
 
+        String picturePath = UserPreferences.getProfilePicturePath();
         if (userProfileCircle != null) {
-            userProfileCircle.setFill(javafx.scene.paint.Color.web("#d4e3ff"));
+            if (picturePath != null) {
+                java.io.File file = new java.io.File(picturePath);
+                if (file.exists()) {
+                    try {
+                        javafx.scene.image.Image img = new javafx.scene.image.Image(file.toURI().toString());
+                        userProfileCircle.setFill(new ImagePattern(img));
+                        if (userProfileInitials != null) userProfileInitials.setVisible(false);
+                    } catch (Exception e) {
+                        userProfileCircle.setFill(javafx.scene.paint.Color.web("#d4e3ff"));
+                    }
+                } else {
+                    UserPreferences.setProfilePicturePath(null);
+                    userProfileCircle.setFill(javafx.scene.paint.Color.web("#d4e3ff"));
+                }
+            } else {
+                userProfileCircle.setFill(javafx.scene.paint.Color.web("#d4e3ff"));
+            }
         }
 
         refreshDashboardGreeting();

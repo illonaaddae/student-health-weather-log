@@ -1,4 +1,4 @@
-package com.kingsley.models;
+package edu.atu.healthlog.studenthealthweatherlog.models;
 
 public class User {
     private int id;

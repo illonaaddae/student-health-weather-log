@@ -1,6 +1,6 @@
-package com.kingsley.repositories;
+package edu.atu.healthlog.studenthealthweatherlog.repositories;
 
-import com.kingsley.models.WeatherData;
+import edu.atu.healthlog.studenthealthweatherlog.models.WeatherData;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class WeatherDataRepository {
         if (weatherData == null) throw new IllegalArgumentException("WeatherData cannot be null");
 
         String sql = """
-            INSERT INTO weather_data (date, temperature, humidity, condition, uv_index, wind_speed, city)
+            INSERT INTO weather_data (date, temperature, humidity, `condition`, uv_index, wind_speed, city)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
 
@@ -90,7 +90,7 @@ public class WeatherDataRepository {
 
         String sql = """
             UPDATE weather_data
-            SET date = ?, temperature = ?, humidity = ?, condition = ?, uv_index = ?, wind_speed = ?, city = ?
+            SET date = ?, temperature = ?, humidity = ?, `condition` = ?, uv_index = ?, wind_speed = ?, city = ?
             WHERE weather_id = ?
         """;
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {

@@ -1,6 +1,7 @@
-package com.kingsley.repositories;
+package edu.atu.healthlog.studenthealthweatherlog.repositories;
 
-import com.kingsley.models.HealthEntry;
+import edu.atu.healthlog.studenthealthweatherlog.models.HealthEntry;
+import edu.atu.healthlog.studenthealthweatherlog.repositories.HealthEntryRepository;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
@@ -27,15 +28,16 @@ public class HealthEntryRepositoryTest {
     void setUp() throws SQLException {
         connection.createStatement().execute("""
             CREATE TABLE IF NOT EXISTS health_entries (
-                entry_id          INT AUTO_INCREMENT PRIMARY KEY,
+                id                INT AUTO_INCREMENT PRIMARY KEY,
                 user_id           INT          NOT NULL,
-                weather_id        INT          NOT NULL,
-                date              DATE         NOT NULL,
-                mood_score        INT          NOT NULL,
-                activity_type     VARCHAR(100) NOT NULL,
-                activity_duration DOUBLE       NOT NULL,
-                energy_level      INT          NOT NULL,
-                notes             VARCHAR(500) NOT NULL
+                entry_date        DATE         NOT NULL,
+                mood_score        VARCHAR(100) NOT NULL,
+                sleep_hours       DOUBLE       NOT NULL,
+                water_intake      DOUBLE       NOT NULL,
+                exercise          VARCHAR(100) NOT NULL,
+                notes             VARCHAR(500) NOT NULL,
+                weather_condition VARCHAR(100),
+                temperature       DOUBLE
             )
         """);
         healthEntryRepository = new HealthEntryRepository(connection);
@@ -65,9 +67,9 @@ public class HealthEntryRepositoryTest {
 
         assertTrue(result.isPresent());
         assertEquals(1, result.get().getUserId());
-        assertEquals(1, result.get().getWeatherId());
-        assertEquals(3, result.get().getMoodScore());
-        assertEquals("Running", result.get().getActivityType());
+        assertEquals("Good", result.get().getMoodScore());
+        assertEquals("Running", result.get().getExercise());
+        assertEquals(7.5, result.get().getSleepHours());
     }
 
     // ── findById ──────────────────────────────────────────────────────────────
@@ -80,7 +82,7 @@ public class HealthEntryRepositoryTest {
         Optional<HealthEntry> result = healthEntryRepository.findById(generatedId);
 
         assertTrue(result.isPresent());
-        assertEquals(generatedId, result.get().getEntryId());
+        assertEquals(generatedId, result.get().getId());
     }
 
     @Test
@@ -107,9 +109,9 @@ public class HealthEntryRepositoryTest {
     @Test
     @Order(8)
     void findByUserId_withExistingUserId_returnsMatchingEntries() throws SQLException {
-        healthEntryRepository.save(buildEntry(1, 1, LocalDate.now()));
-        healthEntryRepository.save(buildEntry(1, 2, LocalDate.now().minusDays(1)));
-        healthEntryRepository.save(buildEntry(2, 1, LocalDate.now()));
+        healthEntryRepository.save(buildEntry(1, LocalDate.now()));
+        healthEntryRepository.save(buildEntry(1, LocalDate.now().minusDays(1)));
+        healthEntryRepository.save(buildEntry(2, LocalDate.now()));
 
         List<HealthEntry> result = healthEntryRepository.findByUserId(1);
 
@@ -152,9 +154,9 @@ public class HealthEntryRepositoryTest {
     @Test
     @Order(13)
     void findAll_withMultipleEntries_returnsAllEntries() throws SQLException {
-        healthEntryRepository.save(buildEntry(1, 1, LocalDate.now()));
-        healthEntryRepository.save(buildEntry(2, 1, LocalDate.now().minusDays(1)));
-        healthEntryRepository.save(buildEntry(3, 2, LocalDate.now().minusDays(2)));
+        healthEntryRepository.save(buildEntry(1, LocalDate.now()));
+        healthEntryRepository.save(buildEntry(2, LocalDate.now().minusDays(1)));
+        healthEntryRepository.save(buildEntry(3, LocalDate.now().minusDays(2)));
 
         List<HealthEntry> result = healthEntryRepository.findAll();
 
@@ -172,8 +174,8 @@ public class HealthEntryRepositoryTest {
         assertTrue(saved.isPresent());
 
         HealthEntry toUpdate = saved.get();
-        toUpdate.setMoodScore(5);
-        toUpdate.setNotes("Felt great today");
+        toUpdate.setMoodScore("Tired");
+        toUpdate.setNotes("Felt exhausted today");
 
         boolean result = healthEntryRepository.update(toUpdate);
 
@@ -181,15 +183,18 @@ public class HealthEntryRepositoryTest {
 
         Optional<HealthEntry> updated = healthEntryRepository.findById(generatedId);
         assertTrue(updated.isPresent());
-        assertEquals(5, updated.get().getMoodScore());
-        assertEquals("Felt great today", updated.get().getNotes());
+        assertEquals("Tired", updated.get().getMoodScore());
+        assertEquals("Felt exhausted today", updated.get().getNotes());
     }
 
     @Test
     @Order(15)
     void update_withNonExistentEntry_returnsFalse() throws SQLException {
-        HealthEntry ghost = new HealthEntry(999, 1, 1, LocalDate.now(), 3, "Running", 1.0, 3, "");
+        HealthEntry ghost = new HealthEntry(999, LocalDate.now(), "Neutral", 6.0, 1.5, "Walking", "");
+        ghost.setId(999);
+
         boolean result = healthEntryRepository.update(ghost);
+
         assertFalse(result);
     }
 
@@ -248,10 +253,10 @@ public class HealthEntryRepositoryTest {
     // ── helpers ───────────────────────────────────────────────────────────────
 
     private HealthEntry buildValidEntry() {
-        return buildEntry(1, 1, LocalDate.now());
+        return buildEntry(1, LocalDate.now());
     }
 
-    private HealthEntry buildEntry(int userId, int weatherId, LocalDate date) {
-        return new HealthEntry(0, userId, weatherId, date, 3, "Running", 1.5, 3, "Feeling good");
+    private HealthEntry buildEntry(int userId, LocalDate date) {
+        return new HealthEntry(userId, date, "Good", 7.5, 2.0, "Running", "Feeling good");
     }
 }
