@@ -128,6 +128,10 @@ public class MainController {
     @FXML
     public void switchToDashboard() {
         loadScreen(DASHBOARD_VIEW);
+        Object controller = controllerCache.get(DASHBOARD_VIEW);
+        if (controller instanceof DashboardController dashboardController) {
+            dashboardController.refreshDashboardData();
+        }
         updateNavigation(dashboardBtn);
     }
 

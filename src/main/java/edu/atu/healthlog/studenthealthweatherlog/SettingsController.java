@@ -428,6 +428,9 @@ public class SettingsController {
     @FXML
     public void saveChanges() {
         System.out.println("Saving settings...");
+        if (saveBtn != null) {
+            saveBtn.setDisable(true);
+        }
         try {
             // Collect all settings
             boolean dailyRemindersEnabled = dailyReminders.isSelected();
@@ -483,6 +486,10 @@ public class SettingsController {
             alert.setContentText(e.getMessage());
             Toast.styleAlert(alert, saveBtn, true);
             alert.show();
+        } finally {
+            if (saveBtn != null) {
+                saveBtn.setDisable(false);
+            }
         }
     }
 

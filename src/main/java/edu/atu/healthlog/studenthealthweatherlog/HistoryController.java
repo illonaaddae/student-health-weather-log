@@ -328,6 +328,10 @@ public class HistoryController {
             return;
         }
 
+        if (exportCsvBtn != null) {
+            exportCsvBtn.setDisable(true);
+        }
+
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Export Wellness History");
         String timestamp = LocalDateTime.now().format(EXPORT_TS_FORMATTER);
@@ -337,6 +341,9 @@ public class HistoryController {
         File file = chooser.showSaveDialog(historyTable.getScene().getWindow());
         if (file == null) {
             Toast.show(historyTable, "Export cancelled", true);
+            if (exportCsvBtn != null) {
+                exportCsvBtn.setDisable(false);
+            }
             return;
         }
 
@@ -359,6 +366,10 @@ public class HistoryController {
             alert.setContentText(e.getMessage());
             Toast.styleAlert(alert, historyTable, true);
             alert.show();
+        } finally {
+            if (exportCsvBtn != null) {
+                exportCsvBtn.setDisable(false);
+            }
         }
     }
 
@@ -371,6 +382,10 @@ public class HistoryController {
             return;
         }
 
+        if (exportPdfBtn != null) {
+            exportPdfBtn.setDisable(true);
+        }
+
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Export Wellness History");
         String timestamp = LocalDateTime.now().format(EXPORT_TS_FORMATTER);
@@ -380,6 +395,9 @@ public class HistoryController {
         File file = chooser.showSaveDialog(historyTable.getScene().getWindow());
         if (file == null) {
             Toast.show(historyTable, "Export cancelled", true);
+            if (exportPdfBtn != null) {
+                exportPdfBtn.setDisable(false);
+            }
             return;
         }
 
@@ -395,6 +413,10 @@ public class HistoryController {
             alert.setContentText(e.getMessage());
             Toast.styleAlert(alert, historyTable, true);
             alert.show();
+        } finally {
+            if (exportPdfBtn != null) {
+                exportPdfBtn.setDisable(false);
+            }
         }
     }
 
@@ -569,6 +591,10 @@ public class HistoryController {
     public void syncCalendar() {
         System.out.println("Syncing with calendar. User experience notification starting...");
 
+        if (syncCalendarBtn != null) {
+            syncCalendarBtn.setDisable(true);
+        }
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Calendar Integration");
         alert.setHeaderText("Link to System Calendar?");
@@ -579,8 +605,13 @@ public class HistoryController {
             if (response == ButtonType.OK) {
                 System.out.println("User confirmed sync. Starting process...");
                 showSyncProgress();
+            } else if (syncCalendarBtn != null) {
+                syncCalendarBtn.setDisable(false);
             }
         });
+        if (!ButtonType.OK.equals(alert.getResult()) && syncCalendarBtn != null) {
+            syncCalendarBtn.setDisable(false);
+        }
     }
 
     private void showSyncProgress() {
@@ -599,9 +630,18 @@ public class HistoryController {
                     progressAlert.setHeaderText("Sync Complete!");
                     progressAlert.setContentText("Successfully synced 31 entries to your calendar. You'll now receive schedule-aware wellness tips.");
                     progressAlert.getButtonTypes().setAll(ButtonType.OK);
+                    Toast.show(historyTable, "Calendar sync complete", false);
+                    if (syncCalendarBtn != null) {
+                        syncCalendarBtn.setDisable(false);
+                    }
                 });
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Platform.runLater(() -> {
+                    Toast.show(historyTable, "Calendar sync interrupted", true);
+                    if (syncCalendarBtn != null) {
+                        syncCalendarBtn.setDisable(false);
+                    }
+                });
             }
         }).start();
     }

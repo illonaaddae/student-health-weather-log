@@ -62,7 +62,7 @@ public class HealthEntryRepository {
     public List<HealthEntry> findByUserId(int userId) throws SQLException {
         if (userId < 1) throw new IllegalArgumentException("User id must be positive");
 
-        String sql = "SELECT * FROM health_entries WHERE user_id = ? ORDER BY entry_date DESC";
+        String sql = "SELECT * FROM health_entries WHERE user_id = ? ORDER BY entry_date DESC, id DESC";
         List<HealthEntry> results = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, userId);

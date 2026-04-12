@@ -160,7 +160,12 @@ public class AddLogController {
     public void saveLogEntry() {
         if (repository == null) {
             System.err.println("Cannot save: database is unavailable.");
+            Toast.show(saveBtn, "Cannot save: database is unavailable", true);
             return;
+        }
+
+        if (saveBtn != null) {
+            saveBtn.setDisable(true);
         }
 
         Integer sleepHours = sleepSpinner.getValue();
@@ -198,12 +203,22 @@ public class AddLogController {
                 }
 
                 Platform.runLater(() -> {
+                    Toast.show(saveBtn, "Log saved successfully", false);
+                    if (saveBtn != null) {
+                        saveBtn.setDisable(false);
+                    }
                     if (MainController.getInstance() != null) {
                         MainController.getInstance().switchToDashboard();
                     }
                 });
             } catch (SQLException e) {
                 System.err.println("Failed to save log entry: " + e.getMessage());
+                Platform.runLater(() -> {
+                    Toast.show(saveBtn, "Failed to save log entry: " + e.getMessage(), true);
+                    if (saveBtn != null) {
+                        saveBtn.setDisable(false);
+                    }
+                });
             }
         }).start();
     }

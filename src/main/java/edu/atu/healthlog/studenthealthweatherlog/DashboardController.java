@@ -65,6 +65,10 @@ public class DashboardController {
         }
         refreshGreeting();
         refreshThemeStyles();
+        refreshDashboardData();
+    }
+
+    public void refreshDashboardData() {
         new Thread(this::loadDashboardData).start();
     }
 
