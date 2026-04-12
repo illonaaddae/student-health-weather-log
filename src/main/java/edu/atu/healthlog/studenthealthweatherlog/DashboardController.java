@@ -42,6 +42,8 @@ public class DashboardController {
     @FXML
     private Label weatherTempLabel;
     @FXML
+    private Label weatherCityLabel;
+    @FXML
     private Label wellnessTipLabel;
     @FXML
     private Button weekBtn;
@@ -75,6 +77,13 @@ public class DashboardController {
     public void refreshGreeting() {
         if (userNameLabel != null) {
             userNameLabel.setText(UserPreferences.getUserName());
+        }
+        if (weatherCityLabel != null) {
+            String city = UserSession.getCurrentUser() != null ? UserSession.getCurrentUser().getCity() : null;
+            if (city == null || city.isBlank()) {
+                city = UserPreferences.getCity();
+            }
+            weatherCityLabel.setText(city == null || city.isBlank() ? "LONDON" : city.trim().toUpperCase());
         }
     }
 
@@ -181,34 +190,7 @@ public class DashboardController {
         System.out.println("Switching to weekly trends...");
         monthlyTrendMode = false;
         applyWeeklyTrendStyles();
-
-        // Update labels for Week
-        day1Label.setText("MON");
-        day2Label.setText("TUE");
-        day3Label.setText("WED");
-        day4Label.setText("THU");
-        day5Label.setText("FRI");
-        day6Label.setText("SAT");
-        day7Label.setText("SUN");
-
-        // Restore active day highlighting (e.g., THU as in mock)
-        day4Label.setStyle("-fx-text-fill: #005faf;");
-        day4Bar.setOpacity(1.0);
-        
-        // Reset others (simple mock logic)
-        Label[] labels = {day1Label, day2Label, day3Label, day5Label, day6Label, day7Label};
-        Rectangle[] bars = {day1Bar, day2Bar, day3Bar, day5Bar, day6Bar, day7Bar};
-        for (Label l : labels) l.setStyle("-fx-text-fill: #70767a;");
-        for (Rectangle b : bars) b.setOpacity(0.2);
-
-        // Reset bar heights to mock weekly data
-        day1Bar.setHeight(60);
-        day2Bar.setHeight(100);
-        day3Bar.setHeight(75);
-        day4Bar.setHeight(130);
-        day5Bar.setHeight(65);
-        day6Bar.setHeight(45);
-        day7Bar.setHeight(30);
+        refreshDashboardData();
     }
 
     /**
@@ -269,21 +251,18 @@ public class DashboardController {
         String activeLabelStyle = dark
                 ? "-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #d4e3ff;"
                 : "-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #005faf;";
-        if (day1Label != null) day1Label.setStyle(mutedLabelStyle);
-        if (day2Label != null) day2Label.setStyle(mutedLabelStyle);
-        if (day3Label != null) day3Label.setStyle(mutedLabelStyle);
-        if (day4Label != null) day4Label.setStyle(activeLabelStyle);
-        if (day5Label != null) day5Label.setStyle(mutedLabelStyle);
-        if (day6Label != null) day6Label.setStyle(mutedLabelStyle);
-        if (day7Label != null) day7Label.setStyle(mutedLabelStyle);
+        Label[] labels = {day1Label, day2Label, day3Label, day4Label, day5Label, day6Label, day7Label};
+        Rectangle[] bars = {day1Bar, day2Bar, day3Bar, day4Bar, day5Bar, day6Bar, day7Bar};
+        int activeIndex = LocalDate.now().getDayOfWeek().getValue() - 1; // Monday=0 ... Sunday=6
 
-        if (day1Bar != null) day1Bar.setOpacity(dark ? 0.35 : 0.2);
-        if (day2Bar != null) day2Bar.setOpacity(dark ? 0.35 : 0.2);
-        if (day3Bar != null) day3Bar.setOpacity(dark ? 0.35 : 0.2);
-        if (day4Bar != null) day4Bar.setOpacity(1.0);
-        if (day5Bar != null) day5Bar.setOpacity(dark ? 0.35 : 0.2);
-        if (day6Bar != null) day6Bar.setOpacity(dark ? 0.35 : 0.2);
-        if (day7Bar != null) day7Bar.setOpacity(dark ? 0.35 : 0.2);
+        for (int i = 0; i < labels.length; i++) {
+            if (labels[i] != null) {
+                labels[i].setStyle(i == activeIndex ? activeLabelStyle : mutedLabelStyle);
+            }
+            if (bars[i] != null) {
+                bars[i].setOpacity(i == activeIndex ? 1.0 : (dark ? 0.35 : 0.2));
+            }
+        }
     }
 
     private void applyMonthlyTrendStyles() {

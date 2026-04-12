@@ -114,27 +114,27 @@
                     <Label text="Weekly Streak" style="-fx-font-size: 1.2em; -fx-font-weight: bold;" />
                     <HBox spacing="8" alignment="BOTTOM_CENTER" prefHeight="120">
                         <VBox alignment="BOTTOM_CENTER" spacing="5" HBox.hgrow="ALWAYS">
-                            <Rectangle width="35" height="100" fill="#d4e3ff" arcWidth="8" arcHeight="8" />
-                            <Label text="Mon" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
+                            <Rectangle fx:id="streakMonBar" width="35" height="100" fill="#d4e3ff" arcWidth="8" arcHeight="8" />
+                            <Label fx:id="streakMonLabel" text="Mon" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" spacing="5" HBox.hgrow="ALWAYS">
-                            <Rectangle width="35" height="75" fill="#d4e3ff" arcWidth="8" arcHeight="8" />
-                            <Label text="Tue" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
+                            <Rectangle fx:id="streakTueBar" width="35" height="75" fill="#d4e3ff" arcWidth="8" arcHeight="8" />
+                            <Label fx:id="streakTueLabel" text="Tue" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" spacing="5" HBox.hgrow="ALWAYS">
-                            <Rectangle width="35" height="50" fill="#005faf" arcWidth="8" arcHeight="8" />
-                            <Label text="Wed" style="-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #005faf;" />
+                            <Rectangle fx:id="streakWedBar" width="35" height="50" fill="#d4e3ff" arcWidth="8" arcHeight="8" />
+                            <Label fx:id="streakWedLabel" text="Wed" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" spacing="5" HBox.hgrow="ALWAYS">
-                            <Rectangle width="35" height="25" fill="#e4e9ea" arcWidth="8" arcHeight="8" />
-                            <Label text="Thu" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
+                            <Rectangle fx:id="streakThuBar" width="35" height="25" fill="#e4e9ea" arcWidth="8" arcHeight="8" />
+                            <Label fx:id="streakThuLabel" text="Thu" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" spacing="5" HBox.hgrow="ALWAYS">
-                            <Rectangle width="35" height="15" fill="#e4e9ea" arcWidth="8" arcHeight="8" />
-                            <Label text="Fri" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
+                            <Rectangle fx:id="streakFriBar" width="35" height="15" fill="#e4e9ea" arcWidth="8" arcHeight="8" />
+                            <Label fx:id="streakFriLabel" text="Fri" style="-fx-font-size: 9; -fx-text-fill: #70767a;" />
                         </VBox>
                     </HBox>
-                    <Label text="Log 4 more days to hit your goal!" style="-fx-text-fill: #5a6061; -fx-alignment: center; -fx-min-width: 100%;" />
+                    <Label fx:id="weeklyStreakHintLabel" text="Log 4 more days to hit your goal!" style="-fx-text-fill: #5a6061; -fx-alignment: center; -fx-min-width: 100%;" />
                 </VBox>
 
                 <!-- Motivational Quote -->

@@ -139,7 +139,7 @@
                 <!-- Weather Widget -->
                 <VBox spacing="20" style="-fx-background-color: #005faf; -fx-padding: 2.5em; -fx-background-radius: 2em; -fx-effect: dropshadow(three-pass-box, rgba(0,95,175,0.3), 20, 0, 0, 10);">
                     <VBox spacing="5">
-                        <Label text="SAN FRANCISCO" style="-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 0.85em; -fx-font-weight: bold; -fx-letter-spacing: 2;" />
+                        <Label fx:id="weatherCityLabel" text="LONDON" style="-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 0.85em; -fx-font-weight: bold; -fx-letter-spacing: 2;" />
                         <HBox alignment="CENTER_LEFT">
                             <Label fx:id="weatherConditionLabel" text="Partly Cloudy" style="-fx-text-fill: white; -fx-font-size: 2.2em; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" />
                             <Region HBox.hgrow="ALWAYS" />

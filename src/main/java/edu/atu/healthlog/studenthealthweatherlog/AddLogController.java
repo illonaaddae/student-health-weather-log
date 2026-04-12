@@ -11,8 +11,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.shape.Rectangle;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -45,6 +47,28 @@ public class AddLogController {
     private Button saveBtn;
     @FXML
     private javafx.scene.image.ImageView hydrationImage;
+    @FXML
+    private Rectangle streakMonBar;
+    @FXML
+    private Rectangle streakTueBar;
+    @FXML
+    private Rectangle streakWedBar;
+    @FXML
+    private Rectangle streakThuBar;
+    @FXML
+    private Rectangle streakFriBar;
+    @FXML
+    private Label streakMonLabel;
+    @FXML
+    private Label streakTueLabel;
+    @FXML
+    private Label streakWedLabel;
+    @FXML
+    private Label streakThuLabel;
+    @FXML
+    private Label streakFriLabel;
+    @FXML
+    private Label weeklyStreakHintLabel;
 
     private HealthEntryRepository repository;
     private CorrelationRepository correlationRepository;
@@ -63,6 +87,7 @@ public class AddLogController {
         setupSpinners();
         setupActivityComboBox();
         setMoodButtonDefault();
+        applyWeeklyStreakHighlight();
     }
 
     /**
@@ -151,6 +176,35 @@ public class AddLogController {
         moodGoodBtn.setStyle("-fx-background-color: #f2f4f4; -fx-padding: 1em; -fx-background-radius: 0.75em; -fx-text-alignment: center; -fx-font-size: 0.85em;");
         moodGreatBtn.setStyle("-fx-background-color: #f2f4f4; -fx-padding: 1em; -fx-background-radius: 0.75em; -fx-text-alignment: center; -fx-font-size: 0.85em;");
         moodTiredBtn.setStyle("-fx-background-color: #f2f4f4; -fx-padding: 1em; -fx-background-radius: 0.75em; -fx-text-alignment: center; -fx-font-size: 0.85em;");
+    }
+
+    private void applyWeeklyStreakHighlight() {
+        Rectangle[] bars = {streakMonBar, streakTueBar, streakWedBar, streakThuBar, streakFriBar};
+        Label[] labels = {streakMonLabel, streakTueLabel, streakWedLabel, streakThuLabel, streakFriLabel};
+
+        for (int i = 0; i < bars.length; i++) {
+            if (bars[i] != null) {
+                bars[i].setStyle("-fx-fill: " + (i <= 2 ? "#d4e3ff" : "#e4e9ea") + ";");
+            }
+            if (labels[i] != null) {
+                labels[i].setStyle("-fx-font-size: 9; -fx-text-fill: #70767a;");
+            }
+        }
+
+        int dayIndex = LocalDate.now().getDayOfWeek().getValue() - 1; // Mon=0..Sun=6
+        if (dayIndex >= 0 && dayIndex <= 4) {
+            if (bars[dayIndex] != null) {
+                bars[dayIndex].setStyle("-fx-fill: #005faf;");
+            }
+            if (labels[dayIndex] != null) {
+                labels[dayIndex].setStyle("-fx-font-size: 9; -fx-font-weight: bold; -fx-text-fill: #005faf;");
+            }
+            if (weeklyStreakHintLabel != null) {
+                weeklyStreakHintLabel.setText("Keep going, you're on track this week!");
+            }
+        } else if (weeklyStreakHintLabel != null) {
+            weeklyStreakHintLabel.setText("Weekend check-in: keep momentum for next week!");
+        }
     }
 
     /**
