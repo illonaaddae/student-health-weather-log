@@ -8,7 +8,7 @@ import java.util.prefs.Preferences;
 public final class UserPreferences {
     private static final Preferences PREFS = Preferences.userNodeForPackage(UserPreferences.class);
     private static final String KEY_CITY = "weather.city";
-    private static final String DEFAULT_CITY = "London";
+    private static final String DEFAULT_CITY = "";
     private static final String KEY_PAGE_SIZE = "history.pageSize";
     private static final String KEY_USER_NAME = "user.name";
     private static final String KEY_USER_EMAIL = "user.email";
@@ -24,6 +24,7 @@ public final class UserPreferences {
 
     public static void setCity(String city) {
         if (city == null || city.isBlank()) {
+            PREFS.remove(KEY_CITY);
             return;
         }
         PREFS.put(KEY_CITY, city.trim());

@@ -1,45 +1,58 @@
 # Student Health & Wellness Log with Weather Correlation
 
-A JavaFX application that allows students to record daily health metrics (sleep, activity, mood, etc.) and correlates them with local weather data.
+Desktop JavaFX app for students to track daily wellness metrics and relate them to weather patterns.
 
-## Project Overview
+## What the app does
 
-- **Health & Wellbeing Module**: Logs mood, sleep, physical activity, nutrition, and more.
-- **Weather Module**: Automatically fetches weather data for the user's location.
-- **Correlation Module**: Analyzes how weather conditions affect student wellbeing.
-- **MVC Architecture**: Clear separation between UI (FXML/Controllers) and business logic.
+- Daily logs for mood, sleep, water intake, exercise, and notes
+- User accounts (Sign In / Sign Up)
+- Dashboard with trend cards and weather summary
+- History table with filtering, pagination, and CSV/PDF export
+- Calendar sync via `.ics` export (works with Apple/Google/Outlook calendar import)
 
-## Technical Requirements
+## Tech stack
 
-- Java 21+
-- MySQL Database
-- Maven
-- JavaFX 21
+- Java 21 (project compiles with `<release>21`)
+- JavaFX 21 (FXML + Controllers)
+- MySQL 8 (Docker Compose ready)
+- Maven Wrapper (`./mvnw`)
 
-## Setup Instructions
+## Quick run
 
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/illonaaddae/student-health-weather-log.git
-    ```
-2.  **Database Configuration**:
-    - Ensure MySQL is running.
-    - Create a database named `wellness_db`.
-    - (Upcoming: Run the migration scripts in `sql/`).
-3.  **Build and Run**:
-    ```bash
-    ./mvnw clean javafx:run
-    ```
+```bash
+cd /Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log
+docker compose up -d
+./mvnw clean javafx:run
+```
 
-## Recent Features & Fixes
+## Database defaults used by the app
 
-- **Interactive Dashboard**: Programmatic control over trend views (Weekly vs. Monthly).
-- **Navigation System**: Centralized navigation for seamless view switching.
-- **Search & Filter**: Real-time search in the sidebar and data filtering in History.
-- **Backend Integration**: Initial integration of backend dependencies (MySQL, Gson) and directory structure.
+- Host: `localhost`
+- Port: `3307`
+- DB: `healthlog_db`
+- User: `root`
+- Password: `root`
+
+These match `docker-compose.yml` and `DatabaseConnection`.
+
+## Login details
+
+- Use demo users from `demo-credentials.txt`, or sign up a new account.
+- Sign in requires `email + password`.
+- Sign up requires `name + email + password`.
+
+## Calendar sync
+
+- Available from History and Analytics screens.
+- Exports an `.ics` file from your wellness entries.
+- On macOS, you can open it directly in Calendar from the export confirmation.
+
+## Project docs
+
+- `QUICK_START.md` - full setup + troubleshooting
+- `IMPLEMENTATION.md` - implementation notes
 
 ## Authors
 
 - Illona (UI/UX & Frontend)
 - Kingsley (Backend & Database)
-- Junie (BeTech Assistant)

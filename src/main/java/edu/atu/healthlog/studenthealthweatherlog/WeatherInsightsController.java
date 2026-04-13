@@ -5,6 +5,8 @@ import edu.atu.healthlog.studenthealthweatherlog.models.Correlation;
 import edu.atu.healthlog.studenthealthweatherlog.models.HealthEntry;
 import edu.atu.healthlog.studenthealthweatherlog.repositories.CorrelationRepository;
 import edu.atu.healthlog.studenthealthweatherlog.repositories.HealthEntryRepository;
+import edu.atu.healthlog.studenthealthweatherlog.services.CalendarLaunchService;
+import edu.atu.healthlog.studenthealthweatherlog.services.CalendarSyncService;
 import edu.atu.healthlog.studenthealthweatherlog.services.CorrelationService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,7 +16,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +48,8 @@ public class WeatherInsightsController {
     private static final String[] CONDITIONS = {"Sunny", "Cloudy", "Rainy", "Snow", "Partly"};
 
     private final CorrelationService correlationService = new CorrelationService();
+    private final CalendarSyncService calendarSyncService = new CalendarSyncService();
+    private final CalendarLaunchService calendarLaunchService = new CalendarLaunchService();
 
     // Live heights computed from DB data (null until loaded)
     private double[] liveHeights = null;
@@ -236,40 +242,96 @@ public class WeatherInsightsController {
     public void syncCalendar() {
         System.out.println("Syncing with calendar...");
 
+        if (syncCalendarBtn != null) {
+            syncCalendarBtn.setDisable(true);
+        }
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Calendar Integration");
-        alert.setHeaderText("Link to System Calendar?");
-        alert.setContentText("Would you like to sync your wellness entries with your device's default calendar? This will allow you to see your wellness patterns alongside your schedule.");
+        alert.setHeaderText("Export calendar file?");
+        alert.setContentText("We'll generate an .ics file you can open in Apple Calendar, Google Calendar, or Outlook.");
         Toast.styleAlert(alert, syncCalendarBtn, false);
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                System.out.println("User confirmed sync. Starting process...");
-                showSyncProgress();
+                FileChooser chooser = new FileChooser();
+                chooser.setTitle("Save Calendar File");
+                File suggested = calendarSyncService.createDefaultIcsFile();
+                chooser.setInitialFileName(suggested.getName());
+                chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("iCalendar Files", "*.ics"));
+
+                File selectedFile = chooser.showSaveDialog(syncCalendarBtn.getScene().getWindow());
+                if (selectedFile != null) {
+                    performCalendarSync(selectedFile);
+                } else {
+                    Toast.show(syncCalendarBtn, "Calendar export cancelled", true);
+                    if (syncCalendarBtn != null) {
+                        syncCalendarBtn.setDisable(false);
+                    }
+                }
+            } else if (syncCalendarBtn != null) {
+                syncCalendarBtn.setDisable(false);
             }
         });
+        if (!ButtonType.OK.equals(alert.getResult()) && syncCalendarBtn != null) {
+            syncCalendarBtn.setDisable(false);
+        }
     }
 
-    private void showSyncProgress() {
-        Alert progressAlert = new Alert(Alert.AlertType.INFORMATION);
-        progressAlert.setTitle("Syncing...");
-        progressAlert.setHeaderText("Calendar Sync in Progress");
-        progressAlert.setContentText("Please wait while we connect to your calendar service...");
-        Toast.styleAlert(progressAlert, syncCalendarBtn, false);
-        progressAlert.show();
-
+    private void performCalendarSync(File outputFile) {
         new Thread(() -> {
             try {
-                Thread.sleep(2500);
+                HealthEntryRepository entryRepo =
+                        new HealthEntryRepository(DatabaseConnection.getConnection());
+                List<HealthEntry> entries = entryRepo.findByUserId(UserSession.getCurrentUserId());
+                int exported = calendarSyncService.exportToIcs(entries, outputFile);
                 Platform.runLater(() -> {
-                    progressAlert.setHeaderText("Sync Complete!");
-                    progressAlert.setContentText("Successfully synced your wellness entries to your calendar. You'll now receive schedule-aware wellness tips.");
-                    progressAlert.getButtonTypes().setAll(ButtonType.OK);
+                    if (exported == 0) {
+                        Toast.show(syncCalendarBtn, "No entries available to sync", true);
+                    } else {
+                        showCalendarExportConfirmation(outputFile, exported);
+                        Toast.show(syncCalendarBtn, "Calendar export complete", false);
+                    }
+                    if (syncCalendarBtn != null) {
+                        syncCalendarBtn.setDisable(false);
+                    }
                 });
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    Toast.show(syncCalendarBtn, "Calendar export failed", true);
+                    if (syncCalendarBtn != null) {
+                        syncCalendarBtn.setDisable(false);
+                    }
+                });
             }
-        }).start();
+        }, "calendar-sync-insights").start();
+    }
+
+    private void showCalendarExportConfirmation(File file, int exportedCount) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Calendar Export Complete");
+        alert.setHeaderText("Exported " + exportedCount + " wellness entries");
+        alert.setContentText(file.getAbsolutePath());
+        Toast.styleAlert(alert, syncCalendarBtn, false);
+
+        ButtonType openCalendar = new ButtonType("Open in Calendar");
+        ButtonType openFolder = new ButtonType("Open Folder");
+        alert.getButtonTypes().setAll(openCalendar, openFolder, ButtonType.OK);
+
+        alert.showAndWait().ifPresent(choice -> {
+            if (choice == openCalendar) {
+                boolean opened = calendarLaunchService.openInCalendar(file)
+                        || calendarLaunchService.openWithDefaultApp(file);
+                if (!opened) {
+                    Toast.show(syncCalendarBtn, "Could not open calendar app", true);
+                }
+            } else if (choice == openFolder) {
+                boolean revealed = calendarLaunchService.revealInFileManager(file);
+                if (!revealed) {
+                    Toast.show(syncCalendarBtn, "Could not open folder", true);
+                }
+            }
+        });
     }
 
     /**

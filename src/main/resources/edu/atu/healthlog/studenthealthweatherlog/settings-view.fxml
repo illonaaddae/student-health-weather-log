@@ -104,6 +104,20 @@
                     </VBox>
                 </VBox>
 
+                <!-- Location -->
+                <VBox spacing="15" styleClass="card">
+                    <Label text="Location" styleClass="title-lg" />
+                    <Separator style="-fx-padding: 0;" />
+
+                    <VBox spacing="10">
+                        <Label text="City" />
+                        <TextField fx:id="cityField" promptText="e.g., Accra" />
+
+                        <Label text="Country" />
+                        <TextField fx:id="countryField" promptText="e.g., Ghana" />
+                    </VBox>
+                </VBox>
+
                 <!-- Privacy & Data Settings -->
                 <VBox spacing="15" styleClass="card" style="-fx-background-color: #ffffff; -fx-padding: 1.5em; -fx-background-radius: 1em;">
                     <Label text="Privacy &amp; Data" styleClass="title-lg" />

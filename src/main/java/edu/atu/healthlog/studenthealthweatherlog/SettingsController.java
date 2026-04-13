@@ -39,6 +39,8 @@ public class SettingsController {
     @FXML
     private TextField cityField;
     @FXML
+    private TextField countryField;
+    @FXML
     private CheckBox dataSharing;
     @FXML
     private Button saveBtn;
@@ -111,7 +113,14 @@ public class SettingsController {
         goalReminders.setSelected(false);
         dataSharing.setSelected(false);
         if (cityField != null) {
-            cityField.setText(UserPreferences.getCity());
+            String city = UserSession.getCurrentUser() != null ? UserSession.getCurrentUser().getCity() : null;
+            if (city == null || city.isBlank()) {
+                city = UserPreferences.getCity();
+            }
+            cityField.setText(extractCity(city));
+            if (countryField != null) {
+                countryField.setText(extractCountry(city));
+            }
         }
         if (userNameField != null) {
             userNameField.setText(UserPreferences.getUserName());
@@ -442,8 +451,10 @@ public class SettingsController {
             int targetExercise = targetExerciseSpinner.getValue();
             boolean dataSharingEnabled = dataSharing.isSelected();
 
-            if (cityField != null && !cityField.getText().isBlank()) {
-                String city = cityField.getText().trim();
+            if (cityField != null) {
+                String cityValue = cityField.getText();
+                String countryValue = countryField != null ? countryField.getText() : "";
+                String city = composeLocation(cityValue, countryValue);
                 UserPreferences.setCity(city);
                 User current = UserSession.getCurrentUser();
                 if (current != null && userRepository != null) {
@@ -491,6 +502,34 @@ public class SettingsController {
                 saveBtn.setDisable(false);
             }
         }
+    }
+
+    private String composeLocation(String city, String country) {
+        String c = city == null ? "" : city.trim();
+        String k = country == null ? "" : country.trim();
+        if (c.isBlank()) {
+            return "";
+        }
+        return k.isBlank() ? c : c + ", " + k;
+    }
+
+    private String extractCity(String location) {
+        if (location == null || location.isBlank()) {
+            return "";
+        }
+        String[] parts = location.split(",", 2);
+        return parts[0].trim();
+    }
+
+    private String extractCountry(String location) {
+        if (location == null || location.isBlank()) {
+            return "";
+        }
+        String[] parts = location.split(",", 2);
+        if (parts.length < 2) {
+            return "";
+        }
+        return parts[1].trim();
     }
 
     /**

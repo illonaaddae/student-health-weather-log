@@ -83,7 +83,7 @@ public class DashboardController {
             if (city == null || city.isBlank()) {
                 city = UserPreferences.getCity();
             }
-            weatherCityLabel.setText(city == null || city.isBlank() ? "LONDON" : city.trim().toUpperCase());
+            weatherCityLabel.setText(city == null || city.isBlank() ? "SET CITY IN SETTINGS" : city.trim().toUpperCase());
         }
     }
 

@@ -109,9 +109,7 @@ public class AuthController {
             UserSession.login(user);
             UserPreferences.setUserName(user.getUsername());
             UserPreferences.setUserEmail(user.getEmail());
-            if (user.getCity() != null && !user.getCity().isBlank()) {
-                UserPreferences.setCity(user.getCity());
-            }
+            UserPreferences.setCity(user.getCity());
             System.out.println("User logged in: [id=" + user.getUserId() + ", username=" + user.getUsername() + ", email=" + user.getEmail() + "]");
             fetchWeatherInBackground();
             switchToMain();
@@ -153,13 +151,14 @@ public class AuthController {
                 return;
             }
 
-            User newUser = new User(0, name, email, PasswordUtils.hash(password), UserPreferences.getCity());
+            User newUser = new User(0, name, email, PasswordUtils.hash(password), "");
             int generatedId = userRepository.save(newUser);
 
-            User savedUser = new User(generatedId, name, email, password, UserPreferences.getCity());
+            User savedUser = new User(generatedId, name, email, password, "");
             UserSession.login(savedUser);
             UserPreferences.setUserName(name);
             UserPreferences.setUserEmail(email);
+            UserPreferences.setCity(savedUser.getCity());
             fetchWeatherInBackground();
             switchToMain();
 
