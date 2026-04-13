@@ -1,5 +1,8 @@
 package edu.atu.healthlog.studenthealthweatherlog;
 
+import edu.atu.healthlog.studenthealthweatherlog.database.DatabaseConnection;
+import edu.atu.healthlog.studenthealthweatherlog.models.HealthEntry;
+import edu.atu.healthlog.studenthealthweatherlog.repositories.HealthEntryRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +17,11 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -187,7 +194,65 @@ public class MainController {
     @FXML
     public void openNotifications() {
         System.out.println("Opening Notifications...");
-        // TODO: Implement notification screen or dialog
+
+        List<String> notifications = new ArrayList<>();
+        boolean hasLogToday = hasLogForToday();
+        String city = UserPreferences.getCity();
+
+        if (!hasLogToday) {
+            notifications.add("You have not logged today yet. Add a quick wellness check-in.");
+        } else {
+            notifications.add("Great job! Today's wellness entry is already saved.");
+        }
+
+        if (city == null || city.isBlank()) {
+            notifications.add("Set your city in Settings for more accurate weather insights.");
+        }
+
+        notifications.add("Tip: Review History weekly to spot mood and weather patterns.");
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Notifications");
+        alert.setHeaderText("Wellness updates for you");
+        alert.setContentText(String.join("\n\n- ", prependBullet(notifications)));
+        Toast.styleAlert(alert, notificationBtn, false);
+
+        ButtonType addLogChoice = new ButtonType("Open Add Log");
+        ButtonType settingsChoice = new ButtonType("Open Settings");
+        alert.getButtonTypes().setAll(addLogChoice, settingsChoice, ButtonType.CLOSE);
+
+        alert.showAndWait().ifPresent(choice -> {
+            if (choice == addLogChoice) {
+                switchToAddLog();
+            } else if (choice == settingsChoice) {
+                openSettings();
+            }
+        });
+
+        Toast.show(notificationBtn, "Notifications loaded", false);
+    }
+
+    private boolean hasLogForToday() {
+        int userId = UserSession.getCurrentUserId();
+        if (userId <= 0) {
+            return false;
+        }
+        try {
+            HealthEntryRepository repository = new HealthEntryRepository(DatabaseConnection.getConnection());
+            List<HealthEntry> entries = repository.findByUserId(userId);
+            LocalDate today = LocalDate.now();
+            return entries.stream().anyMatch(entry -> today.equals(entry.getEntryDate()));
+        } catch (SQLException e) {
+            System.err.println("Notification check failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private String prependBullet(List<String> lines) {
+        if (lines.isEmpty()) {
+            return "- No new notifications.";
+        }
+        return "- " + String.join("\n\n- ", lines);
     }
 
     @FXML
