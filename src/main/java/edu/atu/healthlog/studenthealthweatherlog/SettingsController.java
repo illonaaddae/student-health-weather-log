@@ -132,11 +132,11 @@ public class SettingsController {
     }
 
     private void restoreProfilePicture() {
-        String path = UserPreferences.getProfilePicturePath();
+        String path = UserPreferences.getCurrentUserProfilePicturePath();
         if (path == null || profileCircle == null) return;
         java.io.File file = new java.io.File(path);
         if (!file.exists()) {
-            UserPreferences.setProfilePicturePath(null);
+            UserPreferences.setCurrentUserProfilePicturePath(null);
             return;
         }
         try {
@@ -213,7 +213,7 @@ public class SettingsController {
                 profileCircle.setFill(new ImagePattern(image));
                 profileInitials.setVisible(false);
 
-                UserPreferences.setProfilePicturePath(selectedFile.getAbsolutePath());
+                UserPreferences.setCurrentUserProfilePicturePath(selectedFile.getAbsolutePath());
 
                 // Update sidebar profile globally via MainController instance
                 if (MainController.getInstance() != null) {

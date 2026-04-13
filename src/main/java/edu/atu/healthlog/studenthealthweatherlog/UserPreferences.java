@@ -83,5 +83,32 @@ public final class UserPreferences {
         }
     }
 
+    private static String profilePictureKeyForUser(int userId) {
+        return KEY_PROFILE_PICTURE + "." + userId;
+    }
+
+    public static String getCurrentUserProfilePicturePath() {
+        int userId = UserSession.getCurrentUserId();
+        if (userId <= 0) {
+            return getProfilePicturePath();
+        }
+        return PREFS.get(profilePictureKeyForUser(userId), null);
+    }
+
+    public static void setCurrentUserProfilePicturePath(String path) {
+        int userId = UserSession.getCurrentUserId();
+        if (userId <= 0) {
+            setProfilePicturePath(path);
+            return;
+        }
+
+        String key = profilePictureKeyForUser(userId);
+        if (path == null || path.isBlank()) {
+            PREFS.remove(key);
+            return;
+        }
+        PREFS.put(key, path.trim());
+    }
+
 }
 

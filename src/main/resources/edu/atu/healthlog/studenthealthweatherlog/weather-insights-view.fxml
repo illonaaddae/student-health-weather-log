@@ -30,9 +30,9 @@
                     <HBox spacing="10" alignment="CENTER_LEFT">
                         <VBox HBox.hgrow="ALWAYS">
                             <Label text="Mood Impact by Condition" styleClass="headline-md" style="-fx-font-size: 1.5em; -fx-font-weight: bold;" />
-                            <Label text="Analyzing the last 30 days of behavioral correlations" styleClass="body-md" style="-fx-text-fill: #70767a;" />
+                            <Label fx:id="moodImpactSubtitleLabel" text="Analyzing the last 30 days of behavioral correlations" styleClass="body-md" style="-fx-text-fill: #70767a;" />
                         </VBox>
-                        <Button text="Monthly View" styleClass="button-secondary" style="-fx-background-color: #d4e3ff; -fx-text-fill: #005faf; -fx-padding: 0.5em 1em; -fx-font-size: 0.8em; -fx-background-radius: 1em;" onAction="#switchToMonthlyView" />
+                        <Button fx:id="monthlyViewBtn" text="Monthly View" styleClass="button-secondary" style="-fx-background-color: #d4e3ff; -fx-text-fill: #005faf; -fx-padding: 0.5em 1em; -fx-font-size: 0.8em; -fx-background-radius: 1em;" onAction="#switchToMonthlyView" />
                         <Button style="-fx-background-color: transparent; -fx-padding: 5; -fx-cursor: hand;" onAction="#openFilter">
                             <graphic>
                                 <FontIcon iconLiteral="fas-filter" iconSize="14" iconColor="#70767a" />

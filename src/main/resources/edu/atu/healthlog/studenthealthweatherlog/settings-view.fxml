@@ -30,13 +30,14 @@
                     <Separator style="-fx-padding: 0;" />
 
                         <HBox spacing="15" alignment="CENTER_LEFT">
-                        <StackPane>
+                        <StackPane fx:id="profileStackPane" onMouseClicked="#changeProfilePicture" style="-fx-cursor: hand;">
                             <Circle radius="30" fx:id="profileCircle" styleClass="background-card" />
                             <Label fx:id="profileInitials" text="IM" style="-fx-font-weight: bold; -fx-text-fill: #005faf;" />
                         </StackPane>
                         <VBox spacing="5" HBox.hgrow="ALWAYS">
                             <TextField fx:id="userNameField" text="Illona Martinez" styleClass="text-field body-lg" editable="false" />
                             <TextField fx:id="userEmailField" text="illona@student.atu.edu" styleClass="text-field body-md" editable="false" />
+                            <Button text="Change Photo" style="-fx-background-color: transparent; -fx-padding: 0; -fx-text-fill: #005faf; -fx-cursor: hand; -fx-font-weight: bold;" onAction="#changeProfilePicture" />
                         </VBox>
                         <Button fx:id="editProfileBtn" text="Edit" styleClass="button-secondary" style="-fx-background-color: #d4e3ff; -fx-text-fill: #005faf; -fx-padding: 0.5em 1em; -fx-font-size: 0.8em;" onAction="#editProfile" />
                     </HBox>

@@ -50,9 +50,8 @@ These match `docker-compose.yml` and `DatabaseConnection`.
 ## Project docs
 
 - `QUICK_START.md` - full setup + troubleshooting
-- `IMPLEMENTATION.md` - implementation notes
+- `CHANGELOG.md` - recent changes and release notes
 
 ## Authors
 
-- Illona (UI/UX & Frontend)
-- Kingsley (Backend & Database)
+- Group Six

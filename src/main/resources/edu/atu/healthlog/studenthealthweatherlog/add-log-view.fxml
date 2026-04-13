@@ -140,8 +140,8 @@
                 <!-- Motivational Quote -->
                 <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 20; -fx-border-color: #005faf; -fx-border-width: 0 0 0 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);">
                     <FontIcon iconLiteral="fas-quote-left" iconSize="20" iconColor="#005faf" />
-                    <Label text="&quot;The greatest wealth is health.&quot;" wrapText="true" style="-fx-text-fill: #005faf; -fx-font-style: italic; -fx-font-size: 1.1em;" />
-                    <Label text="— Virgil" style="-fx-text-fill: #70767a; -fx-font-size: 0.9em;" />
+                    <Label fx:id="quoteLabel" wrapText="true" style="-fx-text-fill: #005faf; -fx-font-style: italic; -fx-font-size: 1.1em;" />
+                    <Label fx:id="quoteAuthorLabel" style="-fx-text-fill: #70767a; -fx-font-size: 0.9em;" />
                 </VBox>
 
             </VBox>

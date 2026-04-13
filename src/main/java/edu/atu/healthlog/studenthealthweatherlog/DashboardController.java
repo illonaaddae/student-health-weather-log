@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * DashboardController - Manages the dashboard view displaying daily wellness metrics.
@@ -57,6 +58,16 @@ public class DashboardController {
     private HealthEntryRepository repository;
     private final WeatherService weatherService = new WeatherService();
     private boolean monthlyTrendMode = false;
+    private int lastQuoteIndex = -1;
+
+    private static final String[] WELLNESS_QUOTES = {
+            "\"Take care of your body. It's the only place you have to live.\" - Jim Rohn",
+            "\"Happiness is the highest form of health.\" - Dalai Lama",
+            "\"To keep the body in good health is a duty.\" - Buddha",
+            "\"Self-care is not a luxury, it is a priority.\" - Audre Lorde",
+            "\"The greatest wealth is health.\" - Virgil",
+            "\"A calm mind brings inner strength and self-confidence.\" - Dalai Lama"
+    };
 
     @FXML
     public void initialize() {
@@ -141,6 +152,7 @@ public class DashboardController {
                 waterLabel.setText("0");
                 exerciseLabel.setText("None");
                 moodStatusLabel.setText("Add your first log today!");
+                wellnessTipLabel.setText(nextWellnessQuote());
             }
 
             // Update chart with recent 7 days
@@ -159,7 +171,19 @@ public class DashboardController {
         } else {
             tip = "Great job maintaining your wellness! Consistency is the secret to long-term health.";
         }
-        wellnessTipLabel.setText(tip);
+        wellnessTipLabel.setText(tip + "\n\n" + nextWellnessQuote());
+    }
+
+    private String nextWellnessQuote() {
+        if (WELLNESS_QUOTES.length == 0) {
+            return "Keep going - your future self will thank you.";
+        }
+        int next = ThreadLocalRandom.current().nextInt(WELLNESS_QUOTES.length);
+        if (WELLNESS_QUOTES.length > 1 && next == lastQuoteIndex) {
+            next = (next + 1) % WELLNESS_QUOTES.length;
+        }
+        lastQuoteIndex = next;
+        return WELLNESS_QUOTES[next];
     }
 
     private void updateWeeklyChart(List<HealthEntry> entries) {

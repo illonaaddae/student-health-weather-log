@@ -31,6 +31,8 @@ public class WeatherInsightsController {
 
     @FXML private Button syncCalendarBtn;
     @FXML private Button viewGoalsBtn;
+    @FXML private Button monthlyViewBtn;
+    @FXML private javafx.scene.control.Label moodImpactSubtitleLabel;
 
     @FXML private javafx.scene.shape.Rectangle sunnyBar;
     @FXML private javafx.scene.shape.Rectangle cloudyBar;
@@ -42,9 +44,10 @@ public class WeatherInsightsController {
     @FXML private AreaChart<String, Number> sleepTrendChart;
     @FXML private BarChart<String, Number> waterMoodChart;
 
-    // Fallback heights (scale: 200px = score 5.0) used when no real data is available
-    // Sunny=4.2  Cloudy=3.5  Rainy=2.8  Snow=1.9  Partly=3.9
-    private static final double[] FALLBACK_HEIGHTS = {168, 140, 112, 76, 156};
+    // Weekly fallback shown when no DB correlations exist yet.
+    private static final double[] WEEKLY_FALLBACK_HEIGHTS = {132, 118, 94, 70, 125};
+    // Monthly view uses a broader average profile to make mode-switch visually obvious.
+    private static final double[] MONTHLY_FALLBACK_HEIGHTS = {168, 140, 112, 76, 156};
     private static final String[] CONDITIONS = {"Sunny", "Cloudy", "Rainy", "Snow", "Partly"};
 
     private final CorrelationService correlationService = new CorrelationService();
@@ -57,7 +60,8 @@ public class WeatherInsightsController {
 
     @FXML
     public void initialize() {
-        applyBarHeights(FALLBACK_HEIGHTS); // show something immediately
+        applyBarHeights(WEEKLY_FALLBACK_HEIGHTS); // show weekly baseline immediately
+        updateMonthlyModeUI();
         loadWeatherInsights();
     }
 
@@ -86,12 +90,13 @@ public class WeatherInsightsController {
                     double[] computed = new double[CONDITIONS.length];
                     for (int i = 0; i < CONDITIONS.length; i++) {
                         double avg = averages.getOrDefault(CONDITIONS[i], -1.0);
-                        computed[i] = avg >= 0 ? avg / 5.0 * 200.0 : FALLBACK_HEIGHTS[i];
+                        computed[i] = avg >= 0 ? avg / 5.0 * 200.0 : WEEKLY_FALLBACK_HEIGHTS[i];
                     }
                     liveHeights = computed;
                     System.out.printf("WeatherInsights: loaded %d correlations%n", correlations.size());
                 } else {
                     System.out.println("WeatherInsights: no correlation data yet — using defaults.");
+                    liveHeights = WEEKLY_FALLBACK_HEIGHTS;
                 }
 
                 // ── Trend charts ─────────────────────────────────────────────
@@ -124,10 +129,11 @@ public class WeatherInsightsController {
                     moodBarSeries.getData().add(new XYChart.Data<>(label, moodNum));
                 }
 
-                final double[] finalHeights = liveHeights != null ? liveHeights : FALLBACK_HEIGHTS;
+                final double[] finalHeights = liveHeights != null ? liveHeights : WEEKLY_FALLBACK_HEIGHTS;
 
                 Platform.runLater(() -> {
-                    applyBarHeights(monthlyViewActive ? FALLBACK_HEIGHTS : finalHeights);
+                    applyBarHeights(monthlyViewActive ? MONTHLY_FALLBACK_HEIGHTS : finalHeights);
+                    updateMonthlyModeUI();
                     populateTrendCharts(moodSeries, sleepSeries, waterSeries, moodBarSeries,
                             chronological.isEmpty());
                 });
@@ -195,11 +201,25 @@ public class WeatherInsightsController {
     @FXML
     public void switchToMonthlyView() {
         monthlyViewActive = !monthlyViewActive;
-        double[] heights = monthlyViewActive ? FALLBACK_HEIGHTS : (liveHeights != null ? liveHeights : FALLBACK_HEIGHTS);
+        double[] heights = monthlyViewActive
+                ? MONTHLY_FALLBACK_HEIGHTS
+                : (liveHeights != null ? liveHeights : WEEKLY_FALLBACK_HEIGHTS);
         applyBarHeights(heights);
+        updateMonthlyModeUI();
         String label = monthlyViewActive ? "Monthly view" : "Live view";
         System.out.println("Switched to " + label);
         Toast.show(syncCalendarBtn, label + " loaded", false);
+    }
+
+    private void updateMonthlyModeUI() {
+        if (monthlyViewBtn != null) {
+            monthlyViewBtn.setText(monthlyViewActive ? "Live View" : "Monthly View");
+        }
+        if (moodImpactSubtitleLabel != null) {
+            moodImpactSubtitleLabel.setText(monthlyViewActive
+                    ? "Showing monthly baseline averages by weather condition"
+                    : "Analyzing the last 30 days of behavioral correlations");
+        }
     }
 
     /**

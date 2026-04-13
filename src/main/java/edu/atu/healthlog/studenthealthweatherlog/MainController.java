@@ -3,7 +3,9 @@ package edu.atu.healthlog.studenthealthweatherlog;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -92,7 +94,7 @@ public class MainController {
             userProfileInitials.setVisible(true);
         }
 
-        String picturePath = UserPreferences.getProfilePicturePath();
+        String picturePath = UserPreferences.getCurrentUserProfilePicturePath();
         if (userProfileCircle != null) {
             if (picturePath != null) {
                 java.io.File file = new java.io.File(picturePath);
@@ -105,7 +107,7 @@ public class MainController {
                         userProfileCircle.setFill(javafx.scene.paint.Color.web("#d4e3ff"));
                     }
                 } else {
-                    UserPreferences.setProfilePicturePath(null);
+                    UserPreferences.setCurrentUserProfilePicturePath(null);
                     userProfileCircle.setFill(javafx.scene.paint.Color.web("#d4e3ff"));
                 }
             } else {
@@ -138,6 +140,10 @@ public class MainController {
     @FXML
     public void switchToAddLog() {
         loadScreen(ADD_LOG_VIEW);
+        Object controller = controllerCache.get(ADD_LOG_VIEW);
+        if (controller instanceof AddLogController addLogController) {
+            addLogController.refreshMotivationalQuote();
+        }
         updateNavigation(addLogBtn);
     }
 
@@ -162,7 +168,20 @@ public class MainController {
     @FXML
     public void openSupport() {
         System.out.println("Opening Support...");
-        // TODO: Implement support screen or dialog
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Support");
+        alert.setHeaderText("Need help with Wellness Sanctuary?");
+        alert.setContentText("Choose Settings -> Contact Support for guided help, account support, and FAQ links.");
+        Toast.styleAlert(alert, supportBtn, false);
+
+        ButtonType openSettingsChoice = new ButtonType("Open Settings");
+        alert.getButtonTypes().setAll(openSettingsChoice, ButtonType.OK);
+        alert.showAndWait().ifPresent(choice -> {
+            if (choice == openSettingsChoice) {
+                openSettings();
+            }
+        });
+        Toast.show(supportBtn, "Support options opened", false);
     }
 
     @FXML

@@ -18,6 +18,8 @@ import javafx.scene.shape.Rectangle;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * AddLogController - Manages the "Add Today's Log" view.
@@ -69,12 +71,25 @@ public class AddLogController {
     private Label streakFriLabel;
     @FXML
     private Label weeklyStreakHintLabel;
+    @FXML
+    private Label quoteLabel;
+    @FXML
+    private Label quoteAuthorLabel;
 
     private HealthEntryRepository repository;
     private CorrelationRepository correlationRepository;
     private final WeatherService weatherService = new WeatherService();
     private final CorrelationService correlationService = new CorrelationService();
     private String selectedMood = "Good"; // Default mood
+    private int lastQuoteIndex = -1;
+
+    private static final List<String[]> QUOTES = List.of(
+            new String[]{"Small daily habits build the strongest wellness streaks.", "Wellness Sanctuary"},
+            new String[]{"Take care of your body. It is the only place you have to live.", "Jim Rohn"},
+            new String[]{"Rest and self-care are productive, not optional.", "Health Reminder"},
+            new String[]{"Your mood is data, not destiny. Track it and grow from it.", "Wellness Insight"},
+            new String[]{"Hydrate, breathe, and begin again.", "Daily Reset"}
+    );
 
     @FXML
     public void initialize() {
@@ -88,6 +103,23 @@ public class AddLogController {
         setupActivityComboBox();
         setMoodButtonDefault();
         applyWeeklyStreakHighlight();
+        refreshMotivationalQuote();
+    }
+
+    public void refreshMotivationalQuote() {
+        if (quoteLabel == null || quoteAuthorLabel == null || QUOTES.isEmpty()) {
+            return;
+        }
+
+        int nextIndex = ThreadLocalRandom.current().nextInt(QUOTES.size());
+        if (QUOTES.size() > 1 && nextIndex == lastQuoteIndex) {
+            nextIndex = (nextIndex + 1) % QUOTES.size();
+        }
+        lastQuoteIndex = nextIndex;
+
+        String[] quote = QUOTES.get(nextIndex);
+        quoteLabel.setText("\"" + quote[0] + "\"");
+        quoteAuthorLabel.setText("- " + quote[1]);
     }
 
     /**
