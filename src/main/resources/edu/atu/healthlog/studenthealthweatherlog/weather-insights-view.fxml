@@ -112,7 +112,7 @@
                                 <VBox alignment="CENTER">
                                     <Label text="TOMORROW" style="-fx-text-fill: #70767a; -fx-font-size: 10; -fx-font-weight: bold;" />
                                     <FontIcon iconLiteral="fas-sun" iconSize="28" iconColor="#ffa000" />
-                                    <Label text="72°F" style="-fx-font-size: 14; -fx-font-weight: bold;" />
+                                    <Label text="22°C" style="-fx-font-size: 14; -fx-font-weight: bold;" />
                                 </VBox>
                                 <Separator orientation="VERTICAL" prefHeight="40" />
                                 <Label text="Syncing with local atmospheric data for smarter logging." wrapText="true" style="-fx-text-fill: #70767a; -fx-font-size: 0.9em;" HBox.hgrow="ALWAYS" />

@@ -43,6 +43,8 @@ public class DashboardController {
     @FXML
     private Label weatherTempLabel;
     @FXML
+    private org.kordamp.ikonli.javafx.FontIcon moodIcon;
+    @FXML
     private Label weatherCityLabel;
     @FXML
     private Label wellnessTipLabel;
@@ -136,6 +138,7 @@ public class DashboardController {
             if (!entries.isEmpty()) {
                 HealthEntry latest = entries.get(0);
                 moodLabel.setText(latest.getMoodScore());
+                updateMoodIcon(latest.getMoodScore());
                 sleepLabel.setText(String.format("%.1f", latest.getSleepHours()));
                 sleepProgressBar.setProgress(Math.min(latest.getSleepHours() / 10.0, 1.0));
                 waterLabel.setText(String.format("%.1f", latest.getWaterIntake()));
@@ -158,6 +161,37 @@ public class DashboardController {
             // Update chart with recent 7 days
             updateWeeklyChart(entries);
         });
+    }
+
+    private void updateMoodIcon(String mood) {
+        if (moodIcon == null) return;
+        
+        switch (mood != null ? mood.toLowerCase() : "") {
+            case "low":
+                moodIcon.setIconLiteral("fas-frown");
+                moodIcon.setIconColor(javafx.scene.paint.Color.web("#5a6061"));
+                break;
+            case "neutral":
+                moodIcon.setIconLiteral("fas-meh");
+                moodIcon.setIconColor(javafx.scene.paint.Color.web("#5a6061"));
+                break;
+            case "good":
+                moodIcon.setIconLiteral("fas-smile");
+                moodIcon.setIconColor(javafx.scene.paint.Color.web("#005faf"));
+                break;
+            case "great":
+                moodIcon.setIconLiteral("fas-grin-stars");
+                moodIcon.setIconColor(javafx.scene.paint.Color.web("#005faf"));
+                break;
+            case "tired":
+                moodIcon.setIconLiteral("fas-tired");
+                moodIcon.setIconColor(javafx.scene.paint.Color.web("#5a6061"));
+                break;
+            default:
+                moodIcon.setIconLiteral("fas-smile");
+                moodIcon.setIconColor(javafx.scene.paint.Color.web("#005faf"));
+                break;
+        }
     }
 
     private void updateWellnessTip(HealthEntry latest) {

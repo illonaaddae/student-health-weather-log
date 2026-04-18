@@ -35,7 +35,7 @@
                                 <Label fx:id="moodStatusLabel" text="↗ Steady since 8 AM" style="-fx-text-fill: #22648e; -fx-font-size: 0.9em;" />
                             </VBox>
                             <StackPane style="-fx-background-color: #cbe6ff; -fx-background-radius: 30; -fx-min-width: 60; -fx-min-height: 60;">
-                                <FontIcon iconLiteral="fas-smile" iconSize="30" iconColor="#005faf" />
+                                <FontIcon fx:id="moodIcon" iconLiteral="fas-smile" iconSize="30" iconColor="#005faf" />
                             </StackPane>
                         </HBox>
                     </VBox>
@@ -148,8 +148,8 @@
                     </VBox>
                     
                     <HBox alignment="BASELINE_LEFT" spacing="5">
-                        <Label fx:id="weatherTempLabel" text="68" style="-fx-text-fill: white; -fx-font-size: 5em; -fx-font-weight: 200;" />
-                        <Label text="° F" style="-fx-text-fill: white; -fx-font-size: 2em; -fx-font-weight: bold;" />
+                        <Label fx:id="weatherTempLabel" text="20" style="-fx-text-fill: white; -fx-font-size: 5em; -fx-font-weight: 200;" />
+                        <Label text="° C" style="-fx-text-fill: white; -fx-font-size: 2em; -fx-font-weight: bold;" />
                     </HBox>
                     
                     <HBox spacing="20">

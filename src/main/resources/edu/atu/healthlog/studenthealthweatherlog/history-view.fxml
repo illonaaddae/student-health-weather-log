@@ -75,21 +75,20 @@
                     </HBox>
                 </VBox>
 
-                <!-- Data Table -->
-                <VBox spacing="0" style="-fx-background-color: white; -fx-background-radius: 1.5em; -fx-overflow: hidden; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);">
-                    <TableView fx:id="historyTable" prefHeight="450" style="-fx-background-color: transparent; -fx-selection-bar: #d4e3ff;">
-                        <columns>
-                            <TableColumn fx:id="dateColumn" text="DATE" prefWidth="150" />
-                            <TableColumn fx:id="moodColumn" text="MOOD" prefWidth="120" />
-                            <TableColumn fx:id="sleepColumn" text="SLEEP" prefWidth="100" />
-                            <TableColumn fx:id="waterColumn" text="WATER" prefWidth="100" />
-                            <TableColumn fx:id="exerciseColumn" text="EXERCISE" prefWidth="150" />
-                            <TableColumn fx:id="weatherColumn" text="WEATHER" prefWidth="120" />
-                        </columns>
-                        <columnResizePolicy>
-                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                        </columnResizePolicy>
-                    </TableView>
+        <!-- Data Table -->
+        <VBox spacing="0" style="-fx-background-color: white; -fx-background-radius: 1.5em; -fx-overflow: hidden; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+            <ScrollPane fitToHeight="true" hbarPolicy="ALWAYS" vbarPolicy="NEVER" style="-fx-background-color: transparent;">
+                <TableView fx:id="historyTable" prefHeight="450" minWidth="1000" style="-fx-background-color: transparent; -fx-selection-bar: #d4e3ff;">
+                    <columns>
+                        <TableColumn fx:id="dateColumn" text="DATE" prefWidth="150" />
+                        <TableColumn fx:id="moodColumn" text="MOOD" prefWidth="120" />
+                        <TableColumn fx:id="sleepColumn" text="SLEEP" prefWidth="100" />
+                        <TableColumn fx:id="waterColumn" text="WATER" prefWidth="100" />
+                        <TableColumn fx:id="exerciseColumn" text="EXERCISE" prefWidth="200" />
+                        <TableColumn fx:id="weatherColumn" text="WEATHER" prefWidth="150" />
+                    </columns>
+                </TableView>
+            </ScrollPane>
 
                     <!-- Pagination -->
                     <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 1.5em; -fx-background-color: #f9f9f9; -fx-background-radius: 0 0 1.5em 1.5em;">

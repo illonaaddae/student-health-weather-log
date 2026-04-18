@@ -20,8 +20,11 @@ Desktop JavaFX app for students to track daily wellness metrics and relate them 
 ## Quick run
 
 ```bash
+open -a Docker
 cd /Users/illona/Desktop/BeTech/Java/projects/student-health-weather-log
 docker compose up -d
+docker compose ps
+docker compose logs db --tail=50 | cat
 ./mvnw clean javafx:run
 ```
 
